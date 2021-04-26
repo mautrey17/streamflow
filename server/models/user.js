@@ -7,16 +7,21 @@ mongoose.promise = Promise;
 const userSchema = new Schema({
 	firstName: { type: String, unique: false },
 	lastName: { type: String, unique: false },
-  username: { type: String, unique: false, required: false },
-  password: { type: String, unique: false, required: false },
-  books: [
-    {
-      // Store ObjectIds in the array
-      type: Schema.Types.ObjectId,
-      // The ObjectIds will refer to the ids in the Book model
-      ref: "Book"
-    }
-  ]
+	username: { type: String, unique: false, required: false },
+	password: { type: String, unique: false, required: false },
+	tasks: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Task"
+		}
+	],
+	projects: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Project"
+		}
+	],
+	picture: { type: String }
 });
 
 // Define schema methods
