@@ -60,10 +60,11 @@ function App() {
           <Nav user={user} logout={logout}/>
           <div className="main-view">
             <Switch>
-              <Route exact path="/" component={Books} />
-              <Route exact path="/books" component={Books} />
-              <Route exact path="/books/:id" component={Detail} />
-              <Route component={NoMatch} />
+              <Route exact path="/" component={Project} />
+              <Route exact path="/userprofile" component={UserProfile} />
+              <Route exact path="/notes" component={Notes} />
+              <Route exact path="/dashboard" component={Dashboard} />
+              <Route exact path="/messaging" component={Messaging} />
             </Switch>
           </div>
         </div>
@@ -71,7 +72,7 @@ function App() {
       { !loggedIn && (
         <div className="auth-wrapper" style={{paddingTop:40}}>
           <Route exact path="/" component={() => <LoginForm login={login}/>} />
-          <Route exact path="/books" component={() => <LoginForm user={login} />} />
+          {/* <Route exact path="/books" component={() => <LoginForm user={login} />} /> */}
           <Route exact path="/signup" component={SignupForm} />
         </div>
       )}
