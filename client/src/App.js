@@ -6,6 +6,7 @@ import Nav from "./components/Nav";
 import Books from './pages/Books';
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import AUTH from './utils/AUTH';
 
 function App() {
