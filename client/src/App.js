@@ -7,6 +7,7 @@ import Books from './pages/Books';
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
+import Test from './pages/Test';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -62,6 +63,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Books} />
               <Route exact path="/books" component={Books} />
+              <Route exact path="/test" component={Test} />
               <Route exact path="/books/:id" component={Detail} />
               <Route component={NoMatch} />
             </Switch>
