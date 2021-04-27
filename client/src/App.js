@@ -7,6 +7,7 @@ import Books from './pages/Books';
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import AUTH from './utils/AUTH';
+import Messages from './pages/Messages';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -63,6 +64,7 @@ function App() {
               <Route exact path="/" component={Books} />
               <Route exact path="/books" component={Books} />
               <Route exact path="/books/:id" component={Detail} />
+              <Route exact path="/test" component={Messages} />
               <Route component={NoMatch} />
             </Switch>
           </div>
@@ -72,6 +74,7 @@ function App() {
         <div className="auth-wrapper" style={{paddingTop:40}}>
           <Route exact path="/" component={() => <LoginForm login={login}/>} />
           <Route exact path="/books" component={() => <LoginForm user={login} />} />
+          <Route exact path="/test" component={Messages} />
           <Route exact path="/signup" component={SignupForm} />
         </div>
       )}
