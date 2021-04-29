@@ -1,7 +1,7 @@
 const ObjectId = require("mongoose").Types.ObjectId;
 const db = require("../models");
 
-modeule.exports ={
+module.exports ={
     findAll: function(req, res){
         if (req.user) {
             if (req.user) {

@@ -8,6 +8,7 @@ import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AUTH from './utils/AUTH';
+import Test from './pages/Test';
 
 //added for testing
 import Messages from './pages/Messages';
@@ -70,6 +71,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Books} />
               <Route exact path="/books" component={Books} />
+              <Route exact path="/test" component={Test} />
               <Route exact path="/books/:id" component={Detail} />
               <Route exact path="/test" component={Messages} />
               <Route exact path="/project" component={Project} />
