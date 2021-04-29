@@ -9,6 +9,10 @@ import NoMatch from "./pages/NoMatch";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AUTH from './utils/AUTH';
 
+//added for testing
+import Messages from './pages/Messages';
+import Project from './pages/Project';
+import Notes from './pages/Notes';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -61,11 +65,13 @@ function App() {
           <Nav user={user} logout={logout}/>
           <div className="main-view">
             <Switch>
-              <Route exact path="/" component={Project} />
-              <Route exact path="/userprofile" component={UserProfile} />
+              <Route exact path="/" component={Books} />
+              <Route exact path="/books" component={Books} />
+              <Route exact path="/books/:id" component={Detail} />
+              <Route exact path="/test" component={Messages} />
+              <Route exact path="/project" component={Project} />
               <Route exact path="/notes" component={Notes} />
-              <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/messaging" component={Messaging} />
+              <Route component={NoMatch} />
             </Switch>
           </div>
         </div>
@@ -73,7 +79,9 @@ function App() {
       { !loggedIn && (
         <div className="auth-wrapper" style={{paddingTop:40}}>
           <Route exact path="/" component={() => <LoginForm login={login}/>} />
-          {/* <Route exact path="/books" component={() => <LoginForm user={login} />} /> */}
+          <Route exact path="/books" component={() => <LoginForm user={login} />} />
+          <Route exact path="/test" component={Messages} />
+          <Route exact path="/project" component={Project} />
           <Route exact path="/signup" component={SignupForm} />
         </div>
       )}

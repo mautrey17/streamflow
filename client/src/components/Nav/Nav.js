@@ -1,4 +1,4 @@
-iimport React from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
