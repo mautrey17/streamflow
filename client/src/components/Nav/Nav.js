@@ -1,39 +1,54 @@
-import React, { Fragment } from "react";
-import { Link } from 'react-router-dom';
-import { Col } from '../Grid';
-import './Nav.css';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Nav = (props) => {
-  let greeting;
+function NavTabs() {
+  // We'll go into the Hooks API later, for now, we are just using some code
+  // from the react-router docs (https://reacttraining.com/react-router/web/api/Hooks/uselocation)
+  // This allows the component to check the route any time the user uses a link to navigate.
+  const location = useLocation();
 
-  if (props.user === null) {
-		greeting = <p>Hello guest</p>
-	} else if (props.user.firstName) {
-		greeting = (
-			<Fragment>
-				Welcome back, <strong>{props.user.firstName}</strong>
-			</Fragment>
-		)
-	} else if (props.user.username) {
-		greeting = (
-			<Fragment>
-				Welcome back, <strong>{props.user.username} </strong>
-			</Fragment>
-		)
-  }
-  
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-      <Col size="md-6 sm-6">
-        <Link to="/" className="navbar-brand">React Reading List With Auth</Link>
-      </Col>
-      <Col size="md-6 sm-6">
-        <div className="float-right">
-        {greeting} - <Link to="#" className="logout" onClick={props.logout}>Logout</Link>
-        </div>
-      </Col>
-    </nav>
-  )
-};
+    <ul className="nav nav-tabs">
+      <li className="nav-item">
+        <Link to="/" className={location.pathname === "/" ? "nav-link active" : "nav-link"}>
+          Project
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          to="/userprofile"
+          className={location.pathname === "/userprofile" ? "nav-link active" : "nav-link"}
+        >
+          User Profile
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          to="/notes"
+          className={location.pathname === "/notes" ? "nav-link active" : "nav-link"}
+        >
+          Notes
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          to="/dashboard"
+          className={location.pathname === "/dashboard" ? "nav-link active" : "nav-link"}
+        >
+          DashBoard
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link
+          to="/messaging"
+          className={location.pathname === "/messaging" ? "nav-link active" : "nav-link"}
+        >
+          Messaging
+        </Link>
+      </li>
+    </ul>
+  );
+}
 
-export default Nav;
+export default NavTabs;
