@@ -3,14 +3,14 @@ import React from 'react';
 import {Col, Row} from "../../components/Grid";
 import ProjectCard from "../../components/ProjectCard";
 import ToDo from "../../components/ToDo"
-// import Nav from "../../components/Nav"
+import Nav from "../../components/Nav"
 
 function Dashboard() {
 
 
     return(
         <div>
-            {/* <Nav /> */}
+            <Nav />
             
             <Row>
             <Col size="md-2 sm-2">

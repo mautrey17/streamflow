@@ -14,6 +14,7 @@ import Messages from './pages/Messages';
 import Project from './pages/Project';
 import Notes from './pages/Notes';
 import Dashboard from './pages/Dashboard';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -74,6 +75,7 @@ function App() {
               <Route exact path="/project" component={Project} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/notes" component={Notes} />
+              <Route exact path="/userprofile" component={UserProfile} />
               <Route component={NoMatch} />
             </Switch>
           </div>
@@ -88,6 +90,7 @@ function App() {
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/signup" component={SignupForm} />
           <Route exact path="/notes" component={Notes} />
+          <Route exact path="/userprofile" component={UserProfile} />
         </div>
       )}
     </div>
