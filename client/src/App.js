@@ -11,6 +11,7 @@ import AUTH from './utils/AUTH';
 //added for testing
 import Messages from './pages/Messages';
 import Project from './pages/Project';
+import Dashboard from './pages/Dashboard'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -69,6 +70,7 @@ function App() {
               <Route exact path="/books/:id" component={Detail} />
               <Route exact path="/test" component={Messages} />
               <Route exact path="/project" component={Project} />
+              <Route exact path="/dashboard" component={Dashboard} />
               <Route component={NoMatch} />
             </Switch>
           </div>
@@ -80,6 +82,7 @@ function App() {
           <Route exact path="/books" component={() => <LoginForm user={login} />} />
           <Route exact path="/test" component={Messages} />
           <Route exact path="/project" component={Project} />
+          <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/signup" component={SignupForm} />
         </div>
       )}
