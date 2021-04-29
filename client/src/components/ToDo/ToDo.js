@@ -5,6 +5,27 @@ function ToDo() {
 
     return(
         <div>
+            <h3>Overdue</h3>
+            <table className="table mb-3">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Urgency</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Progress</th>
+                        <th scope="col">Manager</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Urgent</td>
+                        <td>Stuck</td>
+                        <td>90%</td>
+                        <td>Jill</td>
+                    </tr>
+                </tbody>
+            </table>
             <h3>Today</h3>
             <table className="table mb-3">
                 <thead>
