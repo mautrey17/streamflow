@@ -1,11 +1,14 @@
 import React from "react";
 import {Col, Row} from "../../components/Grid";
-import KanBan from "../../components/KanBan"
+import KanBan from "../../components/KanBan";
+import Nav from "../../components/Nav";
 
 function Project() {
 
     return(
-        <div className="container">
+        <div>
+            <Nav />
+            <div className="container">
             <div>
                 <h1>Graph of Task Statuses</h1>
             </div>
@@ -28,6 +31,7 @@ function Project() {
                         
                 </Row>
                 
+            </div>
             </div>
         </div>
     )

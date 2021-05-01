@@ -1,9 +1,12 @@
 import React from "react";
+import Nav from "../../components/Nav";
 
 function Note ()  {
 
 return (
-<div className="container">
+<div>
+    <Nav />
+    <div className="container">
    <form>
        <label>
         Note:
@@ -15,6 +18,7 @@ return (
            
        </textarea>
    </form>
+   </div>
 </div>
 )
 }
