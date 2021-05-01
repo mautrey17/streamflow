@@ -73,7 +73,7 @@ function App() {
               <Route exact path="/books" component={Books} />
               <Route exact path="/test" component={Test} />
               <Route exact path="/books/:id" component={Detail} />
-              <Route exact path="/test" component={Messages} />
+              <Route exact path="/messaging" component={Messages} />
               <Route exact path="/project" component={Project} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/notes" component={Notes} />
@@ -89,6 +89,7 @@ function App() {
           <Route exact path="/books" component={() => <LoginForm user={login} />} />
           <Route exact path="/test" component={Messages} />
           <Route exact path="/project" component={Project} />
+          <Route exact path="/messaging" component={Messages} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/signup" component={SignupForm} />
           <Route exact path="/notes" component={Notes} />
