@@ -1,0 +1,18 @@
+.low{
+    background-color: green;
+    color: white;
+}
+
+.medium{
+    background-color: yellow;
+    color: black;
+}
+
+.high{
+    background-color: red 
+}
+
+.urgent{
+    background-color: purple;
+    color: white;
+}
