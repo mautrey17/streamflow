@@ -7,7 +7,13 @@ const projectSchema = new Schema({
   startDate: { type: Date, default: Date.now },
   dueDate: { type: Date },
   assignedUsers: [{ type: String }],
-  project: { type: String }
+  project: { type: String },
+  owner: {
+    firstName: { type: String },
+    lastName: { type: String },
+    username: { type: String },
+    id: { type: String }
+  }
 });
 
 const Task = mongoose.model("Task", projectSchema);

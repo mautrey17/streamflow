@@ -15,10 +15,12 @@ function Test() {
   const [formObject, setFormObject] = useState({});
   const formEl = useRef(null);
   const [userInfo, setUserInfo] = useState({});
+  const [userList, setUserList] = useState([]);
 
   // Load all books and store them with setBooks
   useEffect(() => {
     loadProjects();
+    loadUsers();
     AUTH.getUser().then(res => {
       setUserInfo(res.data.user);
     });
@@ -33,6 +35,13 @@ function Test() {
       })
       .catch(err => console.log(err));
   };
+
+  function loadUsers() {
+    API.getUsers().then(res => {
+      console.log(res.data);
+      setUserList(res.data);
+    })
+  }
 
   // // Deletes a book from the database with a given id, then reloads books from the db
   // function deleteBook(id) {
@@ -59,7 +68,7 @@ function Test() {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
             username: userInfo.username,
-            id: "_" + userInfo._id
+            id: userInfo._id
         }
       })
         .then(res => {
@@ -112,6 +121,17 @@ function Test() {
               ) : (
                 <h3>No Results to Display</h3>
               )}
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col size="md-6">
+            <Card title="List of users">
+              {userList.map(user => (
+                <ListItem key={user._id}>
+                  {user.username}
+                </ListItem>
+              ))}
             </Card>
           </Col>
         </Row>
