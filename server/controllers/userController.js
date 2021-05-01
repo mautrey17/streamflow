@@ -2,6 +2,14 @@ const db = require("../models");
 
 // Defining methods for the userController
 module.exports = {
+  findAll: (req, res) => {
+    if (req.user) {
+      db.User.find({}, 'firstName lastName username')
+      .then(user => {
+        res.json(user)
+      })
+    }
+  },
   getUser: (req, res, next) => {
     // console.log(req.user);
     if (req.user) {
