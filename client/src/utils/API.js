@@ -26,7 +26,19 @@ export default {
   deleteProject: function(id) {
     return axios.delete("/api/projects/" + id);
   },
+  getUsers: function() {
+    return axios.get("/api/users");
+  },
   getUser: function(id) {
     return axios.get("/api/users/" + id);
+  },
+  getTasks: function() {
+    return axios.get("/api/tasks");
+  },
+  getTask: function(id) {
+    return axios.get("/api/tasks/" + id);
+  },
+  saveTask: function(taskData) {
+    return axios.post("/api/tasks", taskData)
   }
 };
