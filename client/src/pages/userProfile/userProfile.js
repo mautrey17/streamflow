@@ -1,8 +1,11 @@
 import React from "react";
+import Nav from "../../components/Nav"
 
 function UserProfile() {
   return (
-    <div className="userProfile">
+    <div>
+      <Nav />
+      <div className="userProfile container">
       <form>
         <label>Login Information</label>
         <input className="form-control" type="text" placeholder="Username " />
@@ -14,6 +17,7 @@ function UserProfile() {
           placeholder="Profile Picture "
         />
       </form>
+      </div>
     </div>
   );
 }

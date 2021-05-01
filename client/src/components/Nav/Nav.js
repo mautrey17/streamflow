@@ -9,18 +9,26 @@ function NavTabs() {
   const location = useLocation();
 
   return (
-    <ul className="nav nav-tabs">
+    <ul className="nav nav-tabs mb-4">
       <li className="nav-item">
-        <Link to="/" className={location.pathname === "/" ? "nav-link active" : "nav-link"}>
+        <Link
+          to="/dashboard"
+          className={location.pathname === "/dashboard" ? "nav-link active" : "nav-link"}
+        >
+          DashBoard
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/project" className={location.pathname === "/project" ? "nav-link active" : "nav-link"}>
           Project
         </Link>
       </li>
       <li className="nav-item">
         <Link
-          to="/userprofile"
-          className={location.pathname === "/userprofile" ? "nav-link active" : "nav-link"}
+          to="/messaging"
+          className={location.pathname === "/messaging" ? "nav-link active" : "nav-link"}
         >
-          User Profile
+          Messaging
         </Link>
       </li>
       <li className="nav-item">
@@ -33,18 +41,10 @@ function NavTabs() {
       </li>
       <li className="nav-item">
         <Link
-          to="/dashboard"
-          className={location.pathname === "/dashboard" ? "nav-link active" : "nav-link"}
+          to="/userprofile"
+          className={location.pathname === "/userprofile" ? "nav-link active" : "nav-link"}
         >
-          DashBoard
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link
-          to="/messaging"
-          className={location.pathname === "/messaging" ? "nav-link active" : "nav-link"}
-        >
-          Messaging
+          User Profile
         </Link>
       </li>
     </ul>
