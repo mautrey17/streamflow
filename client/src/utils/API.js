@@ -17,8 +17,11 @@ export default {
   saveBook: function(bookData) {
     return axios.post("/api/books", bookData);
   },
-  getProjects: function() {
-    return axios.get("/api/projects");
+  getAllProjects: function() {
+    return axios.post("/api/projects")
+  },
+  getProjects: function(type) {
+    return axios.get("/api/projects/type/" + type);
   },
   saveProject: function(projectData) {
     return axios.post("/api/projects", projectData);
