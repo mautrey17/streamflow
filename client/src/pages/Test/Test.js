@@ -10,32 +10,57 @@ import API from "../../utils/API";
 import AUTH from '../../utils/AUTH';
 
 function Test() {
-  // Setting our component's initial state
   const [projects, setProjects] = useState([]);
   const [formObject, setFormObject] = useState({});
   const formEl = useRef(null);
   const [userInfo, setUserInfo] = useState({});
   const [userList, setUserList] = useState([]);
 
-  // Load all books and store them with setBooks
   useEffect(() => {
-    loadProjects();
+    loadAllProjects();
+    loadOwnedProjects();
+    loadAssignedProjects();
     loadUsers();
     AUTH.getUser().then(res => {
       setUserInfo(res.data.user);
     });
   }, []);
 
-  // Loads all books and sets them to books
-  function loadProjects() {
+  // -------------------------------------------
+
+  // API.getProjects(param)
+  // Leaving param blank will get all projects associated with the logged in user
+  // Setting param to "owned" will only get projects created by the logged in user
+  // Setting param to "assigned" will only get projects assigned to the logged in user
+
+  function loadAllProjects() {
     API.getProjects()
       .then(res => {
-        // console.log(res.data.books);
+        console.log("all projects: " + JSON.stringify(res.data.projects));
         setProjects(res.data.projects);
+      })
+      .catch(err => console.log(err));
+  }
+
+  function loadOwnedProjects() {
+    API.getProjects("owned")
+      .then(res => {
+        console.log("owned projects : " + JSON.stringify(res.data.projects));
       })
       .catch(err => console.log(err));
   };
 
+  function loadAssignedProjects() {
+    API.getProjects("assigned")
+      .then(res => {
+        console.log("assigned projects : " + JSON.stringify(res.data.projects));
+      })
+      .catch(err => console.log(err));
+  }
+
+  // -------------------------------------------
+
+  // Grabs list of all users in the DB, ready for assigning users to projects/tasks
   function loadUsers() {
     API.getUsers().then(res => {
       console.log(res.data);
@@ -73,7 +98,7 @@ function Test() {
       })
         .then(res => {
           formEl.current.reset();
-          loadProjects();
+          loadOwnedProjects();
         })
         .catch(err => console.log(err));
     }
