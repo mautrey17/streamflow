@@ -4,7 +4,22 @@ const db = require("../models");
 module.exports = {
   findAll: function (req, res) {
       if (req.user) {
-        db.Project
+        if (req.params.type === "owned") { db.Project
+          .find({ "owner.id": req.user._id })
+          .populate({ path: "projects", options: { sort: { 'date': -1 } } })
+          .then(projects => {
+            res.json({ projects });
+          })
+          .catch(err => res.status(422).json(err));
+        } else if (req.params.type === "assigned") { db.Project
+          .find({ "assignedUsers": req.user._id })
+          .populate({ path: "projects", options: { sort: { 'date': -1 } } })
+          .then(projects => {
+            res.json({ projects });
+          })
+          .catch(err => res.status(422).json(err));
+        } else {
+          db.Project
           .find({ 
             "$or": 
             [{ 
@@ -18,6 +33,7 @@ module.exports = {
             res.json({ projects });
           })
           .catch(err => res.status(422).json(err));
+        }
       } else {
         return res.json({ projects: null });
       }
