@@ -1,7 +1,7 @@
-import React from "react";
+
 import API from "../../utils/API";
 import React, { useState, useEffect, useRef } from "react";
-import { NoteInput, NoteTextArea, NoteBtn } from "../../components/Form";
+import { Input, TextArea, FormBtn } from "../../components/Form";
 import DeleteBtn from "../../components/DeleteBtn";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
