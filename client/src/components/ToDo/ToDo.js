@@ -10,6 +10,8 @@ function ToDo() {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Task</th>
                         <th scope="col">Urgency</th>
                         <th scope="col">Status</th>
                         <th scope="col">Progress</th>
@@ -19,6 +21,8 @@ function ToDo() {
                 <tbody>
                     <tr>
                         <th scope="row">1</th>
+                        <td>Project 1</td>
+                        <td>Finish Home Page</td>
                         <td>Urgent</td>
                         <td>Stuck</td>
                         <td>90%</td>
@@ -31,6 +35,8 @@ function ToDo() {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Task</th>
                         <th scope="col">Urgency</th>
                         <th scope="col">Status</th>
                         <th scope="col">Progress</th>
@@ -40,6 +46,8 @@ function ToDo() {
                 <tbody>
                     <tr>
                         <th scope="row">1</th>
+                        <td>Project 1</td>
+                        <td>Finish Home Page</td>
                         <td>Urgent</td>
                         <td>Stuck</td>
                         <td>90%</td>
@@ -47,6 +55,8 @@ function ToDo() {
                     </tr>
                     <tr>
                         <th scope="row">2</th>
+                        <td>Project 2</td>
+                        <td>Finish Home Page</td>
                         <td>Moderate</td>
                         <td>Flowing</td>
                         <td>60%</td>
@@ -54,6 +64,8 @@ function ToDo() {
                     </tr>
                     <tr>
                         <th scope="row">3</th>
+                        <td>Project 1</td>
+                        <td>Finish Home Page</td>
                         <td>Low</td>
                         <td>Waiting on others</td>
                         <td>25%</td>
@@ -67,6 +79,8 @@ function ToDo() {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Task</th>
                         <th scope="col">Urgency</th>
                         <th scope="col">Status</th>
                         <th scope="col">Progress</th>
@@ -76,6 +90,8 @@ function ToDo() {
                 <tbody>
                     <tr>
                         <th scope="row">1</th>
+                        <td>Project 1</td>
+                        <td>Finish Home Page</td>
                         <td>Urgent</td>
                         <td>Stuck</td>
                         <td>90%</td>
@@ -83,6 +99,8 @@ function ToDo() {
                     </tr>
                     <tr>
                         <th scope="row">2</th>
+                        <td>Project 1</td>
+                        <td>Finish Home Page</td>
                         <td>Moderate</td>
                         <td>Flowing</td>
                         <td>60%</td>

@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
 import Nav from "./components/Nav";
-import Books from './pages/Books';
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -69,11 +68,10 @@ function App() {
           <Nav user={user} logout={logout}/>
           <div className="main-view">
             <Switch>
-              <Route exact path="/" component={Books} />
-              <Route exact path="/books" component={Books} />
+              <Route exact path="/" component={Dashboard} />
               <Route exact path="/test" component={Test} />
               <Route exact path="/books/:id" component={Detail} />
-              <Route exact path="/test" component={Messages} />
+              <Route exact path="/messaging" component={Messages} />
               <Route exact path="/project" component={Project} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/notes" component={Notes} />
@@ -89,6 +87,7 @@ function App() {
           <Route exact path="/books" component={() => <LoginForm user={login} />} />
           <Route exact path="/test" component={Messages} />
           <Route exact path="/project" component={Project} />
+          <Route exact path="/messaging" component={Messages} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/signup" component={SignupForm} />
           <Route exact path="/notes" component={Notes} />
