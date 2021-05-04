@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Col, Row} from "../../components/Grid";
 import KanBan from "../../components/KanBan";
 import Nav from "../../components/Nav";
 import "./Project.css";
 
 function Project() {
+    //set the initial state
+    const [projects, setProjects] = useState([]);
+    const [tasks, setTasks] = useState([]);
+    const [openTask, setOpenTask] = useState({});
+
+    useEffect(() => {
+        //API call here and set state for projects
+    });
 
     return(
         <div>
             <Nav />
             <Row>
-            <Col size="md-2 sm-2">
+            <Col size="lg-2 md-2">
                 <div className="list-group mt-3">
                     <button type="button" className="list-group-item list-group-item-action active">Project 1</button>
                     <button type="button" className="list-group-item list-group-item-action">Project 2</button>
