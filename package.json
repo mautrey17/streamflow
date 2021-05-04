@@ -33,11 +33,14 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "if-env": "^1.0.4",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "mongoose": "^5.9.14",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "react-minimal-pie-chart": "^8.2.0",
+    "react-moment": "^1.1.1",
     "react-vis": "^1.11.7"
   }
 }
