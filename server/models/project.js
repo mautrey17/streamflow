@@ -8,6 +8,7 @@ const projectSchema = new Schema({
   dueDate: { type: Date },
   assignedUsers: [{ type: String }],
   tasks: [{ type: String }],
+  urgency: { type: String },
   owner: {
     firstName: { type: String },
     lastName: { type: String },
