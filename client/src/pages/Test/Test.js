@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-
+import Moment from 'react-moment';
+import 'moment-timezone';
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Card } from "../../components/Card";
@@ -8,6 +9,7 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 import DeleteBtn from "../../components/DeleteBtn";
 import API from "../../utils/API";
 import AUTH from '../../utils/AUTH';
+const moment = require('moment');
 
 function Test() {
   const [projects, setProjects] = useState([]);
@@ -84,7 +86,7 @@ function Test() {
   function handleInputChange(event) {
     const { name, value } = event.target;
     setFormObject({...formObject, [name]: value})
-    console.log("date: " + dateToLocalISO(new Date(taskFormObject.dueDate)))
+    console.log("date: " + dateToLocalTZ(taskFormObject.dueDate))
   };
 
   // When the form is submitted, use the API.saveBook method to save the book data
@@ -94,7 +96,7 @@ function Test() {
     if (formObject.title && formObject.dueDate) {
       API.saveProject({
         title: formObject.title,
-        dueDate: dateToLocalISO((new Date(formObject.dueDate))),
+        dueDate: dateToLocalTZ(formObject.dueDate),
         owner: {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
@@ -110,14 +112,14 @@ function Test() {
     }
   };
 
-  function dateToLocalISO(date) {
-    if (date) {
-      const offsetMs = date.getTimezoneOffset() * 60 * 1000;
-      const msLocal =  date.getTime() - offsetMs;
-      const dateLocal = new Date(msLocal);
-      return dateLocal;
-    }
-    
+  function dateToLocalTZ(date) {
+    const x = date.toString();
+    let y = x.substring(0, 4);
+    let m = parseInt(x.substring(5, 7)) - 1;
+    let d = x.substring(8, 10);
+    console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
+    const newDate = new Date(y,m,d);
+    return newDate.toISOString();
   }
 
   // Handles updating component state when the user types into the input field
@@ -152,7 +154,7 @@ function Test() {
     if (taskFormObject.title && taskFormObject.dueDate) {
       API.saveTask({
         title: taskFormObject.title,
-        dueDate: dateToLocalISO(new Date(taskFormObject.dueDate)),
+        dueDate: dateToLocalTZ(taskFormObject.dueDate),
         owner: {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
@@ -242,6 +244,9 @@ function Test() {
                 <div>
                   Assign user(s)
                   <select onChange={handleSelectedUser} value={selectedUser}>
+                    <option>
+                      
+                    </option>
                     {userList.map(user => (
                       <option
                         key={user._id}
