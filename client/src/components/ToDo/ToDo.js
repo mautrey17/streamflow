@@ -1,111 +1,107 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import API from "../../utils/API";
+import ToDoRow from "../ToDoRow";
+import THead from "../THead";
+import moment from "moment";
 
 function ToDo() {
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [overTasks, setOverTasks] = useState([]);
+    const [todayTasks, setTodayTasks] = useState([]);
+    const [tomorrowTasks, setTomorrowTasks] = useState([]);
+    const [overProjName, setOverProjName] = useState([]);
+    const [todayProjName, setTodayProjName] = useState([]);
+    const [tomProjName, setTomProjName] = useState([]);
 
+    useEffect(() => {
+        loadAssignedTasks();
+    }, [])
+
+    // Tasks are called and split into 3 sections depending on due date
+    // Project name gets called and associated with matching task
+    function loadAssignedTasks() {
+        API.getTasks("assigned")
+            .then(res => {
+                API.getProjects()
+                    .then(res2 => {
+                        console.log(res2.data.projects)
+                        res.data.tasks.map((task, j) => {
+                            if (compareTime(task.dueDate) === 1) {
+                                setOverTasks(old => [...old, task])
+                                for (let i = 0; i < res2.data.projects.length; i++) {
+                                    if (res2.data.projects[i]._id === res.data.tasks[j].project) {
+                                        setOverProjName(old => [...old, res2.data.projects[i].title])
+                                        break;
+                                    }
+                                }
+                            } else if (compareTime(task.dueDate) === 2) {
+                                setTodayTasks(old => [...old, task])
+                                for (let i = 0; i < res2.data.projects.length; i++) {
+                                    if (res2.data.projects[i]._id === res.data.tasks[j].project) {
+                                        setTodayProjName(old => [...old, res2.data.projects[i].title])
+                                        break;
+                                    }
+                                }
+                            } else {
+                                setTomorrowTasks(old => [...old, task])
+                                for (let i = 0; i < res2.data.projects.length; i++) {
+                                    if (res2.data.projects[i]._id === res.data.tasks[j].project) {
+                                        setTomProjName(old => [...old, res2.data.projects[i].title])
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    })     
+            })
+    }
+
+    // Compares due date to current time
+    function compareTime(x) {
+        const dateB = new Date(x);
+        // 1 = overdue
+        if ( moment(currentDate).isAfter(dateB, "day") ) {
+            return 1     
+        }
+        // 2 = today
+        else if ( moment(currentDate).isSame(dateB, "day") ) {
+            return 2
+        }
+        // 3 = tomorrow
+        else if ( moment(currentDate).isBefore(dateB, "day") ) {
+            return 3
+        }
+        else return null
+    }
 
     return(
         <div>
             <h3>Overdue</h3>
             <table className="table mb-3">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Project</th>
-                        <th scope="col">Task</th>
-                        <th scope="col">Urgency</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Progress</th>
-                        <th scope="col">Manager</th>
-                    </tr>
-                </thead>
+                <THead />
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Project 1</td>
-                        <td>Finish Home Page</td>
-                        <td>Urgent</td>
-                        <td>Stuck</td>
-                        <td>90%</td>
-                        <td>Jill</td>
-                    </tr>
+                {overTasks.map((task, i) => (
+                    <ToDoRow task={task} count={i+1} key={task._id} project={overProjName[i]}/>
+                ))}
                 </tbody>
             </table>
             <h3>Today</h3>
             <table className="table mb-3">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Project</th>
-                        <th scope="col">Task</th>
-                        <th scope="col">Urgency</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Progress</th>
-                        <th scope="col">Manager</th>
-                    </tr>
-                </thead>
+                <THead />
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Project 1</td>
-                        <td>Finish Home Page</td>
-                        <td>Urgent</td>
-                        <td>Stuck</td>
-                        <td>90%</td>
-                        <td>Jill</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Project 2</td>
-                        <td>Finish Home Page</td>
-                        <td>Moderate</td>
-                        <td>Flowing</td>
-                        <td>60%</td>
-                        <td>Jill</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Project 1</td>
-                        <td>Finish Home Page</td>
-                        <td>Low</td>
-                        <td>Waiting on others</td>
-                        <td>25%</td>
-                        <td>Mark</td>
-                    </tr>
+                {todayTasks.map((task, i) => (
+                    <ToDoRow task={task} count={i+1} key={task._id} project={todayProjName[i]}/>
+                ))}
                 </tbody>
             </table>
 
             <h3>Tomorrow</h3>
             <table className="table mt-3">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Project</th>
-                        <th scope="col">Task</th>
-                        <th scope="col">Urgency</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Progress</th>
-                        <th scope="col">Manager</th>
-                    </tr>
-                </thead>
+                <THead />
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Project 1</td>
-                        <td>Finish Home Page</td>
-                        <td>Urgent</td>
-                        <td>Stuck</td>
-                        <td>90%</td>
-                        <td>Jill</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Project 1</td>
-                        <td>Finish Home Page</td>
-                        <td>Moderate</td>
-                        <td>Flowing</td>
-                        <td>60%</td>
-                        <td>Jack</td>
-                    </tr>
+                {tomorrowTasks.map((task, i) => (
+                    <ToDoRow task={task} count={i+1} key={task._id} project={tomProjName[i]}/>
+                ))}
                 </tbody>
             </table>
         </div>

@@ -1,12 +1,17 @@
-
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import {Col, Row} from "../../components/Grid";
 import ProjectCard from "../../components/ProjectCard";
 import ToDo from "../../components/ToDo"
 import Nav from "../../components/Nav"
 
 function Dashboard() {
+  //set the initial state
+  const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
+  useEffect(() => {
+      //API call here and set state for projects
+  });
 
     return(
         <div>

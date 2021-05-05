@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { PieChart } from 'react-minimal-pie-chart';
+import BarGraph from "../../components/BarGraph";
 import {Col, Row} from "../../components/Grid";
 import KanBan from "../../components/KanBan";
 import Nav from "../../components/Nav";
 import "./Project.css";
 
 function Project() {
+    //set the initial state
+    const [projects, setProjects] = useState([]);
+    const [tasks, setTasks] = useState([]);
+    const [openTask, setOpenTask] = useState({});
+
+    useEffect(() => {
+        //API call here and set state for projects
+    });
+
+    const taskClick = (() => {
+        alert('passed successfully')
+    })
 
     return(
         <div>
             <Nav />
             <Row>
-            <Col size="md-2 sm-2">
+            <Col size="lg-2 md-2">
                 <div className="list-group mt-3">
                     <button type="button" className="list-group-item list-group-item-action active">Project 1</button>
                     <button type="button" className="list-group-item list-group-item-action">Project 2</button>
                     <button type="button" className="list-group-item list-group-item-action">Project 3</button>
+                    <button type="button" className="list-group-item list-group-item-action">Add a Project</button>
                 </div>
             
             </Col>
@@ -22,9 +37,40 @@ function Project() {
                 <h1 className="text-center">Project Name</h1>
             <div>
                 <h2>Graph of Task Statuses</h2>
+                <PieChart
+                    data={[
+                        { title: 'To Do', value: 10, color: 'red' },
+                        { title: 'In Progress', value: 15, color: 'yellow' },
+                        { title: 'Completed', value: 20, color: 'green' },
+                    ]}
+                    lineWidth={66}
+                    radius={15}
+                    center={[50, 15]}
+                    viewBoxSize={[100, 30]}
+                    startAngle={270}
+                    paddingAngle={2}
+
+                    
+                />;
+                {/* <BarGraph /> */}
             </div>
             <div>
                 <h2>Important user info and due dates</h2>
+                <Row>
+                    <Col size="md-1"></Col>
+                    <Col size="md-5">
+                        <div className='card'>
+                            <h5>This Week: </h5>
+                            <p>Task Name</p>
+                        </div>
+                    </Col>
+                    <Col size="md-5">
+                        <div className='card'>
+                            <h5>Urgent: </h5>
+                            <p>Task Name</p>
+                        </div>
+                    </Col>
+                </Row>
             </div>
             <div>
             <h2>Active Projects</h2>
@@ -32,12 +78,15 @@ function Project() {
                     
                         <KanBan 
                             title="To Do"
+                            taskClick={taskClick}
                         />
                         <KanBan 
                             title="In Progress"
+                            taskClick={taskClick}
                         />
                         <KanBan 
                             title="Completed"
+                            taskClick={taskClick}
                         />
                         
                 </Row>

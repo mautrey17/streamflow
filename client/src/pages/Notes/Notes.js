@@ -12,6 +12,13 @@ import Nav from "../../components/Nav";
 
 function Note ()  {
 
+
+// TODO: - getting list of notes
+//       - render list of notes
+//       - creating new notes
+//       - updatiing notes
+//       - deleting notes
+
 //set initial state 
 const [notes, setNotes] = useState([])
 const [formObject, setFormObject] = useState({})
@@ -60,6 +67,7 @@ function handleFormSubmit(event){
         .catch(err => console.log(err));
     }
 }
+
 
 return (
     

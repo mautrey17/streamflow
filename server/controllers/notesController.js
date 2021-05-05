@@ -4,22 +4,7 @@ const db = require("../models");
 module.exports = {
   findAll: function (req, res) {
       if (req.user) {
-        if (req.params.type === "owned") { db.Task
-          .find({ "owner.id": req.user._id })
-          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
-          .then(tasks => {
-            res.json({ tasks });
-          })
-          .catch(err => res.status(422).json(err));
-        } else if (req.params.type === "assigned") { db.Task
-          .find({ "assignedUsers": req.user._id })
-          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
-          .then(tasks => {
-            res.json({ tasks });
-          })
-          .catch(err => res.status(422).json(err));
-        } else {
-          db.Task
+        db.Note
           .find({ 
             "$or": 
             [{ 
@@ -28,19 +13,18 @@ module.exports = {
               "assignedUsers": req.user._id
             }]
         })
-          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
-          .then(tasks => {
-            res.json({ tasks });
+          .populate({ path: "notes", options: { sort: 'title' } })
+          .then(notes => {
+            res.json({ notes: notes });
           })
           .catch(err => res.status(422).json(err));
-        }
       } else {
-        return res.json({ tasks: null });
+        return res.json({ notes: null });
       }
   },
   findById: function (req, res) {
     if (req.user) {
-      db.Task
+      db.Note
           .find({ 
             "$or": 
             [{ 
@@ -49,22 +33,22 @@ module.exports = {
               "assignedUsers": req.user._id
             }]
         })
-        .populate("tasks")
-        .then(tasks => {
-          const task = tasks.filter(p => p._id.toString() === req.params.id);
-          res.json({ task: task[0] });
+        .populate("notes")
+        .then(notes => {
+          const note = notes.filter(p => p._id.toString() === req.params.id);
+          res.json({ note: note[0] });
         })
         .catch(err => res.status(422).json(err));
     } else {
-      return res.json({ task: null });
+      return res.json({ note: null });
     }
   },
   create: function (req, res) {
     console.log(req)
-    db.Task
+    db.Note
       .create(req.body)
-      .then(dbTask => {
-        return db.User.findOneAndUpdate({ _id: req.user._id }, { $push: { tasks: dbTask._id } }, { new: true });
+      .then(dbNote => {
+        return db.User.findOneAndUpdate({ _id: req.user._id }, { $push: { notes: dbNote._id } }, { new: true });
       })
       .then((dbUser) => {
         // If the User was updated successfully, send it back to the client
@@ -73,7 +57,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   update: function (req, res) {
-    db.Task
+    db.Note
       .findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => {
         console.log(dbModel);
@@ -82,11 +66,11 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {
-    db.User.findOneAndUpdate({ _id: req.user._id }, { $pull: { tasks: new ObjectId(req.params.id) } }, { new: true })
+    db.User.findOneAndUpdate({ _id: req.user._id }, { $pull: { notes: new ObjectId(req.params.id) } }, { new: true })
       .then(() => {
-        db.Task
+        db.Note
           .findOneAndDelete({ _id: req.params.id })
-          .then(dbTask => res.json(dbTask))
+          .then(dbNote => res.json(dbNote))
           .catch(err => res.status(422).json(err));
       });
   }
