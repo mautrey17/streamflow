@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import Moment from 'react-moment';
-import 'moment-timezone';
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Card } from "../../components/Card";
@@ -9,7 +7,6 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 import DeleteBtn from "../../components/DeleteBtn";
 import API from "../../utils/API";
 import AUTH from '../../utils/AUTH';
-const moment = require('moment');
 
 function Test() {
   const [projects, setProjects] = useState([]);
@@ -17,6 +14,7 @@ function Test() {
   const [taskFormObject, setTaskFormObject] = useState({});
   const [selectedUser, setSelectedUser] = useState("");
   const [taskUserArray, setTaskUserArray] = useState([]);
+  const [taskStatus, setTaskStatus] = useState("");
   const [projectTask, setProjectTask] = useState("");
   const [taskUrgency, setTaskUrgency] = useState("");
   const formEl = useRef(null);
@@ -86,7 +84,6 @@ function Test() {
   function handleInputChange(event) {
     const { name, value } = event.target;
     setFormObject({...formObject, [name]: value})
-    console.log("date: " + dateToLocalTZ(taskFormObject.dueDate))
   };
 
   // When the form is submitted, use the API.saveBook method to save the book data
@@ -142,6 +139,10 @@ function Test() {
     setTaskUrgency(event.target.value);
   }
 
+  function handleTaskStatus(event) {
+    setTaskStatus(event.target.value);
+  }
+
   function addAssignUser(event) {
     event.preventDefault();
     setTaskUserArray(oldArray => [...oldArray, selectedUser])
@@ -163,7 +164,8 @@ function Test() {
         },
         assignedUsers: taskUserArray,
         project: projectTask,
-        urgency: taskUrgency
+        urgency: taskUrgency,
+        status: taskStatus
       })
         .then(res => {
           formEl.current.reset();
@@ -245,7 +247,7 @@ function Test() {
                   Assign user(s)
                   <select onChange={handleSelectedUser} value={selectedUser}>
                     <option>
-                      
+
                     </option>
                     {userList.map(user => (
                       <option
@@ -267,6 +269,9 @@ function Test() {
                 <div>
                   Associate Project
                   <select onChange={handleSelectedProject} value={projectTask}>
+                  <option>
+
+                  </option>
                     {projects.map(project => (
                       <option
                         key={project._id}
@@ -282,10 +287,27 @@ function Test() {
                 <div>
                   Task Urgency
                   <select onChange={handleTaskUrgency} value={taskUrgency}>
-                      <option value="low"> Low </option>
-                      <option value="medium"> Medium </option>
-                      <option value="high"> High </option>
-                      <option value="urgent"> Urgent </option>
+                    <option>
+
+                    </option> 
+                    <option value="low"> Low </option>
+                    <option value="medium"> Medium </option>
+                    <option value="high"> High </option>
+                    <option value="urgent"> Urgent </option>
+                  </select>
+                </div>
+
+                <div>
+                  Task Status
+                  <select onChange={handleTaskStatus} value={taskStatus}>
+                    <option>
+
+                    </option> 
+                    <option value="onTrack"> On Track </option>
+                    <option value="potentialDelays"> Potential Delays </option>
+                    <option value="delayed"> Delayed </option>
+                    <option value="stuck"> Stuck </option>
+                    <option value="finished"> Finished </option>
                   </select>
                 </div>
                 
