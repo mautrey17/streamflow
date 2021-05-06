@@ -1,7 +1,7 @@
 import React from "react";
 import "./Task.css";
 
-function Task() {
+function Task(props) {
   return (
     <div className="card mb-3 pr-2">
       <div className="task-box">
@@ -15,7 +15,7 @@ function Task() {
           <p>Opened by: someone</p>
         </div>
         <div className="mx-auto move">
-            <button>&lt;</button>
+            <button onClick={props.taskClick}>&lt;</button>
             <button>&gt;</button>
         </div>
       </div>

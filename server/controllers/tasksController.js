@@ -4,7 +4,22 @@ const db = require("../models");
 module.exports = {
   findAll: function (req, res) {
       if (req.user) {
-        db.Task
+        if (req.params.type === "owned") { db.Task
+          .find({ "owner.id": req.user._id })
+          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
+          .then(tasks => {
+            res.json({ tasks });
+          })
+          .catch(err => res.status(422).json(err));
+        } else if (req.params.type === "assigned") { db.Task
+          .find({ "assignedUsers": req.user._id })
+          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
+          .then(tasks => {
+            res.json({ tasks });
+          })
+          .catch(err => res.status(422).json(err));
+        } else {
+          db.Task
           .find({ 
             "$or": 
             [{ 
@@ -15,9 +30,10 @@ module.exports = {
         })
           .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
           .then(tasks => {
-            res.json({ tasks: tasks });
+            res.json({ tasks });
           })
           .catch(err => res.status(422).json(err));
+        }
       } else {
         return res.json({ tasks: null });
       }

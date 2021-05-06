@@ -35,8 +35,11 @@ export default {
   getUser: function(id) {
     return axios.get("/api/users/" + id);
   },
-  getTasks: function() {
+  getAllTasks: function() {
     return axios.get("/api/tasks");
+  },
+  getTasks: function(type) {
+    return axios.get("/api/tasks/type/" + type);
   },
   getTask: function(id) {
     return axios.get("/api/tasks/" + id);
@@ -58,6 +61,9 @@ export default {
   },
   // Saves a book to the database
   saveNote: function(noteData) {
-    return axios.post("/api/notes", noteData);
+    return axios.post("/api/notes", noteData)
+  },
+  deleteTask: function(id) {
+    return axios.delete("/api/tasks/" + id);
   },
 };

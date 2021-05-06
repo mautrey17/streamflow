@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Card } from "../../components/Card";
@@ -12,6 +11,12 @@ import AUTH from '../../utils/AUTH';
 function Test() {
   const [projects, setProjects] = useState([]);
   const [formObject, setFormObject] = useState({});
+  const [taskFormObject, setTaskFormObject] = useState({});
+  const [selectedUser, setSelectedUser] = useState("");
+  const [taskUserArray, setTaskUserArray] = useState([]);
+  const [taskStatus, setTaskStatus] = useState("");
+  const [projectTask, setProjectTask] = useState("");
+  const [taskUrgency, setTaskUrgency] = useState("");
   const formEl = useRef(null);
   const [userInfo, setUserInfo] = useState({});
   const [userList, setUserList] = useState([]);
@@ -88,13 +93,79 @@ function Test() {
     if (formObject.title && formObject.dueDate) {
       API.saveProject({
         title: formObject.title,
-        dueDate: formObject.dueDate,
+        dueDate: dateToLocalTZ(formObject.dueDate),
         owner: {
             firstName: userInfo.firstName,
             lastName: userInfo.lastName,
             username: userInfo.username,
             id: userInfo._id
         }
+      })
+        .then(res => {
+          formEl.current.reset();
+          loadOwnedProjects();
+        })
+        .catch(err => console.log(err));
+    }
+  };
+
+  function dateToLocalTZ(date) {
+    const x = date.toString();
+    let y = x.substring(0, 4);
+    let m = parseInt(x.substring(5, 7)) - 1;
+    let d = x.substring(8, 10);
+    console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
+    const newDate = new Date(y,m,d);
+    return newDate.toISOString();
+  }
+
+  // Handles updating component state when the user types into the input field
+  function handleTaskInputChange(event) {
+    const { name, value } = event.target;
+    setTaskFormObject({...taskFormObject, [name]: value})
+  };
+
+  function handleSelectedUser(event) {
+    console.log(event.target.value);
+    setSelectedUser(event.target.value);
+  }
+
+  function handleSelectedProject(event) {
+    console.log(event.target.value);
+    setProjectTask(event.target.value);
+  }
+
+  function handleTaskUrgency(event) {
+    setTaskUrgency(event.target.value);
+  }
+
+  function handleTaskStatus(event) {
+    setTaskStatus(event.target.value);
+  }
+
+  function addAssignUser(event) {
+    event.preventDefault();
+    setTaskUserArray(oldArray => [...oldArray, selectedUser])
+  }
+
+  // When the form is submitted, use the API.saveBook method to save the book data
+  // Then reload books from the database
+  function handleTaskFormSubmit(event) {
+    event.preventDefault();
+    if (taskFormObject.title && taskFormObject.dueDate) {
+      API.saveTask({
+        title: taskFormObject.title,
+        dueDate: dateToLocalTZ(taskFormObject.dueDate),
+        owner: {
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            username: userInfo.username,
+            id: userInfo._id
+        },
+        assignedUsers: taskUserArray,
+        project: projectTask,
+        urgency: taskUrgency,
+        status: taskStatus
       })
         .then(res => {
           formEl.current.reset();
@@ -118,13 +189,13 @@ function Test() {
                 <Input
                   onChange={handleInputChange}
                   name="dueDate"
-                  placeholder="Due Date"
+                  placeholder="Due Date (YYYY-MM-DD)"
                 />
                 <FormBtn
                   disabled={!(formObject.dueDate && formObject.title)}
                   onClick={handleFormSubmit}
                 >
-                  Submit Book
+                  Submit Project
                 </FormBtn>
               </form>
             </Card>
@@ -157,6 +228,96 @@ function Test() {
                   {user.username}
                 </ListItem>
               ))}
+            </Card>
+          </Col>
+          <Col size="md-6">
+            <Card title="Enter Task Information">
+              <form ref={formEl}>
+                <Input
+                  onChange={handleTaskInputChange}
+                  name="title"
+                  placeholder="Title (required)"
+                />
+                <Input
+                  onChange={handleTaskInputChange}
+                  name="dueDate"
+                  placeholder="Due Date (YYYY-MM-DD)"
+                />
+                <div>
+                  Assign user(s)
+                  <select onChange={handleSelectedUser} value={selectedUser}>
+                    <option>
+
+                    </option>
+                    {userList.map(user => (
+                      <option
+                        key={user._id}
+                        name="project"
+                        value={user._id}
+                      >
+                        {user.username}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <FormBtn
+                  onClick={addAssignUser}
+                >
+                  Add User
+                </FormBtn>
+
+                <div>
+                  Associate Project
+                  <select onChange={handleSelectedProject} value={projectTask}>
+                  <option>
+
+                  </option>
+                    {projects.map(project => (
+                      <option
+                        key={project._id}
+                        name="projectID"
+                        value={project._id}
+                      >
+                        {project.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  Task Urgency
+                  <select onChange={handleTaskUrgency} value={taskUrgency}>
+                    <option>
+
+                    </option> 
+                    <option value="low"> Low </option>
+                    <option value="medium"> Medium </option>
+                    <option value="high"> High </option>
+                    <option value="urgent"> Urgent </option>
+                  </select>
+                </div>
+
+                <div>
+                  Task Status
+                  <select onChange={handleTaskStatus} value={taskStatus}>
+                    <option>
+
+                    </option> 
+                    <option value="onTrack"> On Track </option>
+                    <option value="potentialDelays"> Potential Delays </option>
+                    <option value="delayed"> Delayed </option>
+                    <option value="stuck"> Stuck </option>
+                    <option value="finished"> Finished </option>
+                  </select>
+                </div>
+                
+                <FormBtn
+                  disabled={!(taskFormObject.dueDate && taskFormObject.title)}
+                  onClick={handleTaskFormSubmit}
+                >
+                  Submit Task
+                </FormBtn>
+              </form>
             </Card>
           </Col>
         </Row>
