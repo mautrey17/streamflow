@@ -1,6 +1,6 @@
 import React from 'react';
-import {Col} from "../Grid";
-import Task from "../Task"
+import Task from "../Task";
+import { Columns, Container } from 'react-bulma-components';
 import "./KanBan.css";
 
 function KanBan(props) {
@@ -8,7 +8,7 @@ function KanBan(props) {
 
     return(
         
-            <Col size="md-4" >
+            <Columns.Column size="4" >
                 <div className="kanban-box">
                     <h4 className="text-center ">{props.title}</h4>
                     <Task 
@@ -16,7 +16,7 @@ function KanBan(props) {
                     />
                 </div>
                 
-            </Col>
+            </Columns.Column>
         
     )
 }
