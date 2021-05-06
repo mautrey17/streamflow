@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function NavTabs() {
   // We'll go into the Hooks API later, for now, we are just using some code
@@ -9,45 +9,160 @@ function NavTabs() {
   const location = useLocation();
 
   return (
-    <ul className="nav nav-tabs mb-4">
-      <li className="nav-item">
-        <Link
-          to="/dashboard"
-          className={location.pathname === "/dashboard" ? "nav-link active" : "nav-link"}
-        >
-          DashBoard
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/project" className={location.pathname === "/project" ? "nav-link active" : "nav-link"}>
-          Project
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link
-          to="/messaging"
-          className={location.pathname === "/messaging" ? "nav-link active" : "nav-link"}
-        >
-          Messaging
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link
-          to="/notes"
-          className={location.pathname === "/notes" ? "nav-link active" : "nav-link"}
-        >
-          Notes
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link
-          to="/userprofile"
-          className={location.pathname === "/userprofile" ? "nav-link active" : "nav-link"}
-        >
-          User Profile
-        </Link>
-      </li>
-    </ul>
+    // <ul className="nav nav-tabs mb-4">
+    //   <li className="nav-item">
+    //     <Link
+    //       to="/dashboard"
+    //       className={location.pathname === "/dashboard" ? "nav-link active" : "nav-link"}
+    //     >
+    //       DashBoard
+    //     </Link>
+    //   </li>
+    //   <li className="nav-item">
+    //     <Link to="/project" className={location.pathname === "/project" ? "nav-link active" : "nav-link"}>
+    //       Project
+    //     </Link>
+    //   </li>
+    //   <li className="nav-item">
+    //     <Link
+    //       to="/messaging"
+    //       className={location.pathname === "/messaging" ? "nav-link active" : "nav-link"}
+    //     >
+    //       Messaging
+    //     </Link>
+    //   </li>
+    //   <li className="nav-item">
+    //     <Link
+    //       to="/notes"
+    //       className={location.pathname === "/notes" ? "nav-link active" : "nav-link"}
+    //     >
+    //       Notes
+    //     </Link>
+    //   </li>
+    //   <li className="nav-item">
+    //     <Link
+    //       to="/userprofile"
+    //       className={location.pathname === "/userprofile" ? "nav-link active" : "nav-link"}
+    //     >
+    //       User Profile
+    //     </Link>
+    //   </li>
+    // </ul>
+    <div className="block">
+      <nav
+        className="navbar is-dark"
+        role="navigation"
+        aria-label="main navigation"
+      >
+        <div className="navbar-brand">
+          <Link
+            to="/project"
+            className={
+              location.pathname === "/dashboard"
+                ? "navbar-item is-active"
+                : "navbar-item"
+            }
+          >
+            <h3>
+              <span>
+                <i className="fas fa-wind"></i>
+              </span>{" "}
+              StreamFlow
+            </h3>
+          </Link>
+
+          <a
+            role="button"
+            className="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarMain"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbarMain" className="navbar-menu">
+          <div className="navbar-start">
+            <Link
+            to="/dashboard"
+            className={
+              location.pathname === "/dashboard"
+                ? "navbar-item is-active"
+                : "navbar-item"
+            }
+          >
+              Dashboard
+          </Link>
+
+          <Link
+            to="/project"
+            className={
+              location.pathname === "/project"
+                ? "navbar-item is-active"
+                : "navbar-item"
+            }
+          >
+              Projects
+          </Link>
+          <Link
+            to="/messaging"
+            className={
+              location.pathname === "/messaging"
+                ? "navbar-item is-active"
+                : "navbar-item"
+            }
+          >
+              Messages
+          </Link>
+          <Link
+            to="/notes"
+            className={
+              location.pathname === "/notes"
+                ? "navbar-item is-active"
+                : "navbar-item"
+            }
+          >
+              Notes
+          </Link>
+          
+            {/* In the future if we add a dropdown menu */}
+            {/* <div className="navbar-item has-dropdown is-hoverable">
+              <a className="navbar-link">More</a>
+
+              <div className="navbar-dropdown">
+                <a className="navbar-item">About</a>
+                <a className="navbar-item">Jobs</a>
+                <a className="navbar-item">Contact</a>
+                <hr className="navbar-divider" />
+                <a className="navbar-item">Report an issue</a>
+              </div>
+            </div> */}
+          </div>
+
+          <div className="navbar-end">
+          <Link
+            to="/userprofile"
+            className={
+              location.pathname === "/userprofile"
+                ? "navbar-item is-active"
+                : "navbar-item"
+            }
+          >
+              User Profile
+          </Link>
+            <div className="navbar-item">
+              <div className="buttons">
+                
+                <a className="button is-black">Log Out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
   );
 }
 

@@ -40,7 +40,7 @@ function Project() {
             </Columns.Column>
             <Columns.Column>
                 <h1 className="has-text-centered title is-1">Project Name</h1>
-            <div>
+            <div className="block">
                 <h2 className="subtitle is-2">Graph of Task Statuses</h2>
                 <PieChart
                     data={[
@@ -56,10 +56,10 @@ function Project() {
                     paddingAngle={2}
 
                     
-                />;
+                />
                 {/* <BarGraph /> */}
             </div>
-            <div>
+            <div className="block">
                 <h2 className="subtitle is-2">Important user info and due dates</h2>
                 <Columns>
                     <Columns.Column size="one-fifth"></Columns.Column>
@@ -78,7 +78,7 @@ function Project() {
                 </Columns>
             </div>
             <div>
-            <h2 className="subtitle is-2">Active Projects</h2>
+            <h2 className="subtitle is-2">Active Tasks</h2>
                 <Columns className="mr-6">
                     
                         <KanBan 
