@@ -2,12 +2,32 @@ import React, { useState, useEffect } from "react";
 import {Col, Row} from "../../components/Grid";
 import ProjectCard from "../../components/ProjectCard";
 import ToDo from "../../components/ToDo"
-import Nav from "../../components/Nav"
+import Nav from "../../components/Nav";
+import AddProjectModal from "../../components/AddProjectModal";
+import AddTaskModal from "../../components/AddTaskModal";
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+
 
 function Dashboard() {
   //set the initial state
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [taskModalIsOpen, setTaskIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal(){
+    setIsOpen(false);
+  }
+  function openTaskModal() {
+    setTaskIsOpen(true);
+  }
+  function closeTaskModal(){
+    setTaskIsOpen(false);
+  }
 
   useEffect(() => {
       //API call here and set state for projects
@@ -16,15 +36,20 @@ function Dashboard() {
     return(
         <div>
             <Nav />
-            
             <Row>
             <Col size="md-2 sm-2">
                 <h2>Project Menu</h2>
                 <div>
-                    <button>Add Project</button>
-                </div>
-                <div>
-                    <button>Add Project</button>
+                    <AddProjectModal 
+                        modalIsOpen={modalIsOpen}
+                        closeModal={closeModal}
+                        openModal={openModal}
+                    />
+                    <AddTaskModal 
+                        modalIsOpen={taskModalIsOpen}
+                        closeModal={closeTaskModal}
+                        openModal={openTaskModal}
+                    />
                 </div>
             
             </Col>
