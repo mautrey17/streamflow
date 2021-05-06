@@ -44,13 +44,15 @@ module.exports = {
     }
   },
   create: function (req, res) {
-    console.log(req)
+    console.log('body',req.body)
     db.Note
       .create(req.body)
       .then(dbNote => {
+        console.log('then -> create')
         return db.User.findOneAndUpdate({ _id: req.user._id }, { $push: { notes: dbNote._id } }, { new: true });
       })
       .then((dbUser) => {
+        console.log('2nd then -> create')
         // If the User was updated successfully, send it back to the client
         res.json(dbUser);
       })
