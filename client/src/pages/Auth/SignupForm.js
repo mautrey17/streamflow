@@ -5,7 +5,7 @@ import { Card } from '../../components/Card';
 import { Input, FormBtn } from '../../components/Form';
 import AUTH from '../../utils/AUTH';
 
-function SignupForm() {
+function SignupForm(props) {
   const [userObject, setUserObject] = useState({
     firstName: '',
     lastName: '',
