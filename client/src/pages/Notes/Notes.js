@@ -1,8 +1,7 @@
-<<<<<<< HEAD
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-=======
 
 import API from "../../utils/API";
 import React, { useState, useEffect, useRef } from "react";
@@ -13,7 +12,7 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Card } from "../../components/Card";
 import "../Notes/notes.css"
->>>>>>> cfc01087405a4017a9b16e93604d0b33dad272e4
+
 import Nav from "../../components/Nav";
 import { List, ListItem } from "../../components/List";
 import DeleteBtn from "../../components/DeleteBtn";
@@ -124,7 +123,7 @@ function handleFormSubmit(event){
 
 
 return (
-<<<<<<< HEAD
+
 <div>
     <Nav />
     <div className="container">
@@ -177,19 +176,10 @@ return (
                 <h1>2nd col</h1>
             </div>
         </div>
-        {/* <form>
-            <label>
-                Note:
-            </label>
-            <textarea
-                className="form-control"
-                type="textarea"
-                placeholder="Please enter notes here: " >
-            </textarea>
-        </form> */}
+        
     </div>
 </div>
-=======
+
     
     <Container fluid>
         <Row>
@@ -237,7 +227,7 @@ return (
           </Col>
         </Row>
       </Container>
->>>>>>> cfc01087405a4017a9b16e93604d0b33dad272e4
+
 )
               }
 
