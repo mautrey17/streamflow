@@ -144,9 +144,6 @@ function Project() {
                                     closeModal={closeModal}
                                     openModal={openModal}
                                 />
-                                {users.map(user => (
-                                    <li>{user.firstName}</li>
-                                ))}
                             </ul>
                         </aside>
                     </div>
