@@ -25,7 +25,7 @@ function ToDo() {
                 API.getProjects()
                     .then(res2 => {
                         console.log(res2.data.projects)
-                        res.data.tasks.map((task, j) => {
+                        if(res.data.tasks) res.data.tasks.map((task, j) => {
                             if (compareTime(task.dueDate) === 1) {
                                 setOverTasks(old => [...old, task])
                                 for (let i = 0; i < res2.data.projects.length; i++) {

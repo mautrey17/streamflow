@@ -35,7 +35,6 @@ function Dashboard() {
 
     return(
         <div>
-            <Nav />
             <Row>
             <Col size="md-2 sm-2">
                 <h2>Project Menu</h2>

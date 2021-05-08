@@ -22,7 +22,6 @@ function Project() {
 
     return(
         <div>
-            <Nav />
             <Columns>
             <Columns.Column size="2">
                 <div className="block ml-3">
