@@ -39,7 +39,7 @@ function Dashboard() {
         <div>
             <Columns>
             <Columns.Column size="2">
-                <div className="block ml-3">
+                <div className="mt-3 block ml-3">
                     <aside className="menu">
                         <p className="menu-label">Project Menu</p>
                         <ul className="menu-list">
@@ -58,15 +58,23 @@ function Dashboard() {
                 </div>
             </Columns.Column>
             <Columns.Column size="9">
-                <div className="block">
-                    <h1 className="has-text-centered title is-1">Current Projects</h1>
-                </div>
-            <Columns>
+                <section className="hero is-medium mb-3">
+                <div className="hero-body">
+                    <h1 className=" title is-1 has-text-centered">Current Projects</h1>
+                    <Columns>
+            <ProjectCard />
+            <ProjectCard />
             <ProjectCard />
             <ProjectCard />
             </Columns>
-            <div className="mt-4">
-                <h1 className="has-text-centered">Upcoming Tasks</h1>
+                </div>
+                </section>
+            {/* <Columns>
+            <ProjectCard />
+            <ProjectCard />
+            </Columns> */}
+            <div className="mt-4 mb-6">
+                <h1 className="has-text-centered title is-1">Upcoming Tasks</h1>
                 <ToDo />
             </div>
             

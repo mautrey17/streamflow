@@ -76,8 +76,8 @@ function ToDo() {
 
     return(
         <div>
-            <h3>Overdue</h3>
-            <table className="table mb-3">
+            <h3 className="subtitle is-2">Overdue</h3>
+            <table className="table mb-3 is-striped is-hoverable">
                 <THead />
                 <tbody>
                 {overTasks ? overTasks.map((task, i) => (
@@ -85,8 +85,8 @@ function ToDo() {
                 )) : ""}
                 </tbody>
             </table>
-            <h3>Today</h3>
-            <table className="table mb-3">
+            <h3 className="subtitle is-2">Today</h3>
+            <table className="table mb-3 is-striped is-hoverable">
                 <THead />
                 <tbody>
                 {todayTasks ? todayTasks.map((task, i) => (
@@ -95,8 +95,8 @@ function ToDo() {
                 </tbody>
             </table>
 
-            <h3>Tomorrow</h3>
-            <table className="table mt-3">
+            <h3 className="subtitle is-2">Tomorrow</h3>
+            <table className="table mt-3 is-striped is-hoverable">
                 <THead />
                 <tbody>
                 {tomorrowTasks ? tomorrowTasks.map((task, i) => (
