@@ -160,11 +160,9 @@ function AddTaskModal(props) {
             <Select 
               options=
                 {[
-                  {value: "onTrack", label: "On Track"},
-                  {value: "potentialDelays", label: "Potential Delays"},
-                  {value: "delayed", label: "Delayed"},
-                  {value: "stuck", label: "Stuck"},
-                  {value: "finished", label: "Finished"}
+                  {value: "toDo", label: "To Do"},
+                  {value: "inProgress", label: "In Progress"},
+                  {value: "completed", label: "Completed"}
                 ]}
               onChange={handleSelectedStatus}
             />
