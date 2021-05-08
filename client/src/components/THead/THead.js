@@ -7,6 +7,7 @@ function THead() {
                 <th scope="col">#</th>
                 <th scope="col">Project</th>
                 <th scope="col">Task</th>
+                <th scope="col">Due Date</th>
                 <th scope="col">Urgency</th>
                 <th scope="col">Status</th>
                 <th scope="col">Progress</th>

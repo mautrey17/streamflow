@@ -24,6 +24,7 @@ function ToDoRow(props) {
             <th scope="row">{props.count}</th>
             <td>{props.project}</td>
             <td>{props.task.title}</td>
+            <td>{props.date}</td>
             <td>{props.task.urgency ? props.task.urgency.charAt(0).toUpperCase() + props.task.urgency.slice(1) : ""}</td>
             <td>{props.task.status ? status(props.task.status) : ""}</td>
             <td></td>
