@@ -39,6 +39,7 @@ module.exports = {
       }
   },
   findById: function (req, res) {
+    console.log('finById',req.body)
     if (req.user) {
       db.Project
           .find({ 
