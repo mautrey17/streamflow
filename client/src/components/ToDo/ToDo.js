@@ -81,7 +81,7 @@ function ToDo() {
                 <THead />
                 <tbody>
                 {overTasks ? overTasks.map((task, i) => (
-                    <ToDoRow task={task} count={i+1} key={task._id} project={overProjName[i]}/>
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={overProjName[i]}/>
                 )) : ""}
                 </tbody>
             </table>
@@ -90,7 +90,7 @@ function ToDo() {
                 <THead />
                 <tbody>
                 {todayTasks ? todayTasks.map((task, i) => (
-                    <ToDoRow task={task} count={i+1} key={task._id} project={todayProjName[i]}/>
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={todayProjName[i]}/>
                 ))  : ""}
                 </tbody>
             </table>
@@ -100,7 +100,7 @@ function ToDo() {
                 <THead />
                 <tbody>
                 {tomorrowTasks ? tomorrowTasks.map((task, i) => (
-                    <ToDoRow task={task} count={i+1} key={task._id} project={tomProjName[i]}/>
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={tomProjName[i]}/>
                 )) : ""}
                 </tbody>
             </table>

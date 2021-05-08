@@ -8,6 +8,7 @@ import AddProjectModal from "../../components/AddProjectModal";
 import AddTaskModal from "../../components/AddTaskModal";
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
+import { PieChart } from 'react-minimal-pie-chart';
 
 
 function Dashboard() {
@@ -57,13 +58,15 @@ function Dashboard() {
                 </div>
             </Columns.Column>
             <Columns.Column size="9">
-            <h1 className="text-center">Current Projects</h1>
+                <div className="block">
+                    <h1 className="has-text-centered title is-1">Current Projects</h1>
+                </div>
             <Columns>
             <ProjectCard />
             <ProjectCard />
             </Columns>
             <div className="mt-4">
-                <h1 className="text-center">Upcoming Tasks</h1>
+                <h1 className="has-text-centered">Upcoming Tasks</h1>
                 <ToDo />
             </div>
             
