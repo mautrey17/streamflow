@@ -113,9 +113,9 @@ function AddTaskModal(props) {
           <div>
             Select Project for Task
             <Select 
-              options={projectList.map(proj => (
+              options={projectList ? projectList.map(proj => (
                 {value: proj._id, label: proj.title}
-              ))}
+              )) : ""}
               onChange={handleSelectedProj}
             />
           </div>
