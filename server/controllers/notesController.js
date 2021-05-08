@@ -2,41 +2,26 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const db = require("../models");
 
 module.exports = {
-  findAll: function (req, res) {
-      if (req.user) {
-        db.Note
-          .find({ 
-            "$or": 
-            [{ 
-              "owner.id": req.user._id
-            }, {
-              "assignedUsers": req.user._id
-            }]
-            // _id: req.user._id
-        })
-          .populate({ path: "notes", options: { sort: 'title' } })
-          .then(notes => {
-            res.json({ notes: notes });
-          })
-          .catch(err => res.status(422).json(err));
-      } else {
-        return res.json({ notes: null });
-      }
-  },
-  findById: function (req, res) {
+  findAll: function(req, res) {
     if (req.user) {
-      db.Note
-          .find({ 
-            "$or": 
-            [{ 
-              "owner.id": req.user._id
-            }, {
-              "assignedUsers": req.user._id
-            }]
+      db.User
+        .find({ _id: req.user._id })
+        .populate({ path: "notes", options: { sort: { 'date': -1 } } })
+        .then(users => {
+          res.json({ notes: users[0].notes });
         })
+        .catch(err => res.status(422).json(err));
+    } else {
+      return res.json({ notes: null });
+    }
+  },
+  findById: function(req, res) {
+    if (req.user) {
+      db.User
+        .find({ _id: req.user._id })
         .populate("notes")
-        .then(notes => {
-          const note = notes.filter(p => p._id.toString() === req.params.id);
+        .then(users => {
+          const note = users[0].notes.filter(b => b._id.toString() === req.params.id);
           res.json({ note: note[0] });
         })
         .catch(err => res.status(422).json(err));
