@@ -3,7 +3,7 @@ import { Columns, Container } from 'react-bulma-components';
 import { PieChart } from "react-minimal-pie-chart";
 
 
-function ProjectCard() {
+function ProjectCard(props) {
 
     return(
         <Columns.Column size="4">
@@ -12,7 +12,6 @@ function ProjectCard() {
                 <h5 className="title">Project Name</h5>
             </div>
             <div className="card-content">
-                <div className="content">Information about each project</div>
                 <PieChart
                     data={[
                         { title: 'To Do', value: 10, color: 'red' },

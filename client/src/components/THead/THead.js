@@ -10,7 +10,6 @@ function THead() {
                 <th scope="col">Due Date</th>
                 <th scope="col">Urgency</th>
                 <th scope="col">Status</th>
-                <th scope="col">Progress</th>
                 <th scope="col">Manager</th>
             </tr>
         </thead>

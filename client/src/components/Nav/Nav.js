@@ -9,46 +9,7 @@ function NavTabs() {
   const location = useLocation();
 
   return (
-    // <ul className="nav nav-tabs mb-4">
-    //   <li className="nav-item">
-    //     <Link
-    //       to="/dashboard"
-    //       className={location.pathname === "/dashboard" ? "nav-link active" : "nav-link"}
-    //     >
-    //       DashBoard
-    //     </Link>
-    //   </li>
-    //   <li className="nav-item">
-    //     <Link to="/project" className={location.pathname === "/project" ? "nav-link active" : "nav-link"}>
-    //       Project
-    //     </Link>
-    //   </li>
-    //   <li className="nav-item">
-    //     <Link
-    //       to="/messaging"
-    //       className={location.pathname === "/messaging" ? "nav-link active" : "nav-link"}
-    //     >
-    //       Messaging
-    //     </Link>
-    //   </li>
-    //   <li className="nav-item">
-    //     <Link
-    //       to="/notes"
-    //       className={location.pathname === "/notes" ? "nav-link active" : "nav-link"}
-    //     >
-    //       Notes
-    //     </Link>
-    //   </li>
-    //   <li className="nav-item">
-    //     <Link
-    //       to="/userprofile"
-    //       className={location.pathname === "/userprofile" ? "nav-link active" : "nav-link"}
-    //     >
-    //       User Profile
-    //     </Link>
-    //   </li>
-    // </ul>
-    <div className="block">
+    <div className="">
       <nav
         className="navbar is-dark"
         role="navigation"
@@ -87,9 +48,9 @@ function NavTabs() {
         <div id="navbarMain" className="navbar-menu">
           <div className="navbar-start">
             <Link
-            to="/dashboard"
+            to="/"
             className={
-              location.pathname === "/dashboard"
+              location.pathname === "/"
                 ? "navbar-item is-active"
                 : "navbar-item"
             }
