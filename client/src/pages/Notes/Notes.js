@@ -7,8 +7,6 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Card } from "../../components/Card";
 import "../Notes/notes.css"
-import Nav from "../../components/Nav";
-
 
 function Note ()  {
 // Setting our component's initial state

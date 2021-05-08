@@ -15,6 +15,12 @@ const userSchema = new Schema({
 			ref: "Task"
 		}
 	],
+	notes: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Note"
+		}
+	],
 	projects: [
 		{
 			type: Schema.Types.ObjectId,
