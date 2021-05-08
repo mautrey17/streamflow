@@ -16,12 +16,14 @@ module.exports = {
     }
   },
   findById: function(req, res) {
+    console.log('findById',req.params.id)
     if (req.user) {
       db.User
         .find({ _id: req.user._id })
         .populate("notes")
         .then(users => {
           const note = users[0].notes.filter(b => b._id.toString() === req.params.id);
+          console.log('result',note[0])
           res.json({ note: note[0] });
         })
         .catch(err => res.status(422).json(err));
