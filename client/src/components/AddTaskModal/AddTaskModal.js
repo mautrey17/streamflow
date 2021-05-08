@@ -99,7 +99,7 @@ function AddTaskModal(props) {
 
   return (
     <div>
-      <button onClick={props.openModal}>Create a Task</button>
+      <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Task</a></li>
       <Modal
         isOpen={props.modalIsOpen}
         onAfterOpen={props.afterOpenModal}

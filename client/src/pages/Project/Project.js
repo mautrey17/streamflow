@@ -3,7 +3,7 @@ import { PieChart } from 'react-minimal-pie-chart';
 import BarGraph from "../../components/BarGraph";
 import KanBan from "../../components/KanBan";
 import Nav from "../../components/Nav";
-import { Columns, Container } from 'react-bulma-components'
+import { Columns, Container } from 'react-bulma-components';
 import "./Project.css";
 
 function Project() {
