@@ -80,18 +80,18 @@ function ToDo() {
             <table className="table mb-3">
                 <THead />
                 <tbody>
-                {overTasks.map((task, i) => (
+                {overTasks ? overTasks.map((task, i) => (
                     <ToDoRow task={task} count={i+1} key={task._id} project={overProjName[i]}/>
-                ))}
+                )) : ""}
                 </tbody>
             </table>
             <h3>Today</h3>
             <table className="table mb-3">
                 <THead />
                 <tbody>
-                {todayTasks.map((task, i) => (
+                {todayTasks ? todayTasks.map((task, i) => (
                     <ToDoRow task={task} count={i+1} key={task._id} project={todayProjName[i]}/>
-                ))}
+                ))  : ""}
                 </tbody>
             </table>
 
@@ -99,9 +99,9 @@ function ToDo() {
             <table className="table mt-3">
                 <THead />
                 <tbody>
-                {tomorrowTasks.map((task, i) => (
+                {tomorrowTasks ? tomorrowTasks.map((task, i) => (
                     <ToDoRow task={task} count={i+1} key={task._id} project={tomProjName[i]}/>
-                ))}
+                )) : ""}
                 </tbody>
             </table>
         </div>
