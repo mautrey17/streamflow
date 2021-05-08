@@ -12,6 +12,7 @@ module.exports = {
             }, {
               "assignedUsers": req.user._id
             }]
+            // _id: req.user._id
         })
           .populate({ path: "notes", options: { sort: 'title' } })
           .then(notes => {
