@@ -1,6 +1,7 @@
 import API from "../../utils/API";
 import React, { useState, useEffect, useRef } from "react";
 import { Input, TextArea, FormBtn, NewBtn } from "../../components/Form";
+import { Columns } from 'react-bulma-components'
 import DeleteBtn from "../../components/DeleteBtn";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
@@ -92,56 +93,74 @@ function Note ()  {
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col size="md-6">
-          <Card title="What's on your mind?">
-            <form ref={formEl}>
-              <Input
-                onChange={handleInputChange}
-                name="title"
-                placeholder="Title (required)"
-              />
-              <TextArea
-                onChange={handleInputChange}
-                name="note"
-                placeholder="Enter your notes here (Required)"
-                // value={formObject.note}
-              />
-              <NewBtn
+    <Columns>
+      <Columns.Column size="1">
+        <div className="block ml-3">
+          <aside className="menu">
+            <p className="menu-label">Menu</p>
+            <ul className="menu-list">
+              <li
                 onClick={handleNewFormSubmit}
               >
-                New Note
-              </NewBtn>
-              <FormBtn
-                disabled={!(formObject.note && formObject.title)}
-                onClick={handleFormSubmit}
-              >
-                Save Note
-              </FormBtn>
-            </form>
-            </Card>
-        </Col>
-        <Col size="md-6 sm-12">
-          <Card title="Previous Notes">
-            {notes.length ? (
-              <List>
-                {notes.map(note => (
-                  <ListItem key={note._id}>
-                    <button onClick={() => loadNote(note._id)}>
-                      {note.title}
-                    </button>
-                    <DeleteBtn onClick={() => deleteNote(note._id)} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )}
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                <a>New Note</a>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </Columns.Column>
+      <Columns.Column>
+        <Container fluid>
+          <Row>
+            <Col size="md-6">
+              <Card title="What's on your mind?">
+                <form ref={formEl}>
+                  <Input
+                    onChange={handleInputChange}
+                    name="title"
+                    placeholder="Title (required)"
+                  />
+                  <TextArea
+                    onChange={handleInputChange}
+                    name="note"
+                    placeholder="Enter your notes here (Required)"
+                    // value={formObject.note}
+                  />
+                  <NewBtn
+                    onClick={handleNewFormSubmit}
+                  >
+                    New Note
+                  </NewBtn>
+                  <FormBtn
+                    disabled={!(formObject.note && formObject.title)}
+                    onClick={handleFormSubmit}
+                  >
+                    Save Note
+                  </FormBtn>
+                </form>
+                </Card>
+            </Col>
+            <Col size="md-6 sm-12">
+              <Card title="Previous Notes">
+                {notes.length ? (
+                  <List>
+                    {notes.map(note => (
+                      <ListItem key={note._id}>
+                        <button onClick={() => loadNote(note._id)}>
+                          {note.title}
+                        </button>
+                        <DeleteBtn onClick={() => deleteNote(note._id)} />
+                      </ListItem>
+                    ))}
+                  </List>
+                ) : (
+                  <h3>No Results to Display</h3>
+                )}
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </Columns.Column>
+    </Columns>
   )
 }
 
