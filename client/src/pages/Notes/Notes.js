@@ -1,6 +1,6 @@
 import API from "../../utils/API";
 import React, { useState, useEffect, useRef } from "react";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, TextArea, FormBtn, NewBtn } from "../../components/Form";
 import DeleteBtn from "../../components/DeleteBtn";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
@@ -32,8 +32,6 @@ function Note ()  {
   function loadNote (id) {
     API.getNote(id)
     .then(res => {
-      console.log('title',res.data.note.title)
-      console.log('note',res.data.note.note)
       setFormObject(res.data.note)
       formEl.current[0].defaultValue=res.data.note.title
       formEl.current[1].defaultValue=res.data.note.note
@@ -55,11 +53,21 @@ function Note ()  {
   };
 
   //when the form is submitted api saveNotes method to save book data 
+  function handleNewFormSubmit(event) {
+    event.preventDefault();
+    const { name, value } = event.target;
+    // formEl.current.reset();
+    // formObject._id='';
+    // formObject.title='';
+    // formObject.note='';
+    setFormObject({[name]: value})
+    formEl.current[0].defaultValue=''
+    formEl.current[1].defaultValue=''
+    console.log('New formObject',formObject);
+  }
 
   function handleFormSubmit(event){
     event.preventDefault();
-    console.log('formobject',formObject)
-    console.log('notes',notes)
     if (formObject._id) {
       API.updateNote(
         formObject._id,
@@ -103,6 +111,11 @@ function Note ()  {
                 placeholder="Enter your notes here (Required)"
                 // value={formObject.note}
               />
+              <NewBtn
+                onClick={handleNewFormSubmit}
+              >
+                New Note
+              </NewBtn>
               <FormBtn
                 disabled={!(formObject.note && formObject.title)}
                 onClick={handleFormSubmit}
@@ -118,11 +131,6 @@ function Note ()  {
               <List>
                 {notes.map(note => (
                   <ListItem key={note._id}>
-                    {/* <Link to={"/notes/" + note._id}>
-                      <strong>
-                        {note.title}
-                      </strong>
-                    </Link> */}
                     <button onClick={() => loadNote(note._id)}>
                       {note.title}
                     </button>
