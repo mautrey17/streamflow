@@ -49,21 +49,15 @@ function Note ()  {
   function handleInputChange(event){
     const { name, value } = event.target;
     setFormObject({...formObject, [name]: value})
-    console.log('input change',formObject)
   };
 
   //when the form is submitted api saveNotes method to save book data 
   function handleNewFormSubmit(event) {
     event.preventDefault();
     const { name, value } = event.target;
-    // formEl.current.reset();
-    // formObject._id='';
-    // formObject.title='';
-    // formObject.note='';
     setFormObject({[name]: value})
     formEl.current[0].defaultValue=''
     formEl.current[1].defaultValue=''
-    console.log('New formObject',formObject);
   }
 
   function handleFormSubmit(event){
@@ -77,6 +71,9 @@ function Note ()  {
         }
       )
       .then(res => {
+        console.log('updated',formObject);
+        formEl.current[0].defaultValue=formObject.title
+        formEl.current[1].defaultValue=formObject.note  
         formEl.current.reset();
         loadNotes();
       })
