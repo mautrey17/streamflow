@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PieChart } from 'react-minimal-pie-chart';
 import BarGraph from "../../components/BarGraph";
 import KanBan from "../../components/KanBan";
@@ -15,7 +15,11 @@ function Project() {
     const [tasks, setTasks] = useState([]);
     const [openTask, setOpenTask] = useState({});
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [selectedProject, setSelectedProject] = useState({});
+    const [selectedProject, setSelectedProject] = useState({
+        toDo: 0,
+        inProgress: 0,
+        completed: 0
+    });
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -86,7 +90,6 @@ function Project() {
         let manager = users.filter(e => {
             return e._id === filteredTask[0].owner.id;
         });
-
         
         console.log(filteredUsers);
         
@@ -105,28 +108,39 @@ function Project() {
     function setCurrentProject(e) {
         e.preventDefault();
         let i = e.currentTarget.value;
+        let taskArray = [];
+        
+        tasks.map(task => {
+            if (projects[i]._id === task.project) {
+                taskArray.push(task);
+            }
+        })
+        setProjectTasks(taskArray);
+        
+        let toDo = taskArray.filter(e => {
+            return e.status === "toDo"
+        })
+        let inProgress = taskArray.filter(e => {
+            return e.status === "inProgress"
+        })
+        let completed = taskArray.filter(e => {
+            return e.status === "completed"
+        })
 
-        if (projects) {
-            setSelectedProject({...selectedProject,
-                title: projects[i].title, 
-                id: projects[i]._id
-            });
-
-            let taskArray = [];
-            tasks.map(task => {
-                if (projects[i]._id === task.project) {
-                    taskArray.push(task);
-                }
-            })
-            setProjectTasks(taskArray);
-        }
+        setSelectedProject({...selectedProject,
+            title: projects[i].title, 
+            id: projects[i]._id,
+            toDo: toDo.length,
+            inProgress: inProgress.length,
+            completed: completed.length
+        })
     }
 
     return (
         <div>
             <Columns>
                 <Columns.Column size="2">
-                    <div className="block ml-3">
+                    <div className="block ml-3 menu-parent">
                         <aside className="menu">
                             <p className="menu-label">Active Projects</p>
                             <ul className="menu-list">
@@ -147,8 +161,6 @@ function Project() {
                             </ul>
                         </aside>
                     </div>
-
-
                 </Columns.Column>
                 <Columns.Column>
                     <h1 className="has-text-centered title is-1">{selectedProject ? selectedProject.title : "Project Name"}</h1>
@@ -156,9 +168,9 @@ function Project() {
                         <h2 className="subtitle is-2">Graph of Task Statuses</h2>
                         <PieChart
                             data={[
-                                { title: 'To Do', value: 10, color: 'red' },
-                                { title: 'In Progress', value: 15, color: 'yellow' },
-                                { title: 'Completed', value: 20, color: 'green' },
+                                { title: 'To Do', value: selectedProject.toDo, color: 'red' },
+                                { title: 'In Progress', value: selectedProject.inProgress, color: 'yellow' },
+                                { title: 'Completed', value: selectedProject.completed, color: 'green' },
                             ]}
                             lineWidth={66}
                             radius={15}

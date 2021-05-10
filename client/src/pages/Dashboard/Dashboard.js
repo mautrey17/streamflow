@@ -9,6 +9,7 @@ import AddTaskModal from "../../components/AddTaskModal";
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import { PieChart } from 'react-minimal-pie-chart';
+import "./Dashboard.css"
 
 
 function Dashboard() {
@@ -39,7 +40,7 @@ function Dashboard() {
         <div>
             <Columns>
             <Columns.Column size="2">
-                <div className="mt-3 block ml-3">
+                <div className="mt-3 block ml-3 menu-parent">
                     <aside className="menu">
                         <p className="menu-label">Project Menu</p>
                         <ul className="menu-list">
