@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-// import "./App.sass";
+import "./App.scss";
 import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
 import Nav from "./components/Nav";
@@ -83,7 +83,7 @@ function App() {
         </div>
       )}
       { !loggedIn && (
-        <div className="auth-wrapper" style={{paddingTop:40}}>
+        <div className="auth-wrapper" style={{}}>
           <Route exact path="/" component={() => <LoginForm login={login}/>} />
           <Route exact path="/books" component={() => <LoginForm user={login} />} />
           <Route exact path="/test" component={Messages} />

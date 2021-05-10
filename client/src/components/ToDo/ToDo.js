@@ -25,7 +25,7 @@ function ToDo() {
                 API.getProjects()
                     .then(res2 => {
                         console.log(res2.data.projects)
-                        res.data.tasks.map((task, j) => {
+                        if(res.data.tasks) res.data.tasks.map((task, j) => {
                             if (compareTime(task.dueDate) === 1) {
                                 setOverTasks(old => [...old, task])
                                 for (let i = 0; i < res2.data.projects.length; i++) {
@@ -76,32 +76,32 @@ function ToDo() {
 
     return(
         <div>
-            <h3>Overdue</h3>
-            <table className="table mb-3">
+            <h3 className="subtitle is-2">Overdue</h3>
+            <table className="table mb-3 is-striped is-hoverable">
                 <THead />
                 <tbody>
-                {overTasks.map((task, i) => (
-                    <ToDoRow task={task} count={i+1} key={task._id} project={overProjName[i]}/>
-                ))}
+                {overTasks ? overTasks.map((task, i) => (
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={overProjName[i]}/>
+                )) : ""}
                 </tbody>
             </table>
-            <h3>Today</h3>
-            <table className="table mb-3">
+            <h3 className="subtitle is-2">Today</h3>
+            <table className="table mb-3 is-striped is-hoverable">
                 <THead />
                 <tbody>
-                {todayTasks.map((task, i) => (
-                    <ToDoRow task={task} count={i+1} key={task._id} project={todayProjName[i]}/>
-                ))}
+                {todayTasks ? todayTasks.map((task, i) => (
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={todayProjName[i]}/>
+                ))  : ""}
                 </tbody>
             </table>
 
-            <h3>Tomorrow</h3>
-            <table className="table mt-3">
+            <h3 className="subtitle is-2">Tomorrow</h3>
+            <table className="table mt-3 is-striped is-hoverable">
                 <THead />
                 <tbody>
-                {tomorrowTasks.map((task, i) => (
-                    <ToDoRow task={task} count={i+1} key={task._id} project={tomProjName[i]}/>
-                ))}
+                {tomorrowTasks ? tomorrowTasks.map((task, i) => (
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={tomProjName[i]}/>
+                )) : ""}
                 </tbody>
             </table>
         </div>

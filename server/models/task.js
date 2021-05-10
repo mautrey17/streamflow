@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
   title: { type: String, required: true },
-  status: { type: String },
+  status: { type: String, default: "toDo" },
   startDate: { type: Date, default: Date.now },
   dueDate: { type: Date },
+  progress: { type: Number },
   assignedUsers: [{ type: String }],
   project: { type: String },
   urgency: { type: String },

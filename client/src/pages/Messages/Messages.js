@@ -8,7 +8,6 @@ function Messages() {
     console.log("messaging");
     return (
         <div>
-            <Nav />
             <iframe
                 title='Chat App Frame'
                 src='https://chat-app-unc.netlify.app/'
