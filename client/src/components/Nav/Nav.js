@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { PromiseProvider } from "mongoose";
 
-function NavTabs() {
+function NavTabs(props) {
   // We'll go into the Hooks API later, for now, we are just using some code
   // from the react-router docs (https://reacttraining.com/react-router/web/api/Hooks/uselocation)
   // This allows the component to check the route any time the user uses a link to navigate.
@@ -122,7 +123,10 @@ function NavTabs() {
             <div className="navbar-item">
               <div className="buttons">
                 
-                <a className="button is-black">Log Out</a>
+                <a 
+                  className="button is-black"
+                  onClick={props.logout}
+                >Log Out</a>
               </div>
             </div>
           </div>
