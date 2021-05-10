@@ -1,0 +1,15 @@
+.menu {
+    position: sticky;
+    display: inline-block;
+    vertical-align: top;
+    max-height: 100vh;
+    overflow-y: auto;
+    top: 0;
+    bottom: 0;
+    padding: 30px;
+}
+
+.menu-parent {
+    overflow: visible;
+    display: initial;
+}
