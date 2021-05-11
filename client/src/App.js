@@ -83,7 +83,13 @@ function App() {
       )}
       { !loggedIn && (
         <div className="auth-wrapper" style={{}}>
-          <LoginForm login={login}/>
+          <div className="main-view">
+            <Switch>
+              <Route exact path="/signup" component={SignupForm} />
+              <Route component={() => <LoginForm login={login}/>} />
+              
+            </Switch>
+          </div>
         </div>
       )}
     </div>
