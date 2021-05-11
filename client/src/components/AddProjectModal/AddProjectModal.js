@@ -81,7 +81,7 @@ function AddProjectModal(props) {
 
   return (
     <div>
-      <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Project</a></li>
+      <li className="has-background-success mt-4"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Project<i className="fas fa-plus ml-2"/></a></li>
       <Modal
         isOpen={props.modalIsOpen}
         onAfterOpen={props.afterOpenModal}
