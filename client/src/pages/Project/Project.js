@@ -168,7 +168,7 @@ function Project() {
                         <h2 className="subtitle is-2">Graph of Task Statuses</h2>
                         <PieChart
                             data={[
-                                { title: 'To Do', value: selectedProject.toDo, color: 'red' },
+                                { title: 'To Do', value: selectedProject.toDo, color: '$green' },
                                 { title: 'In Progress', value: selectedProject.inProgress, color: 'yellow' },
                                 { title: 'Completed', value: selectedProject.completed, color: 'green' },
                             ]}
