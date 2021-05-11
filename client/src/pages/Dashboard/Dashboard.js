@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {Col, Row} from "../../components/Grid";
-import { Columns, Container } from 'react-bulma-components'
+import { Columns, Container } from 'react-bulma-components';
 import ProjectCard from "../../components/ProjectCard";
 import ToDo from "../../components/ToDo"
 import Nav from "../../components/Nav";
