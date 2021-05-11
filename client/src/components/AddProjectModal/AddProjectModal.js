@@ -3,7 +3,9 @@ import Modal from 'react-modal';
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import AUTH from '../../utils/AUTH';
 import API from "../../utils/API";
-import Select from 'react-select'
+import Select from 'react-select';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const customStyles = {
   content: {
@@ -49,10 +51,10 @@ function AddProjectModal(props) {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (formObject.title && formObject.dueDate) {
+    if (formObject.title) {
       API.saveProject({
         title: formObject.title,
-        dueDate: dateToLocalTZ(formObject.dueDate),
+        dueDate: formObject.date,
         assignedUsers: addUsers,
         owner: {
           firstName: userInfo.firstName,
@@ -69,15 +71,15 @@ function AddProjectModal(props) {
     }
   };
 
-  function dateToLocalTZ(date) {
-    const x = date.toString();
-    let y = x.substring(0, 4);
-    let m = parseInt(x.substring(5, 7)) - 1;
-    let d = x.substring(8, 10);
-    console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
-    const newDate = new Date(y, m, d);
-    return newDate.toISOString();
-  }
+  // function dateToLocalTZ(date) {
+  //   const x = date.toString();
+  //   let y = x.substring(0, 4);
+  //   let m = parseInt(x.substring(5, 7)) - 1;
+  //   let d = x.substring(8, 10);
+  //   console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
+  //   const newDate = new Date(y, m, d);
+  //   return newDate.toISOString();
+  // }
 
   return (
     <div>
@@ -97,10 +99,11 @@ function AddProjectModal(props) {
             name="title"
             placeholder="Title (required)"
           />
-          <Input
-            onChange={handleInputChange}
-            name="dueDate"
-            placeholder="Due Date (YYYY-MM-DD)"
+          <DatePicker 
+            selected={formObject.date}
+            onChange={date => setFormObject({...formObject, date: date})}
+            className="form-control mb-2"
+            placeholderText="Due date (required)"
           />
           <div>
             Assign user(s)
@@ -114,7 +117,7 @@ function AddProjectModal(props) {
           </div>
           <hr />
           <FormBtn
-            disabled={!(formObject.dueDate && formObject.title)}
+            disabled={!formObject.title}
             onClick={handleFormSubmit}
           >
             Submit Project
