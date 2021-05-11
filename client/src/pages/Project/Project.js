@@ -7,19 +7,17 @@ import { Columns, Container } from 'react-bulma-components'
 import "./Project.css";
 import API from "../../utils/API";
 import AddProjectModal from "../../components/AddProjectModal";
+import moment from "moment";
+import Select from "react-select";
 
 function Project() {
     //set the initial state
     const [projects, setProjects] = useState([]);
     const [projectTasks, setProjectTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
-    const [openTask, setOpenTask] = useState({});
+    const [openTask, setOpenTask] = useState(null);
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [selectedProject, setSelectedProject] = useState({
-        toDo: 0,
-        inProgress: 0,
-        completed: 0
-    });
+    const [selectedProject, setSelectedProject] = useState({});
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -33,6 +31,7 @@ function Project() {
         setIsOpen(false);
     }
 
+    // Calls 3 APIs (Projects, Tasks, Users) and loads them into 3 arrays
     function loadProjects() {
         API.getProjects()
             .then(res => {
@@ -66,7 +65,7 @@ function Project() {
     function taskClick(e) {
         console.log("aa");
     }
-
+    
     function handleSelectedTask(e) {
         e.preventDefault();
         let id = e.target.getAttribute("value")
@@ -74,9 +73,6 @@ function Project() {
         let filteredTask = tasks.filter(e => {
             return e._id === id
         })
-
-        console.log(filteredTask);
-        console.log(users);
 
         let filteredUsers = [];
         for (let i = 0; i < filteredTask[0].assignedUsers.length; i++) {
@@ -91,18 +87,17 @@ function Project() {
             return e._id === filteredTask[0].owner.id;
         });
         
-        console.log(filteredUsers);
         
         setOpenTask({...openTask,
+            i: projectTasks.findIndex(task => task._id === filteredTask[0]._id),
+            id: filteredTask[0]._id,
             title: filteredTask[0].title,
             urgency: filteredTask[0].urgency,
             status: filteredTask[0].status,
-            owner: filteredTask[0].owner.username,
+            owner: filteredTask[0].owner,
             team: filteredUsers,
             manager: manager[0].username
         });
-
-        console.log(openTask);
     }
 
     function setCurrentProject(e) {
@@ -114,26 +109,83 @@ function Project() {
             if (projects[i]._id === task.project) {
                 taskArray.push(task);
             }
-        })
+        });
         setProjectTasks(taskArray);
-        
-        let toDo = taskArray.filter(e => {
-            return e.status === "toDo"
-        })
-        let inProgress = taskArray.filter(e => {
-            return e.status === "inProgress"
-        })
-        let completed = taskArray.filter(e => {
-            return e.status === "completed"
-        })
 
         setSelectedProject({...selectedProject,
             title: projects[i].title, 
             id: projects[i]._id,
-            toDo: toDo.length,
-            inProgress: inProgress.length,
-            completed: completed.length
+            selected: i
+        });
+    }
+
+    function compareWeek(x) {
+        if (moment(x.dueDate).isSame(new Date(), "week")) return true
+        else return false
+    }
+
+    function handleUrgencyChange(x) {
+        setOpenTask({...openTask, 
+            urgency: x.value
+        });
+    }
+    function handleStatusChange(x) {
+        setOpenTask({...openTask, 
+            status: x.value
+        });
+    }
+    function handleTaskTitleChange(e) {
+        setOpenTask({...openTask, 
+            title: e.target.value
         })
+        console.log(openTask);
+    }
+
+    function statusLabel(x) {
+        switch(x) {
+            case "toDo":
+                return "To Do";
+            case "inProgress":
+                return "In Progress";
+            case "completed":
+                return "Completed";
+            default:
+                return "";
+        }
+    }
+
+    function updateTask(e) {
+        e.preventDefault();
+        let assignedUsersId = [];
+        openTask.team.map(user => {
+            assignedUsersId.push(user._id)
+        })
+
+        API.updateTask(openTask.id, {
+            title: openTask.title,
+            status: openTask.status,
+            urgency: openTask.urgency,
+            assignedUsers: assignedUsersId
+        })
+
+        setProjectTasks(projectTasks.map(task => {
+            if (task._id !== openTask.id) return task
+            return {...task, 
+                title: openTask.title,
+                status: openTask.status,
+                urgency: openTask.urgency,
+                assignedUsers: assignedUsersId
+            }
+        }))
+        setTasks(tasks.map(task => {
+            if (task._id !== openTask.id) return task
+            return {...task, 
+                title: openTask.title,
+                status: openTask.status,
+                urgency: openTask.urgency,
+                assignedUsers: assignedUsersId
+            }
+        }))
     }
 
     return (
@@ -149,11 +201,12 @@ function Project() {
                                         key={proj.id}
                                         onClick={setCurrentProject}
                                         value={i}
+                                        className={selectedProject.selected === i ? "has-background-success-light" : ""}
                                     >
                                         <a>{proj.title}</a>
                                     </li>
                                 )) : ""}
-                                <AddProjectModal 
+                                <AddProjectModal
                                     modalIsOpen={modalIsOpen}
                                     closeModal={closeModal}
                                     openModal={openModal}
@@ -163,14 +216,20 @@ function Project() {
                     </div>
                 </Columns.Column>
                 <Columns.Column>
-                    <h1 className="has-text-centered title is-1">{selectedProject ? selectedProject.title : "Project Name"}</h1>
+                    <h1 className="has-text-centered title is-1 mt-3">
+                        {selectedProject.title ? 
+                            <>
+                                {selectedProject.title} <i className="fas fa-edit"/>
+                            </>
+                        : "Please select a project"}
+                    </h1>
                     <div className="block">
                         <h2 className="subtitle is-2">Graph of Task Statuses</h2>
                         <PieChart
                             data={[
-                                { title: 'To Do', value: selectedProject.toDo, color: '$green' },
-                                { title: 'In Progress', value: selectedProject.inProgress, color: 'yellow' },
-                                { title: 'Completed', value: selectedProject.completed, color: 'green' },
+                                { title: 'To Do', value: projectTasks.filter(e => {return e.status === "toDo"}).length, color: 'red' },
+                                { title: 'In Progress', value: projectTasks.filter(e => {return e.status === "inProgress"}).length, color: 'yellow' },
+                                { title: 'Completed', value: projectTasks.filter(e => {return e.status === "completed"}).length, color: 'green' },
                             ]}
                             lineWidth={66}
                             radius={15}
@@ -178,8 +237,6 @@ function Project() {
                             viewBoxSize={[100, 30]}
                             startAngle={270}
                             paddingAngle={2}
-
-
                         />
                         {/* <BarGraph /> */}
                     </div>
@@ -190,13 +247,23 @@ function Project() {
                             <Columns.Column size="3">
                                 <div className='card'>
                                     <h5>This Week: </h5>
-                                    <p>Task Name</p>
+                                    {projectTasks && projectTasks.map(task => {
+                                            return (
+                                                compareWeek(task) && <p>{task.title}</p>
+                                            )
+                                        }   
+                                    )}
                                 </div>
                             </Columns.Column>
                             <Columns.Column size="3">
                                 <div className='card'>
                                     <h5>Urgent: </h5>
-                                    <p>Task Name</p>
+                                    {projectTasks && projectTasks.map(task => {
+                                            return (
+                                                task.urgency === "urgent" && <p>{task.title}</p>
+                                            )
+                                        }   
+                                    )}
                                 </div>
                             </Columns.Column>
                         </Columns>
@@ -230,63 +297,96 @@ function Project() {
                         </Columns>
                         <div>
                             <h4 className="subtitle is-4">Current Task</h4>
-                            <form>
-                                <table className="table mb-3">
-                                    <thead>
-                                        <tr>
-                                            <th>Task</th>
-                                            <th>Urgency</th>
-                                            <th>Status</th>
-                                            <th>Progress</th>
-                                            <th>Team</th>
-                                            <th>Manager</th>
-                                            <th>Update</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><input className="input" type="text" value={openTask.title}></input></td>
-                                            <td>
-                                                <div className="select is-primary">
-                                                    <select className="urgent" value={openTask.urgency}>
-                                                        <option className="low" value="low">Low</option>
-                                                        <option className="medium" value="medium">Medium</option>
-                                                        <option className="high" value="high">High</option>
-                                                        <option className="urgent" value="urgent" selected>Urgent</option>
-                                                    </select>
-                                                </div>
+                            {openTask !== null &&
+                                <form>
+                                    <table className="table mb-3">
+                                        <thead>
+                                            <tr>
+                                                <th>Task</th>
+                                                <th>Urgency</th>
+                                                <th>Status</th>
+                                                <th>Team</th>
+                                                <th>Manager</th>
+                                                <th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input 
+                                                        className="input"
+                                                        type="text"
+                                                        value={openTask.title}
+                                                        onChange={handleTaskTitleChange}
+                                                    >
+                                                    </input>
+                                                </td>
+                                                <td>
+                                                        {/* <select className="urgent" value={openTask.urgency}>
+                                                            <option className="low" value="low">Low</option>
+                                                            <option className="medium" value="medium">Medium</option>
+                                                            <option className="high" value="high">High</option>
+                                                            <option className="urgent" value="urgent" selected>Urgent</option>
+                                                        </select> */}
+                                                        <Select 
+                                                            value={{
+                                                                value: openTask.urgency,
+                                                                label: (openTask.urgency ? openTask.urgency[0].toUpperCase() + openTask.urgency.substring(1): "")
+                                                            }}
+                                                            options={[
+                                                                {value: "low", label: "Low"},
+                                                                {value: "medium", label: "Medium"},
+                                                                {value: "high", label: "High"},
+                                                                {value: "urgent", label: "Urgent"}
+                                                            ]}
+                                                            onChange={handleUrgencyChange}
+                                                            menuPlacement="top"
+                                                        />
 
-                                            </td>
-                                            <td>
-                                                <div className="select is-primary">
-                                                    <select value={openTask.status}>
-                                                        <option className="high" value="toDo">To Do</option>
-                                                        <option className="medium" value="inProgress">In Progress</option>
-                                                        <option className="low" value="completed">Completed</option>
-                                                    </select>
-                                                </div>
-
-                                            </td>
-                                            <td>
-                                                {/* <div class="progress">
-                                <div class="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%
-                                </div>
-                            </div> */}
-                                                <progress className="progress is-info" value="25" max="100">25%</progress>
-                                            </td>
-                                            <td>
-                                                {openTask.team ? openTask.team.map((user, i) => (
-                                                    (i ? ", " : "") + user.username
-                                                )) : ""}
-                                            </td>
-                                            <td>{openTask.manager}</td>
-                                            <td><button type="submit" className="button is-primary ">Update</button></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </form>
+                                                </td>
+                                                <td>
+                                                    {/* <div className="select is-primary">
+                                                        <select value={openTask.status}>
+                                                            <option className="high" value="toDo">To Do</option>
+                                                            <option className="medium" value="inProgress">In Progress</option>
+                                                            <option className="low" value="completed">Completed</option>
+                                                        </select>
+                                                    </div> */}
+                                                    <Select 
+                                                            value={{
+                                                                value: openTask.status,
+                                                                label: (openTask.status ? statusLabel(openTask.status): "")
+                                                            }}
+                                                            options={[
+                                                                {value: "toDo", label: "To Do"},
+                                                                {value: "inProgress", label: "In Progress"},
+                                                                {value: "completed", label: "Completed"}
+                                                            ]}
+                                                            onChange={handleStatusChange}
+                                                            menuPlacement="top"
+                                                        />
+                                                </td>
+                                                <td>
+                                                    {openTask.team ? openTask.team.map((user, i) => (
+                                                        (i ? ", " : "") + user.username
+                                                    )) : ""}
+                                                </td>
+                                                <td>{openTask.manager}</td>
+                                                <td>
+                                                    <button 
+                                                        type="submit"
+                                                        className="button is-primary"
+                                                        onClick={updateTask}
+                                                    >
+                                                        Update
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            }
                         </div>
-
                     </div>
                 </Columns.Column>
             </Columns>
