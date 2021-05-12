@@ -17,12 +17,12 @@ function ToDoRow(props) {
 
     function statusStyle(x) {
         switch(x) {
-            case "todo":
-                return "has-text-success";
+            case "toDo":
+                return "has-text-danger";
             case "inProgress":
-                return "has-text-primary";
+                return "has-text-warning has-background-warning-light";
             case "completed":
-                return "has-background-danger-light has-text-dark";
+                return "has-background-success-light has-text-success";
             default:
                 return "";
         }
@@ -31,7 +31,7 @@ function ToDoRow(props) {
     function urgentStyle(x) {
         switch(x) {
             case "low":
-                return "has-text-link";
+                return "has-text-link has-background-link-light";
             case "medium":
                 return "has-text-success has-background-success-light";
             case "high":
@@ -43,8 +43,14 @@ function ToDoRow(props) {
         }
     }
 
+    function strike(status) {
+        if(status === 'completed') {
+            return {textDecoration: 'line-through'}
+        }
+    }
+
     return (
-        <tr>
+        <tr style={strike(props.task.status)}>
             <th scope="row">{props.count}</th>
             <td>{props.project}</td>
             <td>{props.task.title}</td>
@@ -52,6 +58,7 @@ function ToDoRow(props) {
             <td className={urgentStyle(props.task.urgency)}>{props.task.urgency ? props.task.urgency.charAt(0).toUpperCase() + props.task.urgency.slice(1) : ""}</td>
             <td className={statusStyle(props.task.status)}>{props.task.status ? status(props.task.status) : ""}</td>
             <td>{props.task.owner.firstName}</td>
+            <td><button className="button is-success is-rounded">Complete</button></td>
         </tr>
     )
 }

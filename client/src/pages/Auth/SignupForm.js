@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Container, Row, Col } from '../../components/Grid';
 import { Card } from '../../components/Card';
 import { Input, FormBtn } from '../../components/Form';
+import { Columns, Container } from 'react-bulma-components';
 import AUTH from '../../utils/AUTH';
+import './LoginForm.css';
 
 function SignupForm(props) {
   const [userObject, setUserObject] = useState({
@@ -46,55 +47,104 @@ function SignupForm(props) {
   }
   
   return (
+    <div className='gradient' style = {{height:"100vh"}}>
     <Container>
-      <Row>
-        <Col size="md-3"></Col>
-        <Col size="md-6">
-          <Card title="Register for React Reading List">
-            <form style={{marginTop: 10}}>
-              <label htmlFor="username">First name: </label>
-              <Input
-                type="text"
-                name="firstName"
-                value={userObject.firstName}
-                onChange={handleChange}
-              />
-              <label htmlFor="username">Last name: </label>
-              <Input
-                type="text"
-                name="lastName"
-                value={userObject.lastName}
-                onChange={handleChange}
-              />
-              <label htmlFor="username">Username: </label>
-              <Input
-                type="text"
-                name="username"
-                value={userObject.username}
-                onChange={handleChange}
-              />
-              <label htmlFor="password">Password: </label>
-              <Input
-                type="password"
-                name="password"
-                value={userObject.password}
-                onChange={handleChange}
-              />
-              <label htmlFor="confirmPassword">Confirm Password: </label>
-              <Input
-                type="password"
-                name="confirmPassword"
-                value={userObject.confirmPassword}
-                onChange={handleChange}
-              />
-              <Link to="/">Login</Link>
-              <FormBtn onClick={handleSubmit}>Register</FormBtn>
-            </form>
-          </Card>
-        </Col>
-        <Col size="md-3"></Col>
-      </Row>
+      <Columns>
+        <Columns.Column size="one-quarter"></Columns.Column>
+        <Columns.Column size="half">
+          <form className="box px-5 py-6 reg-box">
+            <h3 className="title has-text-centered mb-4 is-2">Streamflow Registration</h3>
+            <h4 className="subtitle has-text-centered is-5">Create your own FREE Streamflow account</h4>
+            <div className="field">
+                <label className="label">First Name:</label>
+                <div className="control pb-1">
+                  <input 
+                    className="input"
+                    type="text"
+                    placeholder="Jane"
+                    name="firstName"
+                    value={userObject.firstName}
+                    onChange={handleChange}
+                  ></input>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Last Name:</label>
+                <div className="control pb-1">
+                  <input 
+                    className="input"
+                    type="text"
+                    placeholder="Doe"
+                    name="lastName"
+                    value={userObject.lastName}
+                    onChange={handleChange}
+                  ></input>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Username:</label>
+                <div className="control has-icons-left pb-1">
+                  <input 
+                    className="input"
+                    type="text"
+                    placeholder="CoolGuy1234"
+                    name="username"
+                    value={userObject.username}
+                    onChange={handleChange}
+                  ></input>
+                  <span className="icon is-small is-left"><i className="fas fa-user"></i></span>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Password:</label>
+                <div className="control has-icons-left pb-1">
+                  <input 
+                    className="input"
+                    type="password"
+                    placeholder="PleaseBeSecure"
+                    name="password"
+                    value={userObject.password}
+                    onChange={handleChange}
+                  ></input>
+                  <span className="icon is-small is-left"><i className="fas fa-lock"></i></span>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Confirm Password:</label>
+                <div className="control has-icons-left pb-1">
+                  <input 
+                    className={`input ${userObject.confirmPassword.length>0 && userObject.confirmPassword === userObject.password ? 'is-success' : ''} `}
+                    type="password"
+                    placeholder="PleaseBeSecure"
+                    name="confirmPassword"
+                    value={userObject.confirmPassword}
+                    onChange={handleChange}
+                  ></input>
+                  <span className="icon is-small is-left"><i className="fas fa-lock"></i></span>
+                </div>
+              </div>
+
+              <div className="field is-grouped is-grouped-centered mt-4">
+                <p className="control">
+                  <a className="button is-success has-text-light is-rounded" onClick={handleSubmit}>
+                    Register
+                  </a>
+                </p>
+                <p className="control">
+                  <Link className="button is-link is-outlined  is-rounded" to='/login'>
+                    Login
+                  </Link>
+                </p>
+              </div>
+          </form>
+        </Columns.Column>
+      </Columns>
     </Container>
+    </div>
   )
 }
 

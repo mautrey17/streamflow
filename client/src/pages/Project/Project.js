@@ -7,6 +7,11 @@ import { Columns, Container } from 'react-bulma-components'
 import "./Project.css";
 import API from "../../utils/API";
 import AddProjectModal from "../../components/AddProjectModal";
+import AddTaskModal from "../../components/AddTaskModal";
+import EditProjectModal from "../../components/EditProjectModal";
+import moment from "moment";
+import Select from "react-select";
+import AUTH from '../../utils/AUTH';
 
 function Project() {
     //set the initial state
@@ -14,16 +19,18 @@ function Project() {
     const [projectTasks, setProjectTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [openTask, setOpenTask] = useState({});
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [selectedProject, setSelectedProject] = useState({
-        toDo: 0,
-        inProgress: 0,
-        completed: 0
-    });
+    const [selectedProject, setSelectedProject] = useState({});
     const [users, setUsers] = useState([]);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [editModalIsOpen, setEditIsOpen] = useState(false);
+    const [taskModalIsOpen, setTaskIsOpen] = useState(false);
+    const [currentUser, setCurrentUser] = useState({});
 
     useEffect(() => {
         loadProjects();
+        AUTH.getUser().then(res => {
+            setCurrentUser(res.data.user);
+        });
     }, []);
 
     function openModal() {
@@ -32,7 +39,20 @@ function Project() {
     function closeModal() {
         setIsOpen(false);
     }
+    function openTaskModal() {
+        setTaskIsOpen(true);
+    }
+    function closeTaskModal() {
+        setTaskIsOpen(false);
+    }
+    function openEditModal() {
+        setEditIsOpen(true);
+    }
+    function closeEditModal() {
+        setEditIsOpen(false);
+    }
 
+    // Calls 3 APIs (Projects, Tasks, Users) and loads them into 3 arrays
     function loadProjects() {
         API.getProjects()
             .then(res => {
@@ -42,13 +62,13 @@ function Project() {
                     })
                 }
             })
-            .then(API.getTasks()
+            .then(API.getAllTasks()
                 .then(res2 => {
-                        if (res2.data.tasks) {
-                            res2.data.tasks.map(task => {
-                                setTasks(old => [...old, task]);
-                            })
-                        }
+                    if (res2.data.tasks) {
+                        res2.data.tasks.map(task => {
+                            setTasks(old => [...old, task]);
+                        })
+                    }
                 })
             )
             .then(API.getUsers()
@@ -75,9 +95,6 @@ function Project() {
             return e._id === id
         })
 
-        console.log(filteredTask);
-        console.log(users);
-
         let filteredUsers = [];
         for (let i = 0; i < filteredTask[0].assignedUsers.length; i++) {
             users.map(user => {
@@ -90,50 +107,148 @@ function Project() {
         let manager = users.filter(e => {
             return e._id === filteredTask[0].owner.id;
         });
-        
-        console.log(filteredUsers);
-        
-        setOpenTask({...openTask,
+
+
+        setOpenTask({
+            ...openTask,
+            i: projectTasks.findIndex(task => task._id === filteredTask[0]._id),
+            id: filteredTask[0]._id,
             title: filteredTask[0].title,
             urgency: filteredTask[0].urgency,
             status: filteredTask[0].status,
-            owner: filteredTask[0].owner.username,
+            owner: filteredTask[0].owner,
             team: filteredUsers,
             manager: manager[0].username
         });
-
-        console.log(openTask);
     }
 
+    // Selecting a project on the left will take it's ID and load the information and tasks related to that project
     function setCurrentProject(e) {
         e.preventDefault();
         let i = e.currentTarget.value;
         let taskArray = [];
-        
+
+        // Loads tasks only associated with the project ID
         tasks.map(task => {
             if (projects[i]._id === task.project) {
                 taskArray.push(task);
             }
-        })
+        });
         setProjectTasks(taskArray);
-        
-        let toDo = taskArray.filter(e => {
-            return e.status === "toDo"
+
+        setSelectedProject({
+            ...selectedProject,
+            title: projects[i].title,
+            id: projects[i]._id,
+            dueDate: projects[i].dueDate,
+            assignedUsers: projects[i].assignedUsers,
+            owner: projects[i].owner,
+            selected: i
+        });
+    }
+
+    // Moment function to show tasks relating to current week
+    function compareWeek(x) {
+        if (moment(x.dueDate).isSame(new Date(), "week")) return true
+        else return false
+    }
+
+    function handleUrgencyChange(x) {
+        setOpenTask({
+            ...openTask,
+            urgency: x.value
+        });
+    }
+    function handleStatusChange(x) {
+        setOpenTask({
+            ...openTask,
+            status: x.value
+        });
+    }
+    function handleTaskTitleChange(e) {
+        setOpenTask({
+            ...openTask,
+            title: e.target.value
         })
-        let inProgress = taskArray.filter(e => {
-            return e.status === "inProgress"
-        })
-        let completed = taskArray.filter(e => {
-            return e.status === "completed"
+        console.log(openTask);
+    }
+
+    function statusLabel(x) {
+        switch (x) {
+            case "toDo":
+                return "To Do";
+            case "inProgress":
+                return "In Progress";
+            case "completed":
+                return "Completed";
+            default:
+                return "";
+        }
+    }
+
+    // Updates task to the database along with the current page without needing to reload
+    function updateTask(e) {
+        e.preventDefault();
+        let assignedUsersId = [];
+        openTask.team.map(user => {
+            assignedUsersId.push(user._id)
         })
 
-        setSelectedProject({...selectedProject,
-            title: projects[i].title, 
-            id: projects[i]._id,
-            toDo: toDo.length,
-            inProgress: inProgress.length,
-            completed: completed.length
+        API.updateTask(openTask.id, {
+            title: openTask.title,
+            status: openTask.status,
+            urgency: openTask.urgency,
+            assignedUsers: assignedUsersId
         })
+
+        setProjectTasks(projectTasks.map(task => {
+            if (task._id !== openTask.id) return task
+            return {
+                ...task,
+                title: openTask.title,
+                status: openTask.status,
+                urgency: openTask.urgency,
+                assignedUsers: assignedUsersId
+            }
+        }))
+        setTasks(tasks.map(task => {
+            if (task._id !== openTask.id) return task
+            return {
+                ...task,
+                title: openTask.title,
+                status: openTask.status,
+                urgency: openTask.urgency,
+                assignedUsers: assignedUsersId
+            }
+        }))
+    }
+
+    function statusStyle(x) {
+        switch(x) {
+            case "toDo":
+                return "has-background-danger";
+            case "inProgress":
+                return "has-background-warning-light";
+            case "completed":
+                return "has-background-success-light";
+            default:
+                return "";
+        }
+    }
+
+    function urgentStyle(x) {
+        switch(x) {
+            case "low":
+                return "has-background-link-light";
+            case "medium":
+                return "has-background-success-light";
+            case "high":
+                return "has-background-danger-light ";
+            case "urgent":
+                return "has-background-danger";
+            default:
+                return "";
+        }
     }
 
     return (
@@ -149,28 +264,63 @@ function Project() {
                                         key={proj.id}
                                         onClick={setCurrentProject}
                                         value={i}
+                                        className={selectedProject.selected === i ? "has-background-success-light" : ""}
                                     >
                                         <a>{proj.title}</a>
                                     </li>
                                 )) : ""}
-                                <AddProjectModal 
+                                <AddProjectModal
                                     modalIsOpen={modalIsOpen}
                                     closeModal={closeModal}
                                     openModal={openModal}
+                                    ariaHideApp={false}
+                                    users={users}
+                                    currentUser={currentUser}
+                                />
+                                <AddTaskModal
+                                    modalIsOpen={taskModalIsOpen}
+                                    closeModal={closeTaskModal}
+                                    openModal={openTaskModal}
+                                    ariaHideApp={false}
+                                    users={users}
+                                    projects={projects}
+                                    currentUser={currentUser}
                                 />
                             </ul>
                         </aside>
                     </div>
                 </Columns.Column>
                 <Columns.Column>
-                    <h1 className="has-text-centered title is-1">{selectedProject ? selectedProject.title : "Project Name"}</h1>
+                    <h1 className="has-text-centered title is-1 mt-3">
+                        {selectedProject.title ?
+                            <>
+                                {selectedProject.title}
+                                
+                                {/* Shows edit icon only if logged in user is the project owner */}
+                                {selectedProject.owner.id === currentUser._id && 
+                                    <EditProjectModal 
+                                        project={selectedProject}
+                                        users={users}
+                                        modalIsOpen={editModalIsOpen}
+                                        closeModal={closeEditModal}
+                                        openModal={openEditModal}
+                                        ariaHideApp={false}
+                                        currentUser={currentUser}
+                                    />
+                                }
+                                
+                            </>
+                            : projects.length === 0 ? "No projects found, please create one"
+                            : "Please select a project"
+                        }
+                    </h1>
                     <div className="block">
                         <h2 className="subtitle is-2">Graph of Task Statuses</h2>
                         <PieChart
                             data={[
-                                { title: 'To Do', value: selectedProject.toDo, color: 'red' },
-                                { title: 'In Progress', value: selectedProject.inProgress, color: 'yellow' },
-                                { title: 'Completed', value: selectedProject.completed, color: 'green' },
+                                { title: 'To Do', value: projectTasks.filter(e => { return e.status === "toDo" }).length, color: 'red' },
+                                { title: 'In Progress', value: projectTasks.filter(e => { return e.status === "inProgress" }).length, color: 'yellow' },
+                                { title: 'Completed', value: projectTasks.filter(e => { return e.status === "completed" }).length, color: 'green' },
                             ]}
                             lineWidth={66}
                             radius={15}
@@ -178,8 +328,6 @@ function Project() {
                             viewBoxSize={[100, 30]}
                             startAngle={270}
                             paddingAngle={2}
-
-
                         />
                         {/* <BarGraph /> */}
                     </div>
@@ -190,13 +338,23 @@ function Project() {
                             <Columns.Column size="3">
                                 <div className='card'>
                                     <h5>This Week: </h5>
-                                    <p>Task Name</p>
+                                    {projectTasks && projectTasks.map(task => {
+                                        return (
+                                            compareWeek(task) && <p>{task.title}</p>
+                                        )
+                                    }
+                                    )}
                                 </div>
                             </Columns.Column>
                             <Columns.Column size="3">
                                 <div className='card'>
                                     <h5>Urgent: </h5>
-                                    <p>Task Name</p>
+                                    {projectTasks && projectTasks.map(task => {
+                                        return (
+                                            task.urgency === "urgent" && <p>{task.title}</p>
+                                        )
+                                    }
+                                    )}
                                 </div>
                             </Columns.Column>
                         </Columns>
@@ -237,7 +395,6 @@ function Project() {
                                             <th>Task</th>
                                             <th>Urgency</th>
                                             <th>Status</th>
-                                            <th>Progress</th>
                                             <th>Team</th>
                                             <th>Manager</th>
                                             <th>Update</th>
@@ -245,34 +402,62 @@ function Project() {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><input className="input" type="text" value={openTask.title}></input></td>
                                             <td>
-                                                <div className="select is-primary">
-                                                    <select className="urgent" value={openTask.urgency}>
+                                                <input
+                                                    className="input"
+                                                    type="text"
+                                                    value={openTask.title}
+                                                    onChange={handleTaskTitleChange}
+                                                    disabled={!openTask.id}
+                                                >
+                                                </input>
+                                            </td>
+                                            <td className={urgentStyle(openTask.urgency)}>
+                                                {/* <select className="urgent" value={openTask.urgency}>
                                                         <option className="low" value="low">Low</option>
                                                         <option className="medium" value="medium">Medium</option>
                                                         <option className="high" value="high">High</option>
                                                         <option className="urgent" value="urgent" selected>Urgent</option>
-                                                    </select>
-                                                </div>
+                                                    </select> */}
+                                                <Select
+                                                    value={{
+                                                        value: openTask.urgency,
+                                                        label: (openTask.urgency ? openTask.urgency[0].toUpperCase() + openTask.urgency.substring(1) : "")
+                                                    }}
+                                                    options={[
+                                                        { value: "low", label: "Low" },
+                                                        { value: "medium", label: "Medium" },
+                                                        { value: "high", label: "High" },
+                                                        { value: "urgent", label: "Urgent" }
+                                                    ]}
+                                                    onChange={handleUrgencyChange}
+                                                    menuPlacement="top"
+                                                    isDisabled={!openTask.id}
+                                                />
 
                                             </td>
-                                            <td>
-                                                <div className="select is-primary">
+                                            <td className={statusStyle(openTask.status)}>
+                                                {/* <div className="select is-primary">
                                                     <select value={openTask.status}>
                                                         <option className="high" value="toDo">To Do</option>
                                                         <option className="medium" value="inProgress">In Progress</option>
                                                         <option className="low" value="completed">Completed</option>
                                                     </select>
-                                                </div>
-
-                                            </td>
-                                            <td>
-                                                {/* <div class="progress">
-                                <div class="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%
-                                </div>
-                            </div> */}
-                                                <progress className="progress is-info" value="25" max="100">25%</progress>
+                                                </div> */}
+                                                <Select
+                                                    value={{
+                                                        value: openTask.status,
+                                                        label: (openTask.status ? statusLabel(openTask.status) : "")
+                                                    }}
+                                                    options={[
+                                                        { value: "toDo", label: "To Do" },
+                                                        { value: "inProgress", label: "In Progress" },
+                                                        { value: "completed", label: "Completed" }
+                                                    ]}
+                                                    onChange={handleStatusChange}
+                                                    menuPlacement="top"
+                                                    isDisabled={!openTask.id}
+                                                />
                                             </td>
                                             <td>
                                                 {openTask.team ? openTask.team.map((user, i) => (
@@ -280,13 +465,21 @@ function Project() {
                                                 )) : ""}
                                             </td>
                                             <td>{openTask.manager}</td>
-                                            <td><button type="submit" className="button is-primary ">Update</button></td>
+                                            <td>
+                                                <button
+                                                    type="submit"
+                                                    className="button is-primary"
+                                                    onClick={updateTask}
+                                                    disabled={!openTask.id}
+                                                >
+                                                    Update
+                                                </button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </form>
                         </div>
-
                     </div>
                 </Columns.Column>
             </Columns>

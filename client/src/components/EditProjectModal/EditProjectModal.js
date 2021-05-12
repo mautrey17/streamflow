@@ -19,19 +19,56 @@ const customStyles = {
   }
 };
 
-function AddProjectModal(props) {
+function EditProjectModal(props) {
   const [formObject, setFormObject] = useState({});
   const [userList, setUserList] = useState([]);
   const formEl = useRef(null);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [addUsers, setAddUsers] = useState([]);
 
-  function setInfo() {
+  function setFormUsers() {
     let filteredUsers = [];
     props.users.map(user => {
       // Gets every user but the current logged in one so you can't assign yourself to a project
-      if (user._id !== props.currentUser._id) filteredUsers.push(user);
+      if (user._id !== props.currentUser._id) filteredUsers.push(user)
     })
     setUserList(filteredUsers);
+    setFormObject({
+      title: props.project.title,
+      date: new Date(props.project.dueDate),
+      assignedUsers: props.project.assignedUsers,
+      owner: props.project.owner
+    })
+
+    // Gets users currently assigned to the project to preloaded list
+    let filterUsers = [];
+    props.users.map(user => {
+      props.project.assignedUsers.map(assignedUser => {
+        if (user._id === assignedUser) {
+          if (!filterUsers.some(x => x._id === assignedUser)) {
+            filterUsers.push(user);
+          }
+        }
+      })
+    })
+
+    let userSelect = [];
+    let userArray = [];
+    filterUsers.map(user => {
+      let obj = {
+        value: user._id,
+        label: user.username
+      }
+      userSelect.push(obj);
+      userArray.push(user._id);
+    })
+    setAddUsers(userArray);
+    setFilteredUsers(userSelect);
+  }
+
+  function debug() {
+    console.log(formObject)
+    console.log(addUsers);
   }
 
   function handleInputChange(event) {
@@ -41,25 +78,23 @@ function AddProjectModal(props) {
 
   function handleSelectedUser(options) {
     let userArray = [];
+    let userSelect = [];
     options.map(user => {
       userArray.push(user.value);
+      userSelect.push(user);
     })
     setAddUsers(userArray);
+    setFilteredUsers(userSelect);
   }
 
   function handleFormSubmit(event) {
     event.preventDefault();
     if (formObject.title) {
-      API.saveProject({
+      API.updateProject(props.project.id, {
         title: formObject.title,
         dueDate: formObject.date,
         assignedUsers: addUsers,
-        owner: {
-          firstName: props.currentUser._id,
-          lastName: props.currentUser._id,
-          username: props.currentUser._id,
-          id: props.currentUser._id
-        }
+        owner: formObject.owner
       })
         .then(res => {
           formEl.current.reset();
@@ -69,35 +104,27 @@ function AddProjectModal(props) {
     }
   };
 
-  // function dateToLocalTZ(date) {
-  //   const x = date.toString();
-  //   let y = x.substring(0, 4);
-  //   let m = parseInt(x.substring(5, 7)) - 1;
-  //   let d = x.substring(8, 10);
-  //   console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
-  //   const newDate = new Date(y, m, d);
-  //   return newDate.toISOString();
-  // }
-
   return (
     <div>
-      <li className="has-background-success mt-4"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Project<i className="fas fa-plus ml-2"/></a></li>
+      <span><a href="#" onClick={props.openModal}><i className="fas fa-edit" /></a></span>
       <Modal
         isOpen={props.modalIsOpen}
-        onAfterOpen={setInfo}
+        onAfterOpen={setFormUsers}
         onRequestClose={props.closeModal}
         style={customStyles}
-        contentLabel="New Project Modal"
+        contentLabel="Edit Project Modal"
       >
 
-        <h2>Enter Project Information</h2>
+        <h2>Manage Project Information</h2>
         <form ref={formEl}>
           <Input
+            value={formObject.title}
             onChange={handleInputChange}
             name="title"
             placeholder="Title (required)"
+            onClick={debug}
           />
-          <DatePicker 
+          <DatePicker
             selected={formObject.date}
             onChange={date => setFormObject({...formObject, date: date})}
             className="form-control mb-2"
@@ -105,10 +132,11 @@ function AddProjectModal(props) {
           />
           <div>
             Assign user(s)
-            <Select 
+            <Select
               options={userList.map(users => (
                 {value: users._id, label: users.username}
-              ))} 
+              ))}
+              value={filteredUsers}
               isMulti
               onChange={handleSelectedUser}
             />
@@ -118,7 +146,7 @@ function AddProjectModal(props) {
             disabled={!formObject.title}
             onClick={handleFormSubmit}
           >
-            Submit Project
+            Update Project
           </FormBtn>
         </form>
       </Modal>
@@ -126,4 +154,4 @@ function AddProjectModal(props) {
   );
 }
 
-export default AddProjectModal;
+export default EditProjectModal;
