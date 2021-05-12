@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from 'react-modal';
-import { Input, TextArea, FormBtn } from "../../components/Form";
-import AUTH from '../../utils/AUTH';
+import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
@@ -22,19 +21,18 @@ const customStyles = {
 
 function AddProjectModal(props) {
   const [formObject, setFormObject] = useState({});
-  const [userInfo, setUserInfo] = useState({});
   const [userList, setUserList] = useState([]);
   const formEl = useRef(null);
   const [addUsers, setAddUsers] = useState([]);
 
-  useEffect(() => {
-    AUTH.getUser().then(res => {
-      setUserInfo(res.data.user);
-    });
-    API.getUsers().then(res => {
-      setUserList(res.data);
+  function setInfo() {
+    let filteredUsers = [];
+    props.users.map(user => {
+      // Gets every user but the current logged in one so you can't assign yourself to a project
+      if (user._id !== props.currentUser._id) filteredUsers.push(user);
     })
-  }, []);
+    setUserList(filteredUsers);
+  }
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -57,10 +55,10 @@ function AddProjectModal(props) {
         dueDate: formObject.date,
         assignedUsers: addUsers,
         owner: {
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          username: userInfo.username,
-          id: userInfo._id
+          firstName: props.currentUser._id,
+          lastName: props.currentUser._id,
+          username: props.currentUser._id,
+          id: props.currentUser._id
         }
       })
         .then(res => {
@@ -86,7 +84,7 @@ function AddProjectModal(props) {
       <li className="has-background-success mt-4"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Project<i className="fas fa-plus ml-2"/></a></li>
       <Modal
         isOpen={props.modalIsOpen}
-        onAfterOpen={props.afterOpenModal}
+        onAfterOpen={setInfo}
         onRequestClose={props.closeModal}
         style={customStyles}
         contentLabel="New Project Modal"

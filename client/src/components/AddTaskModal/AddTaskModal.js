@@ -29,18 +29,16 @@ function AddTaskModal(props) {
   const [projectList, setProjectList] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
-  useEffect(() => {
-    AUTH.getUser().then(res => {
-      setUserInfo(res.data.user);
-    });
-    API.getUsers()
-      .then(res2 => {
-        API.getProjects().then(res3 => {
-          setUserList(res2.data);
-          setProjectList(res3.data.projects);
-        })
-      })
-  }, []);
+  function setInfo() {
+    setUserInfo(props.currentUser);
+    setUserList(props.users);
+    setProjectList(props.projects);
+  }
+
+  // Clears formObject after the modal is closed
+  function clearForm() {
+    setFormObject({});
+  }
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -124,8 +122,9 @@ function AddTaskModal(props) {
       <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Task<i className="fas fa-plus ml-2"/></a></li>
       <Modal
         isOpen={props.modalIsOpen}
-        onAfterOpen={props.afterOpenModal}
+        onAfterOpen={setInfo}
         onRequestClose={props.closeModal}
+        onAfterClose={clearForm}
         style={customStyles}
         contentLabel="New Task Modal"
       >

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from 'react-modal';
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
@@ -27,7 +27,12 @@ function EditProjectModal(props) {
   const [addUsers, setAddUsers] = useState([]);
 
   function setFormUsers() {
-    setUserList(props.users);
+    let filteredUsers = [];
+    props.users.map(user => {
+      // Gets every user but the current logged in one so you can't assign yourself to a project
+      if (user._id !== props.currentUser._id) filteredUsers.push(user)
+    })
+    setUserList(filteredUsers);
     setFormObject({
       title: props.project.title,
       date: new Date(props.project.dueDate),
@@ -35,6 +40,7 @@ function EditProjectModal(props) {
       owner: props.project.owner
     })
 
+    // Gets users currently assigned to the project to preloaded list
     let filterUsers = [];
     props.users.map(user => {
       props.project.assignedUsers.map(assignedUser => {
