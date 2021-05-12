@@ -7,11 +7,11 @@ function ProjectCard(props) {
 
     return(
         <Columns.Column size="4">
-            <div className="card mb-3">
-            <div className="card-header">
-                <h5 className="title">Project Name</h5>
-            </div>
-            <div className="card-content">
+            <div className="box mb-3">
+            
+                <h5 className="has-text-centered title is-4">Project Name</h5>
+            
+            <div className="">
                 <PieChart
                     data={[
                         { title: 'To Do', value: 10, color: '#DD1E2f' },
