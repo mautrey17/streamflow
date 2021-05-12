@@ -6,6 +6,7 @@ const apiRoutes = require("./api");
 // Auth Routes
 router.use('/auth', authRoutes);
 
+
 // API Routes
 router.use("/api", apiRoutes);
 

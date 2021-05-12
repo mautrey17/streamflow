@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { PromiseProvider } from "mongoose";
 
-function NavTabs() {
+function NavTabs(props) {
   // We'll go into the Hooks API later, for now, we are just using some code
   // from the react-router docs (https://reacttraining.com/react-router/web/api/Hooks/uselocation)
   // This allows the component to check the route any time the user uses a link to navigate.
   const location = useLocation();
+
+  const [navActive, setNavActive] = React.useState(false)
 
   return (
     <div className="">
@@ -33,8 +36,11 @@ function NavTabs() {
           </Link>
 
           <a
+            onClick={() => {
+              setNavActive(!navActive)
+            }}
             role="button"
-            className="navbar-burger"
+            className={`navbar-burger ${navActive ? 'is-active' : ''}`}
             aria-label="menu"
             aria-expanded="false"
             data-target="navbarMain"
@@ -45,7 +51,7 @@ function NavTabs() {
           </a>
         </div>
 
-        <div id="navbarMain" className="navbar-menu">
+        <div id="navbarMain" className={`navbar-menu ${navActive ? 'is-active is-centered' : ''}`}>
           <div className="navbar-start">
             <Link
             to="/"
@@ -55,7 +61,7 @@ function NavTabs() {
                 : "navbar-item"
             }
           >
-              Dashboard
+              <span><i className="fas fa-home mr-2"></i></span>Dashboard
           </Link>
 
           <Link
@@ -66,7 +72,7 @@ function NavTabs() {
                 : "navbar-item"
             }
           >
-              Projects
+              <span><i className="mr-2 fas fa-shapes"></i></span>Projects
           </Link>
           <Link
             to="/messaging"
@@ -76,7 +82,7 @@ function NavTabs() {
                 : "navbar-item"
             }
           >
-              Messages
+              <span><i className="mr-2 fas fa-comment-dots"></i></span>Messages
           </Link>
           <Link
             to="/notes"
@@ -86,7 +92,7 @@ function NavTabs() {
                 : "navbar-item"
             }
           >
-              Notes
+              <span><i className="mr-2 fas fa-sticky-note"></i></span>Notes
           </Link>
           
             {/* In the future if we add a dropdown menu */}
@@ -112,12 +118,15 @@ function NavTabs() {
                 : "navbar-item"
             }
           >
-              User Profile
+              <span><i className="fas fa-user-tie mr-2"></i></span>User Profile
           </Link>
             <div className="navbar-item">
               <div className="buttons">
                 
-                <a className="button is-black">Log Out</a>
+                <a 
+                  className="button is-black"
+                  onClick={props.logout}
+                >Log Out</a>
               </div>
             </div>
           </div>

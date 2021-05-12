@@ -1,11 +1,11 @@
 import React ,{ useState , useEffect, useRef } from "react";
 import Nav from "../../components/Nav";
 import { Card } from "../../components/Card";
-
+import MyAvatar from "../../components/Avatar"
 import { Col, Row, Container } from "../../components/Grid";
 import SignupForm from "../Auth/SignupForm";
 import API from "../../utils/API";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, TextArea, FormBtn, Dropdown } from "../../components/Form";
 import AUTH from "../../utils/AUTH"
 import Axios from "axios";
 
@@ -69,11 +69,7 @@ function UserProfile() {
                   name="Email"
                   placeholder="Email Address (required)"
                 />
-                <Input
-                  onChange={handleInputChange}
-                  name="profilepic"
-                  placeholder="Profile Picture (optional)"
-                />
+                <MyAvatar/>
           <FormBtn
                   disabled={!(userObject.username && userObject.password && userObject.email)}
                   onClick={handleFormSubmit}

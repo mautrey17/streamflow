@@ -3,7 +3,9 @@ import Modal from 'react-modal';
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import AUTH from '../../utils/AUTH';
 import API from "../../utils/API";
-import Select from 'react-select'
+import Select from 'react-select';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const customStyles = {
   content: {
@@ -12,6 +14,7 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
+    marginTop: '5%',
     transform: 'translate(-50%, -50%)',
     width: "500px",
     height: "700px"
@@ -24,18 +27,18 @@ function AddTaskModal(props) {
   const [userList, setUserList] = useState([]);
   const formEl = useRef(null);
   const [projectList, setProjectList] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  useEffect(() => {
-    AUTH.getUser().then(res => {
-      setUserInfo(res.data.user);
-    });
-    API.getUsers().then(res => {
-      setUserList(res.data);
-    })
-    API.getProjects().then(res => {
-      setProjectList(res.data.projects);
-    })
-  }, []);
+  function setInfo() {
+    setUserInfo(props.currentUser);
+    setUserList(props.users);
+    setProjectList(props.projects);
+  }
+
+  // Clears formObject after the modal is closed
+  function clearForm() {
+    setFormObject({});
+  }
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -51,7 +54,24 @@ function AddTaskModal(props) {
   }
 
   function handleSelectedProj(option) {
-    setFormObject({ ...formObject, project: option.value})
+    setFormObject({ ...formObject, project: option.value._id})
+
+    // Allows it so only users associated with the selected project are shown
+    let userArray = [];
+    userList.map(user => {
+      if (option.value.owner.id === user._id) {
+        userArray.push(user)
+      }
+      option.value.assignedUsers.map(projUser => {
+        if (user._id === projUser) {
+          if (!userArray.some(x => x._id === projUser)) {
+            userArray.push(user)
+          }
+        }
+      })
+    })
+    setFilteredUsers(userArray);
+    console.log(filteredUsers);
   }
 
   function handleSelectedUrgency(option) {
@@ -64,10 +84,10 @@ function AddTaskModal(props) {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (formObject.title && formObject.dueDate) {
+    if (formObject.title && formObject.date) {
       API.saveTask({
         title: formObject.title,
-        dueDate: dateToLocalTZ(formObject.dueDate),
+        dueDate: formObject.date,
         project: formObject.project,
         assignedUsers: formObject.users,
         urgency: formObject.urgency,
@@ -87,23 +107,24 @@ function AddTaskModal(props) {
     }
   };
 
-  function dateToLocalTZ(date) {
-    const x = date.toString();
-    let y = x.substring(0, 4);
-    let m = parseInt(x.substring(5, 7)) - 1;
-    let d = x.substring(8, 10);
-    console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
-    const newDate = new Date(y, m, d);
-    return newDate.toISOString();
-  }
+  // function dateToLocalTZ(date) {
+  //   const x = date.toString();
+  //   let y = x.substring(0, 4);
+  //   let m = parseInt(x.substring(5, 7)) - 1;
+  //   let d = x.substring(8, 10);
+  //   console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
+  //   const newDate = new Date(y, m, d);
+  //   return newDate.toISOString();
+  // }
 
   return (
-    <div>
-      <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Task</a></li>
+    <div className>
+      <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Task<i className="fas fa-plus ml-2"/></a></li>
       <Modal
         isOpen={props.modalIsOpen}
-        onAfterOpen={props.afterOpenModal}
+        onAfterOpen={setInfo}
         onRequestClose={props.closeModal}
+        onAfterClose={clearForm}
         style={customStyles}
         contentLabel="New Task Modal"
       >
@@ -114,7 +135,7 @@ function AddTaskModal(props) {
             Select Project for Task
             <Select 
               options={projectList ? projectList.map(proj => (
-                {value: proj._id, label: proj.title}
+                {value: proj, label: proj.title}
               )) : ""}
               onChange={handleSelectedProj}
             />
@@ -125,19 +146,21 @@ function AddTaskModal(props) {
             name="title"
             placeholder="Title (required)"
           />
-          <Input
-            onChange={handleInputChange}
-            name="dueDate"
-            placeholder="Due Date (YYYY-MM-DD)"
+          <DatePicker 
+            selected={formObject.date}
+            onChange={date => setFormObject({...formObject, date: date})}
+            className="form-control mb-2"
+            placeholderText="Due date (required)"
           />
           <div>
             Assign user(s)
             <Select 
-              options={userList.map(users => (
+              options={filteredUsers.map(users => (
                 {value: users._id, label: users.username}
               ))} 
               isMulti
               onChange={handleSelectedUser}
+              isDisabled={!formObject.project}
             />
           </div>
           <br />
@@ -170,7 +193,7 @@ function AddTaskModal(props) {
           <br />
           <hr />
           <FormBtn
-            disabled={!(formObject.dueDate && formObject.title)}
+            disabled={!formObject.title}
             onClick={handleFormSubmit}
           >
             Submit Task

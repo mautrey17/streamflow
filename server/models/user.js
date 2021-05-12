@@ -27,7 +27,17 @@ const userSchema = new Schema({
 			ref: "Project"
 		}
 	],
-	picture: { type: String }
+	avatar: { 
+		top: {type: String},
+		accessories: {type: String},
+		hairColor: {type: String},
+		facialHair: {type: String},
+		clothes: {type: String},
+		eyes: {type: string},
+		eyeBrow: {type: String},
+		mouth: {type: String},
+		skin: {type: String}
+	 }
 });
 
 // Define schema methods

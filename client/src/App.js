@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useParams } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import "./App.scss";
 import LoginForm from './pages/Auth/LoginForm';
@@ -71,7 +71,6 @@ function App() {
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/test" component={Test} />
-              <Route exact path="/books/:id" component={Detail} />
               <Route exact path="/messaging" component={Messages} />
               <Route exact path="/project" component={Project} />
               <Route exact path="/dashboard" component={Dashboard} />
@@ -84,15 +83,13 @@ function App() {
       )}
       { !loggedIn && (
         <div className="auth-wrapper" style={{}}>
-          <Route exact path="/" component={() => <LoginForm login={login}/>} />
-          <Route exact path="/books" component={() => <LoginForm user={login} />} />
-          <Route exact path="/test" component={Messages} />
-          <Route exact path="/project" component={Project} />
-          <Route exact path="/messaging" component={Messages} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/signup" component={SignupForm} />
-          <Route exact path="/notes" component={Notes} />
-          <Route exact path="/userprofile" component={UserProfile} />
+          <div className="main-view">
+            <Switch>
+              <Route exact path="/signup" component={SignupForm} />
+              <Route component={() => <LoginForm login={login}/>} />
+              
+            </Switch>
+          </div>
         </div>
       )}
     </div>
