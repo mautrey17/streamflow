@@ -33,7 +33,7 @@ const userSchema = new Schema({
 		hairColor: {type: String},
 		facialHair: {type: String},
 		clothes: {type: String},
-		eyes: {type: string},
+		eyes: {type: String},
 		eyeBrow: {type: String},
 		mouth: {type: String},
 		skin: {type: String}
