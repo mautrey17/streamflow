@@ -61,13 +61,19 @@ function AddTaskModal(props) {
     // Allows it so only users associated with the selected project are shown
     let userArray = [];
     userList.map(user => {
+      if (option.value.owner.id === user._id) {
+        userArray.push(user)
+      }
       option.value.assignedUsers.map(projUser => {
-        if ( ( (user._id === projUser) || (user._id === option.value.owner.id) ) && (userArray.findIndex(x => x._id === user._id) !== 1) ) {
-          userArray.push(user)
+        if (user._id === projUser) {
+          if (!userArray.some(x => x._id === projUser)) {
+            userArray.push(user)
+          }
         }
       })
     })
     setFilteredUsers(userArray);
+    console.log(filteredUsers);
   }
 
   function handleSelectedUrgency(option) {
