@@ -10,16 +10,7 @@ import { Card } from "../../components/Card";
 import "../Notes/notes.css"
 
 function Note ()  {
-// Setting our component's initial state
-    const [notes, setNotes] = useState([]);
-    const [formObject, setFormObject] = useState({});
-    const formEl = useRef(null);
-  
-// Load all books and store them with setBooks
-    useEffect(() => {
-        // loadNotes();
-        API.getNotes();
-    }, []);
+
 
   //set initial state 
   const [notes, setNotes] = useState([])
