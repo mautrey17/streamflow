@@ -60,7 +60,15 @@ export default {
   saveNote: function(noteData) {
     return axios.post("/api/notes", noteData)
   },
+
+
+  // Saves a book to the database
   updateNote: function(id,noteData) {
     return axios.put("/api/notes/"+id, noteData)
-  }
+  },
+
+  deleteTask: function(id) {
+    return axios.delete("/api/tasks/" + id);
+  },
+
 };
