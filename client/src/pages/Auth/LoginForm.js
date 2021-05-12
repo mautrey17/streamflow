@@ -80,6 +80,7 @@ function LoginForm({login}) {
                 </p>
               </div>
               <img className="ml-4" src='images/login.jpg'></img>
+              <p style={{fontSize: 10}} className="has-text-centered">Image by: <a  href="https://www.vecteezy.com/free-vector/vector">Vector Vectors by Vecteezy</a></p>
               
             </form>
             {/* <Card title="Login to React Reading List">
