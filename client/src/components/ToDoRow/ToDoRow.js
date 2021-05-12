@@ -17,7 +17,7 @@ function ToDoRow(props) {
 
     function statusStyle(x) {
         switch(x) {
-            case "todo":
+            case "toDo":
                 return "has-text-danger";
             case "inProgress":
                 return "has-text-warning has-background-warning-light";
