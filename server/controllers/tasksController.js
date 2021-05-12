@@ -20,14 +20,7 @@ module.exports = {
           .catch(err => res.status(422).json(err));
         } else {
           db.Task
-          .find({ 
-            "$or": 
-            [{ 
-              "owner.id": req.user._id
-            }, {
-              "assignedUsers": req.user._id
-            }]
-        })
+          .find({})
           .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
           .then(tasks => {
             res.json({ tasks });
