@@ -14,6 +14,9 @@ export default {
   deleteProject: function(id) {
     return axios.delete("/api/projects/" + id);
   },
+  updateProject: function(id, projectData) {
+    return axios.put("/api/projects/" + id, projectData)
+  },
 
   // Users
   getUsers: function() {

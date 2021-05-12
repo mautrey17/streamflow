@@ -8,8 +8,10 @@ import "./Project.css";
 import API from "../../utils/API";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddTaskModal from "../../components/AddTaskModal";
+import EditProjectModal from "../../components/EditProjectModal";
 import moment from "moment";
 import Select from "react-select";
+import AUTH from '../../utils/AUTH';
 
 function Project() {
     //set the initial state
@@ -17,13 +19,18 @@ function Project() {
     const [projectTasks, setProjectTasks] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [openTask, setOpenTask] = useState({});
-    const [modalIsOpen, setIsOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState({});
     const [users, setUsers] = useState([]);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [taskModalIsOpen, setTaskIsOpen] = useState(false);
+    const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
         loadProjects();
+        AUTH.getUser().then(res => {
+            setUserInfo(res.data.user);
+        });
     }, []);
 
     function openModal() {
@@ -38,6 +45,12 @@ function Project() {
     function closeTaskModal() {
         setTaskIsOpen(false);
     }
+    function openEditModal() {
+        setEditIsOpen(true);
+    }
+    function closeEditModal() {
+        setEditIsOpen(false);
+    }
 
     // Calls 3 APIs (Projects, Tasks, Users) and loads them into 3 arrays
     function loadProjects() {
@@ -49,7 +62,7 @@ function Project() {
                     })
                 }
             })
-            .then(API.getTasks()
+            .then(API.getAllTasks()
                 .then(res2 => {
                     if (res2.data.tasks) {
                         res2.data.tasks.map(task => {
@@ -125,6 +138,9 @@ function Project() {
             ...selectedProject,
             title: projects[i].title,
             id: projects[i]._id,
+            dueDate: projects[i].dueDate,
+            assignedUsers: projects[i].assignedUsers,
+            owner: projects[i].owner,
             selected: i
         });
     }
@@ -225,11 +241,13 @@ function Project() {
                                     modalIsOpen={modalIsOpen}
                                     closeModal={closeModal}
                                     openModal={openModal}
+                                    ariaHideApp={false}
                                 />
                                 <AddTaskModal
                                     modalIsOpen={taskModalIsOpen}
                                     closeModal={closeTaskModal}
                                     openModal={openTaskModal}
+                                    ariaHideApp={false}
                                 />
                             </ul>
                         </aside>
@@ -239,10 +257,22 @@ function Project() {
                     <h1 className="has-text-centered title is-1 mt-3">
                         {selectedProject.title ?
                             <>
-                                {selectedProject.title} <i className="fas fa-edit" />
+                                {selectedProject.title}
+                                {selectedProject.owner.id === userInfo._id && 
+                                    <EditProjectModal 
+                                        project={selectedProject}
+                                        users={users}
+                                        modalIsOpen={editModalIsOpen}
+                                        closeModal={closeEditModal}
+                                        openModal={openEditModal}
+                                        ariaHideApp={false}
+                                    />
+                                }
+                                
                             </>
                             : projects.length === 0 ? "No projects found, please create one"
-                                : "Please select a project"}
+                            : "Please select a project"
+                        }
                     </h1>
                     <div className="block">
                         <h2 className="subtitle is-2">Graph of Task Statuses</h2>
