@@ -4,7 +4,7 @@ const db = require("../models");
 module.exports = {
   findAll: (req, res) => {
     if (req.user) {
-      db.User.find({}, 'firstName lastName username')
+      db.User.find({}, 'firstName lastName username avatar')
       .then(user => {
         res.json(user)
       })
