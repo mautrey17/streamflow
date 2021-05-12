@@ -11,6 +11,7 @@ function THead() {
                 <th scope="col">Urgency</th>
                 <th scope="col">Status</th>
                 <th scope="col">Manager</th>
+                <th>Finalize</th>
             </tr>
         </thead>
     )
