@@ -24,12 +24,12 @@ function Project() {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [taskModalIsOpen, setTaskIsOpen] = useState(false);
-    const [userInfo, setUserInfo] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
 
     useEffect(() => {
         loadProjects();
         AUTH.getUser().then(res => {
-            setUserInfo(res.data.user);
+            setCurrentUser(res.data.user);
         });
     }, []);
 
@@ -122,11 +122,13 @@ function Project() {
         });
     }
 
+    // Selecting a project on the left will take it's ID and load the information and tasks related to that project
     function setCurrentProject(e) {
         e.preventDefault();
         let i = e.currentTarget.value;
         let taskArray = [];
 
+        // Loads tasks only associated with the project ID
         tasks.map(task => {
             if (projects[i]._id === task.project) {
                 taskArray.push(task);
@@ -145,6 +147,7 @@ function Project() {
         });
     }
 
+    // Moment function to show tasks relating to current week
     function compareWeek(x) {
         if (moment(x.dueDate).isSame(new Date(), "week")) return true
         else return false
@@ -183,6 +186,7 @@ function Project() {
         }
     }
 
+    // Updates task to the database along with the current page without needing to reload
     function updateTask(e) {
         e.preventDefault();
         let assignedUsersId = [];
@@ -242,12 +246,17 @@ function Project() {
                                     closeModal={closeModal}
                                     openModal={openModal}
                                     ariaHideApp={false}
+                                    users={users}
+                                    currentUser={currentUser}
                                 />
                                 <AddTaskModal
                                     modalIsOpen={taskModalIsOpen}
                                     closeModal={closeTaskModal}
                                     openModal={openTaskModal}
                                     ariaHideApp={false}
+                                    users={users}
+                                    projects={projects}
+                                    currentUser={currentUser}
                                 />
                             </ul>
                         </aside>
@@ -258,7 +267,9 @@ function Project() {
                         {selectedProject.title ?
                             <>
                                 {selectedProject.title}
-                                {selectedProject.owner.id === userInfo._id && 
+                                
+                                {/* Shows edit icon only if logged in user is the project owner */}
+                                {selectedProject.owner.id === currentUser._id && 
                                     <EditProjectModal 
                                         project={selectedProject}
                                         users={users}
@@ -266,6 +277,7 @@ function Project() {
                                         closeModal={closeEditModal}
                                         openModal={openEditModal}
                                         ariaHideApp={false}
+                                        currentUser={currentUser}
                                     />
                                 }
                                 
