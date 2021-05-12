@@ -22,12 +22,14 @@ function KanBan(props) {
                                 taskClick={props.taskClick}
                                 task={task}
                                 handleSelectedTask={props.handleSelectedTask}
+                                key={task._id}
                             /> : ""}
                             {props.title  === "Completed" && task.status === "completed" ? 
                             <Task
                                 taskClick={props.taskClick}
                                 task={task}
                                 handleSelectedTask={props.handleSelectedTask}
+                                key={task._id}
                             /> : ""}
                         </>
                     )) : ""}
