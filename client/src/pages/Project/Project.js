@@ -223,6 +223,34 @@ function Project() {
         }))
     }
 
+    function statusStyle(x) {
+        switch(x) {
+            case "toDo":
+                return "has-background-danger";
+            case "inProgress":
+                return "has-background-warning-light";
+            case "completed":
+                return "has-background-success-light";
+            default:
+                return "";
+        }
+    }
+
+    function urgentStyle(x) {
+        switch(x) {
+            case "low":
+                return "has-background-link-light";
+            case "medium":
+                return "has-background-success-light";
+            case "high":
+                return "has-background-danger-light ";
+            case "urgent":
+                return "has-background-danger";
+            default:
+                return "";
+        }
+    }
+
     return (
         <div>
             <Columns>
@@ -384,7 +412,7 @@ function Project() {
                                                 >
                                                 </input>
                                             </td>
-                                            <td>
+                                            <td className={urgentStyle(openTask.urgency)}>
                                                 {/* <select className="urgent" value={openTask.urgency}>
                                                         <option className="low" value="low">Low</option>
                                                         <option className="medium" value="medium">Medium</option>
@@ -408,7 +436,7 @@ function Project() {
                                                 />
 
                                             </td>
-                                            <td>
+                                            <td className={statusStyle(openTask.status)}>
                                                 {/* <div className="select is-primary">
                                                     <select value={openTask.status}>
                                                         <option className="high" value="toDo">To Do</option>
