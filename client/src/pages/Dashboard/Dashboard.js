@@ -45,14 +45,16 @@ function Dashboard() {
                         <p className="menu-label">Project Menu</p>
                         <ul className="menu-list">
                         <AddProjectModal 
-                        modalIsOpen={modalIsOpen}
-                        closeModal={closeModal}
-                        openModal={openModal}
+                            modalIsOpen={modalIsOpen}
+                            closeModal={closeModal}
+                            openModal={openModal}
+                            ariaHideApp={false}
                         />
                         <AddTaskModal 
                             modalIsOpen={taskModalIsOpen}
                             closeModal={closeTaskModal}
                             openModal={openTaskModal}
+                            ariaHideApp={false}
                         />
                         </ul>
                     </aside>
