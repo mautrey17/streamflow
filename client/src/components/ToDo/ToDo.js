@@ -5,7 +5,7 @@ import THead from "../THead";
 import moment from "moment";
 import './ToDo.css';
 
-function ToDo() {
+function ToDo(props) {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [overTasks, setOverTasks] = useState([]);
     const [todayTasks, setTodayTasks] = useState([]);
@@ -16,46 +16,74 @@ function ToDo() {
 
     useEffect(() => {
         loadAssignedTasks();
-        // getShownRows();
-    }, [])
+    }, [props])
 
     // Tasks are called and split into 3 sections depending on due date
     // Project name gets called and associated with matching task
     function loadAssignedTasks() {
-        API.getTasks("assigned")
-            .then(res => {
-                API.getProjects()
-                    .then(res2 => {
-                        console.log(res2.data.projects)
-                        if(res.data.tasks) res.data.tasks.map((task, j) => {
-                            if (compareTime(task.dueDate) === 1) {
-                                setOverTasks(old => [...old, task])
-                                for (let i = 0; i < res2.data.projects.length; i++) {
-                                    if (res2.data.projects[i]._id === res.data.tasks[j].project) {
-                                        setOverProjName(old => [...old, res2.data.projects[i].title])
-                                        break;
-                                    }
-                                }
-                            } else if (compareTime(task.dueDate) === 2) {
-                                setTodayTasks(old => [...old, task])
-                                for (let i = 0; i < res2.data.projects.length; i++) {
-                                    if (res2.data.projects[i]._id === res.data.tasks[j].project) {
-                                        setTodayProjName(old => [...old, res2.data.projects[i].title])
-                                        break;
-                                    }
-                                }
-                            } else {
-                                setTomorrowTasks(old => [...old, task])
-                                for (let i = 0; i < res2.data.projects.length; i++) {
-                                    if (res2.data.projects[i]._id === res.data.tasks[j].project) {
-                                        setTomProjName(old => [...old, res2.data.projects[i].title])
-                                        break;
-                                    }
-                                }
-                            }
-                        });
-                    })     
+        // API.getTasks("assigned")
+        //     .then(res => {
+        //         API.getProjects()
+        //             .then(res2 => {
+        //                 console.log(res2.data.projects)
+        //                 if(res.data.tasks) res.data.tasks.map((task, j) => {
+        //                     if (compareTime(task.dueDate) === 1) {
+        //                         setOverTasks(old => [...old, task])
+        //                         for (let i = 0; i < res2.data.projects.length; i++) {
+        //                             if (res2.data.projects[i]._id === res.data.tasks[j].project) {
+        //                                 setOverProjName(old => [...old, res2.data.projects[i].title])
+        //                                 break;
+        //                             }
+        //                         }
+        //                     } else if (compareTime(task.dueDate) === 2) {
+        //                         setTodayTasks(old => [...old, task])
+        //                         for (let i = 0; i < res2.data.projects.length; i++) {
+        //                             if (res2.data.projects[i]._id === res.data.tasks[j].project) {
+        //                                 setTodayProjName(old => [...old, res2.data.projects[i].title])
+        //                                 break;
+        //                             }
+        //                         }
+        //                     } else {
+        //                         setTomorrowTasks(old => [...old, task])
+        //                         for (let i = 0; i < res2.data.projects.length; i++) {
+        //                             if (res2.data.projects[i]._id === res.data.tasks[j].project) {
+        //                                 setTomProjName(old => [...old, res2.data.projects[i].title])
+        //                                 break;
+        //                             }
+        //                         }
+        //                     }
+        //                 });
+        //             })     
+        //     })
+        let overTasks = [];
+        let todayTasks = [];
+        let tomTasks = [];
+        if (props.tasks && props.projects) {
+            props.tasks.map(task => {
+                if (task.assignedUsers.indexOf(props.currentUser._id) !== -1) {
+                    if (task.status !== "completed") {
+                        // Gets the project name from the task's project ID then assigns it to the task object
+                        if (compareTime(task.dueDate) === 1) {
+                            let proj = props.projects.filter(e => e._id === task.project);
+                            if (proj[0].title) task.projectTitle = proj[0].title;
+                            overTasks.push(task);
+                        } else if (compareTime(task.dueDate) === 2) {
+                            let proj = props.projects.filter(e => e._id === task.project);
+                            if (proj[0].title) task.projectTitle = proj[0].title;
+                            todayTasks.push(task);
+                        } else {
+                            let proj = props.projects.filter(e => e._id === task.project);
+                            if (proj[0].title) task.projectTitle = proj[0].title;
+                            tomTasks.push(task);
+                        }
+                    }  
+                }
+
             })
+        }
+        setOverTasks(overTasks);
+        setTodayTasks(todayTasks);
+        setTomorrowTasks(tomTasks);
     }
 
     // Compares due date to current time
@@ -87,7 +115,7 @@ function ToDo() {
                 <THead />
                 <tbody>
                 {overTasks ? overTasks.map((task, i) => (
-                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={overProjName[i]}/>
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id}/>
                 )) : ""}
                 </tbody>
             </table>
@@ -96,7 +124,7 @@ function ToDo() {
                 <THead />
                 <tbody>
                 {todayTasks ? todayTasks.map((task, i) => (
-                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={todayProjName[i]}/>
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id}/>
                 ))  : ""}
                 </tbody>
             </table>
@@ -107,7 +135,7 @@ function ToDo() {
                 <tbody>
                     
                 {tomorrowTasks ? tomorrowTasks.map((task, i) => (
-                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id} project={tomProjName[i]}/>
+                    <ToDoRow task={task} date={moment(task.dueDate).format('MMMM Do YYYY')} count={i+1} key={task._id}/>
                 )) : ""}
                 </tbody>
             </table>
