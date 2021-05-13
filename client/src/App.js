@@ -10,12 +10,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AUTH from './utils/AUTH';
 import Test from './pages/Test';
 
-//added for testing
+//pages
 import Messages from './pages/Messages';
 import Project from './pages/Project';
 import Notes from './pages/Notes';
 import Dashboard from './pages/Dashboard';
 import UserProfile from './pages/UserProfile';
+import LoggedOut from './pages/LoggedOut';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -86,8 +87,8 @@ function App() {
           <div className="main-view">
             <Switch>
               <Route exact path="/signup" component={SignupForm} />
-              <Route component={() => <LoginForm login={login}/>} />
-              
+              <Route exact path="/login" component={() => <LoginForm login={login}/>} />
+              <Route component={LoggedOut} />
             </Switch>
           </div>
         </div>
