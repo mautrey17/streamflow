@@ -10,9 +10,6 @@ function ToDo(props) {
     const [overTasks, setOverTasks] = useState([]);
     const [todayTasks, setTodayTasks] = useState([]);
     const [tomorrowTasks, setTomorrowTasks] = useState([]);
-    const [overProjName, setOverProjName] = useState([]);
-    const [todayProjName, setTodayProjName] = useState([]);
-    const [tomProjName, setTomProjName] = useState([]);
 
     useEffect(() => {
         loadAssignedTasks();
@@ -55,6 +52,7 @@ function ToDo(props) {
         //                 });
         //             })     
         //     })
+        
         let overTasks = [];
         let todayTasks = [];
         let tomTasks = [];

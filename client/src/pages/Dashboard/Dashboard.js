@@ -16,11 +16,7 @@ import AUTH from "../../utils/AUTH";
 
 function Dashboard() {
     //set the initial state
-    const [projects, setProjects] = useState([]);
-    const [tasks, setTasks] = useState([]);
-    const [users, setUsers] = useState([]);
     const [data, setData] = useState({});
-    const [currentUser, setCurrentUser] = useState({});
     const [modalIsOpen, setIsOpen] = useState(false);
     const [taskModalIsOpen, setTaskIsOpen] = useState(false);
 

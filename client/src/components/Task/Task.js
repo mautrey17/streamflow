@@ -11,6 +11,26 @@ function Task(props) {
     setIsOpen(false);
   }
 
+  function getTeam() {
+    let team = [];
+    props.task.assignedUsers.map(taskUser => {
+      props.users.map(user => {
+        if (taskUser === user._id) {
+          team.push(user.username);
+        }
+      })
+    })
+
+    let message = ""
+    if (team.length > 0) {
+      message = "Team: ";
+      team.map((user, i) => {
+        message += (i ? ", " : "") + user;
+      });
+    }
+    return message;
+  }
+
   return (
     <article className="message is-small is-info mb-3">
       <div className="message-header title is-5 mb-1" style={{ cursor: "pointer" }}>
@@ -26,8 +46,8 @@ function Task(props) {
       </div>
 
       <div className="message-body">
-        <p className="mb-2">Urgency: *needs input*</p>
-        <p className="mb-2">Team: *needs team*</p>
+        <p className="mb-2">Urgency: {props.task.urgency[0].toUpperCase() + props.task.urgency.substring(1)}</p>
+        <p className="mb-2">{getTeam()}</p>
         <p className="mb-2">Opened by: {props.task.owner.username}</p>
       </div>
     </article>

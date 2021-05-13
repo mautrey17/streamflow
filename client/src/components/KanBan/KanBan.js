@@ -16,6 +16,7 @@ function KanBan(props) {
                                 task={task}
                                 handleSelectedTask={props.handleSelectedTask}
                                 key={task._id}
+                                users={props.users}
                             /> : ""}
                             {props.title  === "In Progress" && task.status === "inProgress" ? 
                             <Task
@@ -23,6 +24,7 @@ function KanBan(props) {
                                 task={task}
                                 handleSelectedTask={props.handleSelectedTask}
                                 key={task._id}
+                                users={props.users}
                             /> : ""}
                             {props.title  === "Completed" && task.status === "completed" ? 
                             <Task
@@ -30,6 +32,7 @@ function KanBan(props) {
                                 task={task}
                                 handleSelectedTask={props.handleSelectedTask}
                                 key={task._id}
+                                users={props.users}
                             /> : ""}
                         </>
                     )) : ""}

@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
+import API from "../../utils/API";
 
 function ToDoRow(props) {
 
+    function markComplete(e) {
+        let id = e.target.value
+
+        API.updateTask(id, {
+            status: "completed"
+        })
+        .then(res => {
+            window.location.reload();
+        })
+        .catch(err => console.log(err));
+    }
+
     function status(x) {
-        switch(x) {
+        switch (x) {
             case "toDo":
                 return "To Do";
             case "inProgress":
@@ -16,7 +29,7 @@ function ToDoRow(props) {
     }
 
     function statusStyle(x) {
-        switch(x) {
+        switch (x) {
             case "toDo":
                 return "has-text-danger";
             case "inProgress":
@@ -29,7 +42,7 @@ function ToDoRow(props) {
     }
 
     function urgentStyle(x) {
-        switch(x) {
+        switch (x) {
             case "low":
                 return "has-text-link has-background-link-light";
             case "medium":
@@ -44,8 +57,8 @@ function ToDoRow(props) {
     }
 
     function strike(status) {
-        if(status === 'completed') {
-            return {textDecoration: 'line-through'}
+        if (status === 'completed') {
+            return { textDecoration: 'line-through' }
         }
     }
 
@@ -58,7 +71,7 @@ function ToDoRow(props) {
             <td className={urgentStyle(props.task.urgency)}>{props.task.urgency ? props.task.urgency.charAt(0).toUpperCase() + props.task.urgency.slice(1) : ""}</td>
             <td className={statusStyle(props.task.status)}>{props.task.status ? status(props.task.status) : ""}</td>
             <td>{props.task.owner.username}</td>
-            <td><button className="button is-success is-rounded">Complete</button></td>
+            <td><button className="button is-success is-rounded" value={props.task._id} onClick={markComplete}>Complete</button></td>
         </tr>
     )
 }
