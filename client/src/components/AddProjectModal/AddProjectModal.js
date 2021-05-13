@@ -55,9 +55,9 @@ function AddProjectModal(props) {
         dueDate: formObject.date,
         assignedUsers: addUsers,
         owner: {
-          firstName: props.currentUser._id,
-          lastName: props.currentUser._id,
-          username: props.currentUser._id,
+          firstName: props.currentUser.firstName,
+          lastName: props.currentUser.lastName,
+          username: props.currentUser.username,
           id: props.currentUser._id
         }
       })
