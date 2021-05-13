@@ -12,32 +12,29 @@ function Task(props) {
       }
 
   return (
-    <div className="card mb-3 pr-2">
-      <div className="task-box">
-        <div>
-          <span>
-            <strong>
-              <a onClick={props.handleSelectedTask} value={props.task._id}>{props.task.title}</a>
-            </strong>
-          </span>
+    <article className="message is-info mb-3">
+      <div className="message-header task-title">
+
+              <a className="title is-5 task-title" onClick={props.handleSelectedTask} value={props.task._id}>{props.task.title}</a>
+            
+            
+            
+          
           <DeleteTaskModal 
             task={props.task}
-            className="text-right"
+            className="has-text-right"
             modalIsOpen={modalIsOpen}
             closeModal={closeModal}
             openModal={openModal}
             ariaHideApp={false}
           />
         </div>
-        <div className="task-item">
+        <div>
+        <div className="message-body">
           <p>Opened by: {props.task.owner.username}</p>
         </div>
-        <div className="mx-auto move">
-            <button onClick={props.taskClick}>&lt;</button>
-            <button>&gt;</button>
-        </div>
       </div>
-    </div>
+    </article>
   );
 }
 

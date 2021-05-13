@@ -5,9 +5,9 @@ import "./KanBan.css";
 
 function KanBan(props) {
     return (
-            <Columns.Column size="4">
-                <div className="kanban-box">
-                    <h4 className="text-center">{props.title}</h4>
+            
+                <div className="">
+                    
                     {props.tasks ? props.tasks.map(task => (
                         <>
                             {props.title  === "To Do" && task.status === "toDo" ? 
@@ -35,7 +35,7 @@ function KanBan(props) {
                     )) : ""}
                     
                 </div>
-            </Columns.Column>
+            
     )
 }
 

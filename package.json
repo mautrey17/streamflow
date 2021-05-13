@@ -50,7 +50,8 @@
     "react-modal": "^3.13.1",
     "react-moment": "^1.1.1",
     "react-select": "^4.3.0",
-    "react-vis": "^1.11.7"
+    "react-vis": "^1.11.7",
+    "yarn": "^1.22.10"
   },
   "repository": {
     "type": "git",
