@@ -19,6 +19,11 @@ function UserProfile() {
     email: '',
   });
   
+  const avatarEl = useRef(null);
+  const [avatarObject, setAvatarObject] = useState({
+    style: '',
+    top: ''
+  });
 
   useEffect(() => {
   Axios.get("/auth/user/ ")
@@ -26,7 +31,12 @@ function UserProfile() {
 
   function handleInputChange(event){
     const { name, value } = event.target;
-    setUserObject({...userObject, [name]: value})
+    setUserObject({...userObject, [name ]: value})
+  };
+
+  function handleAvatarChange(event){
+    const { name, value } = event.target;
+    setAvatarObject({...avatarObject, [name ]: value})
   };
 
   function handleFormSubmit(event){
@@ -35,52 +45,84 @@ function UserProfile() {
 
     }
   }
+
   return (
     <>
-      <Nav />
     <Container fluid>
       <Row>
         <Col size="md-6 sm-6">
           <Card title="Profile Settings">
             <form ref={formEl}>
-           
+              <Input
+                onChange={handleInputChange}
+                name="firstname"
+                placeholder="First Name"
+              />
+              <Input
+                onChange={handleInputChange}
+                name="lastname"
+                placeholder="Last Name"
+              />
+              <Input
+                onChange={handleInputChange}
+                name="username"
+                placeholder="Username (required)"
+              />
                 <Input
-                  onChange={handleInputChange}
-                  name="firstname"
-                  placeholder="First Name (required)"
-                />
-                <Input
-                  onChange={handleInputChange}
-                  name="lastname"
-                  placeholder="Last Name (required)"
-                />
-                <Input
-                  onChange={handleInputChange}
-                  name="username"
-                  placeholder="Username (required)"
-                />
-                 <Input
-                  onChange={handleInputChange}
-                  name="Password"
-                  placeholder="Change Password (required)"
-                />
-                <Input
-                  onChange={handleInputChange}
-                  name="Email"
-                  placeholder="Email Address (required)"
-                />
-                <MyAvatar/>
-          <FormBtn
-                  disabled={!(userObject.username && userObject.password && userObject.email)}
-                  onClick={handleFormSubmit}
-                ></FormBtn>
-          </form>
+                onChange={handleInputChange}
+                name="Password"
+                placeholder="Change Password (required)"
+              />
+              <Input
+                onChange={handleInputChange}
+                name="Email"
+                placeholder="Email Address (required)"
+              />
+              <FormBtn
+                disabled={!(userObject.username && userObject.password && userObject.email)}
+                onClick={handleFormSubmit}
+              >Update Profile</FormBtn>
+            </form>
           </Card>
         </Col>
-        </Row>
-        
-        </Container>
-        </>
+        <Col size="md-6 sm-6">
+          <Card title="Avatar Settings">
+            <form ref={avatarEl}>
+              <Input 
+                onChange={handleAvatarChange}
+                placeholder="my style" 
+                list="optStyle"
+              />
+                <datalist id="optStyle">
+                  <option>Circle</option>
+                  <option>Transparent</option>
+                </datalist>
+              <Input
+                onChange={handleAvatarChange}
+                placeholder="my top" 
+                list="optTop"
+              />
+                <datalist id="optTop">
+                  <option>No Hair</option>
+                  <option>WinterHat1</option>
+                </datalist>
+              {(avatarEl.current !== null) ? (
+              <MyAvatar
+                style={avatarEl.current[0].value}
+                top={avatarEl.current[1].value}
+              />
+              ) : (
+                <MyAvatar
+                  style='Transparent'
+                  top='LongHairMiaWallace'
+                />
+              )}
+            </form>
+          </Card>
+        </Col>
+      </Row>  
+    </Container>
+    </>
   )
 }
       
