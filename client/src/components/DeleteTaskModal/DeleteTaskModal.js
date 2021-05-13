@@ -27,8 +27,8 @@ function DeleteTaskModal(props) {
   };
 
   return (
-    <span>
-      <button onClick={props.openModal} className="delete"></button>
+    <div>
+      <button onClick={props.openModal} className="delete is-small"></button>
       <Modal
         isOpen={props.modalIsOpen}
         onRequestClose={props.closeModal}
@@ -53,7 +53,7 @@ function DeleteTaskModal(props) {
           </button>
         </form>
       </Modal>
-    </span>
+    </div>
   );
 }
 

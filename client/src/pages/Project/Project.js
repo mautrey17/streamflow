@@ -363,7 +363,7 @@ function Project() {
                             <div class="tile is-parent">
                                 <article class="tile is-child notification is-info">
                                 <div className="block">
-                        <h2 className="title is-3">Project Progress</h2>
+                        <h2 className="title is-3 mb-5">Project Progress</h2>
                         <PieChart
                             data={[
                                 { title: 'To Do', value: projectTasks.filter(e => { return e.status === "toDo" }).length, color: '#DD1E2f' },
