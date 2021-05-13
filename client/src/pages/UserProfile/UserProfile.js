@@ -22,7 +22,16 @@ function UserProfile() {
   const avatarEl = useRef(null);
   const [avatarObject, setAvatarObject] = useState({
     style: '',
-    top: ''
+    top: '',
+    accessories: '',
+   hairColor: '',
+   facialHair: '',
+   clothes: '',
+   eyes: '',
+  eyebrow: '',
+  mouth: '',
+  skin:''
+
   });
 
   useEffect(() => {
@@ -104,12 +113,104 @@ function UserProfile() {
               />
                 <datalist id="optTop">
                   <option>No Hair</option>
-                  <option>WinterHat1</option>
+                  <option>Hat</option>
+                  <option>LongHairStraight</option>
+                  <option>ShortHairShortFlat</option>
+                  <Input
+                onChange={handleAvatarChange}
+                placeholder="my accessories" 
+                list="optAccessories"
+              />
+                </datalist>
+                <datalist id="optAccessories">
+                  <option>Blank</option>
+                  <option>Prescription01</option>
+                  <option>Prescription02</option>
+                  <option>Round</option>
+                  <option>Sunglasses</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my hair color" 
+                list="optHairColor"
+              />
+                <datalist id="optHairColor">
+                  <option>Black</option>
+                  <option>BrownDark</option>
+                  <option>Auburn</option>
+                  <option>Blonde</option>
+                  <option>Red</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my facial hair" 
+                list="optFacialHair"
+              />
+                <datalist id="optFacialHair">
+                  <option>Blank</option>
+                  <option>BeardMedium</option>
+                  <option>BeardLight</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my clothes" 
+                list="optClothes"
+              />
+                <datalist id="optClothes">
+                  <option>CollarSweater</option>
+                  <option>Hoodie</option>
+                  <option>ShirtCrewNeck</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my eyes" 
+                list="optEyes"
+              />
+                <datalist id="optEyes">
+                  <option>Happy</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my eyebrow" 
+                list="optEyebrow"
+              />
+                <datalist id="optEyebrow">
+                  <option>DefaultNatural</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my mouth" 
+                list="optMouth"
+              />
+                <datalist id="optMouth">
+                  <option>Default</option>
+                </datalist>
+                <Input
+                onChange={handleAvatarChange}
+                placeholder="my skin" 
+                list="optSkin"
+              />
+                <datalist id="optSkin">
+                  <option>Tanned</option>
+                  <option>Yellow</option>
+                  <option>Pale</option>
+                  <option>Light</option>
+                  <option>Brown</option>
+                  <option>DarkBrown</option>
                 </datalist>
               {(avatarEl.current !== null) ? (
               <MyAvatar
                 style={avatarEl.current[0].value}
                 top={avatarEl.current[1].value}
+                accessories={avatarEl.current[2].value}
+                hairColor={avatarEl.current[3].value}
+                facialHair={avatarEl.current[4].value}
+                clothes={avatarEl.current[5].value}
+                eyes={avatarEl.current[6].value}
+                eyebrow={avatarEl.current[7].value}
+                mouth={avatarEl.current[8].value}
+                skin={avatarEl.current[9].value}
+                
               />
               ) : (
                 <MyAvatar
