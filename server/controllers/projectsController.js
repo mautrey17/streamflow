@@ -6,14 +6,16 @@ module.exports = {
       if (req.user) {
         if (req.params.type === "owned") { db.Project
           .find({ "owner.id": req.user._id })
-          .populate({ path: "projects", options: { sort: { 'date': -1 } } })
+          .sort({dueDate: 1})
+          .populate({ path: "projects" })
           .then(projects => {
             res.json({ projects });
           })
           .catch(err => res.status(422).json(err));
         } else if (req.params.type === "assigned") { db.Project
           .find({ "assignedUsers": req.user._id })
-          .populate({ path: "projects", options: { sort: { 'date': -1 } } })
+          .sort({dueDate: 1})
+          .populate({ path: "projects" })
           .then(projects => {
             res.json({ projects });
           })
@@ -27,8 +29,9 @@ module.exports = {
             }, {
               "assignedUsers": req.user._id
             }]
-        })
-          .populate({ path: "projects", options: { sort: { 'date': -1 } } })
+          })
+          .sort({dueDate: 1})
+          .populate({ path: "projects" })
           .then(projects => {
             res.json({ projects });
           })

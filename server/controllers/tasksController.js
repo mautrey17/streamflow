@@ -6,14 +6,16 @@ module.exports = {
       if (req.user) {
         if (req.params.type === "owned") { db.Task
           .find({ "owner.id": req.user._id })
-          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
+          .sort({dueDate: 1})
+          .populate({ path: "tasks" })
           .then(tasks => {
             res.json({ tasks });
           })
           .catch(err => res.status(422).json(err));
         } else if (req.params.type === "assigned") { db.Task
           .find({ "assignedUsers": req.user._id })
-          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
+          .sort({dueDate: 1})
+          .populate({ path: "tasks" })
           .then(tasks => {
             res.json({ tasks });
           })
@@ -21,7 +23,8 @@ module.exports = {
         } else {
           db.Task
           .find({})
-          .populate({ path: "tasks", options: { sort: { 'date': -1 } } })
+          .sort({dueDate: 1})
+          .populate({ path: "tasks" })
           .then(tasks => {
             res.json({ tasks });
           })
