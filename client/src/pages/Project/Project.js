@@ -136,6 +136,15 @@ function Project() {
         });
         setProjectTasks(taskArray);
 
+        let filteredUsers = [];
+        for (let e = 0; e < projects[i].assignedUsers.length; e++) {
+            users.map(user => {
+                if (user._id === projects[i].assignedUsers[e]) {
+                    filteredUsers.push(user);
+                }
+            })
+        };
+
         setSelectedProject({
             ...selectedProject,
             title: projects[i].title,
@@ -143,6 +152,7 @@ function Project() {
             dueDate: projects[i].dueDate,
             assignedUsers: projects[i].assignedUsers,
             owner: projects[i].owner,
+            usernames: filteredUsers,
             selected: i
         });
     }
@@ -290,7 +300,8 @@ function Project() {
                         </aside>
                     </div>
                 </Columns.Column>
-                <Columns.Column>
+                <Columns.Column size="9">
+                    <div className="block">
                     <h1 className="has-text-centered title is-1 mt-3">
                         {selectedProject.title ?
                             <>
@@ -314,55 +325,99 @@ function Project() {
                             : "Please select a project"
                         }
                     </h1>
-                    <div className="block">
-                        <h2 className="subtitle is-2">Graph of Task Statuses</h2>
+                    </div>
+
+                    {/* tiles start here */}
+
+                    <div class="tile is-ancestor mt-4">
+                        <div class="tile is-vertical is-8">
+                            <div class="tile">
+                            <div class="tile is-parent is-vertical">
+                                <article class="tile is-child notification is-danger">
+                                <div className='content is-medium'>
+                                    <h5 className="title is-3">Urgent: </h5>
+                                    <ul>
+                                    {projectTasks && projectTasks.map(task => {
+                                        return (
+                                            task.urgency === "urgent" && <li>{task.title}</li>
+                                        )
+                                    }
+                                    )}
+                                    </ul>
+                                </div>
+                                </article>
+                                <article class="tile is-child notification is-warning">
+                                <div className='content is-medium'>
+                                    <h5 className="title is-3">This Week: </h5>
+                                    <ul>
+                                    {projectTasks && projectTasks.map(task => {
+                                        return (
+                                            compareWeek(task) && <li>{task.title}</li>
+                                        )
+                                    }
+                                    )}
+                                    </ul>
+                                </div>
+                                </article>
+                            </div>
+                            <div class="tile is-parent">
+                                <article class="tile is-child notification is-info">
+                                <div className="block">
+                        <h2 className="title is-3">Project Progress</h2>
                         <PieChart
                             data={[
-                                { title: 'To Do', value: projectTasks.filter(e => { return e.status === "toDo" }).length, color: 'red' },
-                                { title: 'In Progress', value: projectTasks.filter(e => { return e.status === "inProgress" }).length, color: 'yellow' },
-                                { title: 'Completed', value: projectTasks.filter(e => { return e.status === "completed" }).length, color: 'green' },
+                                { title: 'To Do', value: projectTasks.filter(e => { return e.status === "toDo" }).length, color: '#DD1E2f' },
+                                { title: 'In Progress', value: projectTasks.filter(e => { return e.status === "inProgress" }).length, color: '#ebb035' },
+                                { title: 'Completed', value: projectTasks.filter(e => { return e.status === "completed" }).length, color: '#218559' },
                             ]}
                             lineWidth={66}
-                            radius={15}
-                            center={[50, 15]}
-                            viewBoxSize={[100, 30]}
+                            radius={30}
+                            center={[50, 30]}
+                            viewBoxSize={[100, 60]}
                             startAngle={270}
                             paddingAngle={2}
                         />
                         {/* <BarGraph /> */}
                     </div>
-                    <div className="block">
-                        <h2 className="subtitle is-2">Important user info and due dates</h2>
-                        <Columns>
-                            <Columns.Column size="one-fifth"></Columns.Column>
-                            <Columns.Column size="3">
-                                <div className='card'>
-                                    <h5>This Week: </h5>
-                                    {projectTasks && projectTasks.map(task => {
+                                </article>
+                            </div>
+                            </div>
+                            <div class="tile is-parent">
+                            <article class="tile is-child notification is-primary">
+                                <p class="title">Manager</p>
+                                <p class="subtitle">Aligned with the right tile</p>
+                                <div class="content">
+                                
+                                </div>
+                            </article>
+                            </div>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child notification is-success">
+                            <div class="content is-medium">
+                                <p class="title">Team Members</p>
+                                <ul>
+                                    {selectedProject.usernames && selectedProject.usernames.map((member) => {
                                         return (
-                                            compareWeek(task) && <p>{task.title}</p>
+                                            <li>{member.username}</li>
                                         )
                                     }
                                     )}
+                                    </ul>
+                                <div class="content">
+                                
                                 </div>
-                            </Columns.Column>
-                            <Columns.Column size="3">
-                                <div className='card'>
-                                    <h5>Urgent: </h5>
-                                    {projectTasks && projectTasks.map(task => {
-                                        return (
-                                            task.urgency === "urgent" && <p>{task.title}</p>
-                                        )
-                                    }
-                                    )}
-                                </div>
-                            </Columns.Column>
-                        </Columns>
+                            </div>
+                            </article>
+                        </div>
                     </div>
-                    <div>
-                        <h2 className="subtitle is-2">Active Tasks</h2>
-                        <Columns className="mr-6">
 
+                    {/* kanBan tiles */}
+                    <div className="box px-3 has-background-primary">
+                    <div class="tile is-ancestor">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                            <p class="title has-text-centered">To Do</p>
                             <KanBan
                                 key="todo_tasks"
                                 title="To Do"
@@ -370,6 +425,11 @@ function Project() {
                                 tasks={projectTasks}
                                 handleSelectedTask={handleSelectedTask}
                             />
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                            <p class="title has-text-centered">In Progress</p>
                             <KanBan
                                 key="inProgress_tasks"
                                 title="In Progress"
@@ -377,6 +437,11 @@ function Project() {
                                 tasks={projectTasks}
                                 handleSelectedTask={handleSelectedTask}
                             />
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                            <p class="title has-text-centered">Completed</p>
                             <KanBan
                                 key="completed_tasks"
                                 title="Completed"
@@ -384,8 +449,14 @@ function Project() {
                                 tasks={projectTasks}
                                 handleSelectedTask={handleSelectedTask}
                             />
+                            </article>
+                        </div>
+                    </div>
+                    </div>
 
-                        </Columns>
+
+                    <div>
+                        
                         <div>
                             <h4 className="subtitle is-4">Current Task</h4>
                             <form>
@@ -481,6 +552,7 @@ function Project() {
                             </form>
                         </div>
                     </div>
+                    
                 </Columns.Column>
             </Columns>
         </div>
