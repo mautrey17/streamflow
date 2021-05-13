@@ -12,27 +12,24 @@ function Task(props) {
       }
 
   return (
-    <article className="message is-info mb-3">
-      <div className="message-header task-title">
-
-              <a className="title is-5 task-title" onClick={props.handleSelectedTask} value={props.task._id}>{props.task.title}</a>
-            
-            
-            
-          
-          <DeleteTaskModal 
-            task={props.task}
-            className="has-text-right"
-            modalIsOpen={modalIsOpen}
-            closeModal={closeModal}
-            openModal={openModal}
-            ariaHideApp={false}
-          />
+    <article className="message is-small is-info mb-3">
+      <div onClick={props.handleSelectedTask} value={props.task._id} className="message-header title is-5 mb-1" style={{cursor: "pointer"}}>
+      {props.task.title}
+      <DeleteTaskModal 
+              task={props.task}
+              className="has-text-right"
+              modalIsOpen={modalIsOpen}
+              closeModal={closeModal}
+              openModal={openModal}
+              ariaHideApp={false}
+            />
+              
         </div>
-        <div>
+        
         <div className="message-body">
-          <p>Opened by: {props.task.owner.username}</p>
-        </div>
+          <p className="mb-2">Urgency: *needs input*</p>
+          <p className="mb-2">Team: *needs team*</p>
+          <p className="mb-2">Opened by: {props.task.owner.username}</p>
       </div>
     </article>
   );
