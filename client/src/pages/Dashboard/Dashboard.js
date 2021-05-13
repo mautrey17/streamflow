@@ -19,6 +19,7 @@ function Dashboard() {
     const [projects, setProjects] = useState([]);
     const [tasks, setTasks] = useState([]);
     const [users, setUsers] = useState([]);
+    const [data, setData] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [modalIsOpen, setIsOpen] = useState(false);
     const [taskModalIsOpen, setTaskIsOpen] = useState(false);
@@ -38,35 +39,34 @@ function Dashboard() {
 
     useEffect(() => {
         API.getProjects()
-            .then(res => {
-                if (res.data.projects) {
-                    res.data.projects.map(proj => {
-                        setProjects(old => [...old, proj]);
+            .then(resProj => {
+                API.getAllTasks()
+                    .then(resTasks => {
+                        API.getUsers()
+                            .then(resUsers => {
+                                AUTH.getUser()
+                                    .then(resCurrentUser => {
+                                        if (resUsers.data) {
+                                            if (resTasks.data.tasks) {
+                                                if (resProj.data.projects) {
+                                                    if (resCurrentUser.data.user) {
+                                                        setData({
+                                                            projects: resProj.data.projects,
+                                                            tasks: resTasks.data.tasks,
+                                                            users: resUsers.data,
+                                                            currentUser: resCurrentUser.data.user
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    })
+                                
+                            })
+                        
                     })
-                }
+                
             })
-            .then(API.getAllTasks()
-                .then(res2 => {
-                    if (res2.data.tasks) {
-                        res2.data.tasks.map(task => {
-                            setTasks(old => [...old, task]);
-                        })
-                    }
-                })
-            )
-            .then(API.getUsers()
-                .then(res3 => {
-                    if (res3.data) {
-                        console.log(res3.data);
-                        res3.data.map(user => {
-                            setUsers(old => [...old, user]);
-                        })
-                    }
-                })
-            )
-        AUTH.getUser().then(res => {
-            setCurrentUser(res.data.user)
-        })
     }, []);
 
     return (
@@ -82,17 +82,17 @@ function Dashboard() {
                                     closeModal={closeModal}
                                     openModal={openModal}
                                     ariaHideApp={false}
-                                    users={users}
-                                    currentUser={currentUser}
+                                    users={data.users}
+                                    currentUser={data.currentUser}
                                 />
                                 <AddTaskModal
                                     modalIsOpen={taskModalIsOpen}
                                     closeModal={closeTaskModal}
                                     openModal={openTaskModal}
                                     ariaHideApp={false}
-                                    users={users}
-                                    projects={projects}
-                                    currentUser={currentUser}
+                                    users={data.users}
+                                    projects={data.projects}
+                                    currentUser={data.currentUser}
                                 />
                             </ul>
                         </aside>
@@ -116,7 +116,12 @@ function Dashboard() {
             </Columns> */}
                     <div className="mt-4 mb-6">
                         <h1 className="has-text-centered title is-1">Upcoming Tasks</h1>
-                        <ToDo />
+                        <ToDo 
+                            projects={data.projects}
+                            tasks={data.tasks}
+                            users={data.users}
+                            currentUser={data.currentUser}
+                        />
                     </div>
 
                 </Columns.Column>
