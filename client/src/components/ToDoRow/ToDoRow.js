@@ -52,12 +52,12 @@ function ToDoRow(props) {
     return (
         <tr style={strike(props.task.status)}>
             <th scope="row">{props.count}</th>
-            <td>{props.project}</td>
+            <td>{props.task.projectTitle}</td>
             <td>{props.task.title}</td>
             <td>{props.date}</td>
             <td className={urgentStyle(props.task.urgency)}>{props.task.urgency ? props.task.urgency.charAt(0).toUpperCase() + props.task.urgency.slice(1) : ""}</td>
             <td className={statusStyle(props.task.status)}>{props.task.status ? status(props.task.status) : ""}</td>
-            <td>{props.task.owner.firstName}</td>
+            <td>{props.task.owner.username}</td>
             <td><button className="button is-success is-rounded">Complete</button></td>
         </tr>
     )
