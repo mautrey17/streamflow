@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { PieChart } from 'react-minimal-pie-chart';
 import BarGraph from "../../components/BarGraph";
 import KanBan from "../../components/KanBan";
@@ -25,13 +26,19 @@ function Project() {
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [taskModalIsOpen, setTaskIsOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
+    let { id } = useParams();
 
     useEffect(() => {
         loadProjects();
-        AUTH.getUser().then(res => {
-            setCurrentUser(res.data.user);
-        });
     }, []);
+
+    // Param from URL
+    // ex: if "projects/1", the second project will be set on page load
+    useEffect(() => {
+        if (id) {
+            setCurrentProject(id);
+        }
+    }, [users])
 
     function openModal() {
         setIsOpen(true);
@@ -79,6 +86,11 @@ function Project() {
                             setUsers(old => [...old, user]);
                         })
                     }
+                })
+            )
+            .then(AUTH.getUser()
+                .then(res4 => {
+                    setCurrentUser(res4.data.user);
                 })
             )
     }
@@ -130,49 +142,52 @@ function Project() {
 
     // Selecting a project on the left will take it's ID and load the information and tasks related to that project
     function setCurrentProject(e) {
-        e.preventDefault();
 
-        // i is the index number from the project list on the left panel
-        let i = e.currentTarget.value;
+        if (projects.length > 0) {
+            // i is the index number from the project list on the left panel
+            let i = 0;
+            if (e.currentTarget) i = e.currentTarget.value;
+            else i = e;
 
-        // Loads tasks only associated with the project ID
-        let taskArray = [];
-        tasks.map(task => {
-            if (projects[i]._id === task.project) {
-                taskArray.push(task);
-            }
-        });
-        setProjectTasks(taskArray);
+            // Loads tasks only associated with the project ID
+            let taskArray = [];
+            tasks.map(task => {
+                if (projects[i]._id === task.project) {
+                    taskArray.push(task);
+                }
+            });
+            setProjectTasks(taskArray);
 
-        // Gets list of users assigned to the project by comparing assigned user's IDs with user database
-        let filteredUsers = [];
-        for (let e = 0; e < projects[i].assignedUsers.length; e++) {
+            // Gets list of users assigned to the project by comparing assigned user's IDs with user database
+            let filteredUsers = [];
+            for (let e = 0; e < projects[i].assignedUsers.length; e++) {
+                users.map(user => {
+                    if (user._id === projects[i].assignedUsers[e]) {
+                        filteredUsers.push(user);
+                    }
+                })
+            };
+
+            // Gets project owner's username by comparing project owner ID with user database
+            let manager = "";
             users.map(user => {
-                if (user._id === projects[i].assignedUsers[e]) {
-                    filteredUsers.push(user);
+                if (user._id === projects[i].owner.id) {
+                    manager = user.username
                 }
             })
-        };
 
-        // Gets project owner's username by comparing project owner ID with user database
-        let manager = "";
-        users.map(user => {
-            if (user._id === projects[i].owner.id) {
-                manager = user.username
-            }
-        })
-
-        setSelectedProject({
-            ...selectedProject,
-            title: projects[i].title,
-            id: projects[i]._id,
-            dueDate: projects[i].dueDate,
-            assignedUsers: projects[i].assignedUsers,
-            owner: projects[i].owner,
-            manager: manager,
-            usernames: filteredUsers,
-            selected: i
-        });
+            setSelectedProject({
+                ...selectedProject,
+                title: projects[i].title,
+                id: projects[i]._id,
+                dueDate: projects[i].dueDate,
+                assignedUsers: projects[i].assignedUsers,
+                owner: projects[i].owner,
+                manager: manager,
+                usernames: filteredUsers,
+                selected: i
+            });
+        }
     }
 
     // Moment function to show tasks relating to current week

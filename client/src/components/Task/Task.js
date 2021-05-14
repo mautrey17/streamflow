@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Task.css";
 import DeleteTaskModal from "../../components/DeleteTaskModal";
+import moment from "moment"
 
 function Task(props) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -46,6 +47,7 @@ function Task(props) {
       </div>
 
       <div className="message-body">
+        <p className="mb-2 has-text-weight-semibold">Due: {moment(props.task.dueDate).format('MMMM Do YYYY')}</p>
         <p className="mb-2">Urgency: {props.task.urgency[0].toUpperCase() + props.task.urgency.substring(1)}</p>
         <p className="mb-2">{getTeam()}</p>
         <p className="mb-2">Opened by: {props.task.owner.username}</p>

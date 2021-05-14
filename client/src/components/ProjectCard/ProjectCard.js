@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Columns, Container } from 'react-bulma-components';
 import { PieChart } from "react-minimal-pie-chart";
+import "./ProjectCard.css"
 
 
 function ProjectCard(props) {
@@ -43,8 +44,12 @@ function ProjectCard(props) {
         })
     }, [props])
 
+    function loadPage() {
+        window.open(window.location.origin + "/project/" + props.i, "_self");
+    }
+
     return(
-        <Columns.Column size="4">
+        <Columns.Column size="4" onClick={loadPage} className="projectCard">
             <div className="box mb-3">
                 <h5 className="has-text-centered title is-4">{project.title}</h5>
             <div className="">
