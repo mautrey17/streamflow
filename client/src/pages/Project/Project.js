@@ -87,14 +87,19 @@ function Project() {
         console.log("aa");
     }
 
+    // Sets the "Current Task" at the bottom with the task ID clicked from the user
     function handleSelectedTask(e) {
         e.preventDefault();
+
+        // ID is retrieved from the task that was clicked
         let id = e.target.getAttribute("value")
 
+        // Returns the task that matches the given ID
         let filteredTask = tasks.filter(e => {
             return e._id === id
         })
 
+        // Gets list of users assigned to the task by comparing assigned user's IDs with user database
         let filteredUsers = [];
         for (let i = 0; i < filteredTask[0].assignedUsers.length; i++) {
             users.map(user => {
@@ -104,11 +109,12 @@ function Project() {
             })
         };
 
+        // Gets task owner's username by comparing task owner ID with user database
         let manager = users.filter(e => {
             return e._id === filteredTask[0].owner.id;
         });
 
-
+        
         setOpenTask({
             ...openTask,
             i: projectTasks.findIndex(task => task._id === filteredTask[0]._id),
@@ -125,10 +131,12 @@ function Project() {
     // Selecting a project on the left will take it's ID and load the information and tasks related to that project
     function setCurrentProject(e) {
         e.preventDefault();
+
+        // i is the index number from the project list on the left panel
         let i = e.currentTarget.value;
-        let taskArray = [];
 
         // Loads tasks only associated with the project ID
+        let taskArray = [];
         tasks.map(task => {
             if (projects[i]._id === task.project) {
                 taskArray.push(task);
@@ -136,6 +144,7 @@ function Project() {
         });
         setProjectTasks(taskArray);
 
+        // Gets list of users assigned to the project by comparing assigned user's IDs with user database
         let filteredUsers = [];
         for (let e = 0; e < projects[i].assignedUsers.length; e++) {
             users.map(user => {
@@ -145,6 +154,14 @@ function Project() {
             })
         };
 
+        // Gets project owner's username by comparing project owner ID with user database
+        let manager = "";
+        users.map(user => {
+            if (user._id === projects[i].owner.id) {
+                manager = user.username
+            }
+        })
+
         setSelectedProject({
             ...selectedProject,
             title: projects[i].title,
@@ -152,6 +169,7 @@ function Project() {
             dueDate: projects[i].dueDate,
             assignedUsers: projects[i].assignedUsers,
             owner: projects[i].owner,
+            manager: manager,
             usernames: filteredUsers,
             selected: i
         });
@@ -363,7 +381,10 @@ function Project() {
                                 <div class="tile is-parent">
                                     <article class="tile is-child notification is-info">
                                         <div className="block">
-                                            <h2 className="title is-3 mb-5">Project Progress</h2>
+                                            <h2 className="title is-3">Project Progress</h2>
+                                            {selectedProject.title &&
+                                                <h4 className="title is-5 mb-5">Due Date: {moment(selectedProject.dueDate).format('MMMM Do YYYY')}</h4>
+                                            }
                                             <PieChart
                                                 data={[
                                                     { title: 'To Do', value: projectTasks.filter(e => { return e.status === "toDo" }).length, color: '#DD1E2f' },
@@ -385,7 +406,7 @@ function Project() {
                             <div class="tile is-parent">
                                 <article class="tile is-child notification is-primary">
                                     <p class="title">Manager</p>
-                                    <p class="subtitle">Aligned with the right tile</p>
+                                    <p class="subtitle">{selectedProject.manager}</p>
                                     <div class="content">
 
                                     </div>
