@@ -74,6 +74,7 @@ function App() {
               <Route exact path="/test" component={Test} />
               <Route exact path="/messaging" component={Messages} />
               <Route exact path="/project" component={Project} />
+              <Route exact path="/project/:id" component={Project} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/notes" component={Notes} />
               <Route exact path="/userprofile" component={UserProfile} />
