@@ -99,10 +99,13 @@ function Dashboard() {
                         <div className="hero-body">
                             <h1 className=" title is-1 has-text-centered">Current Projects</h1>
                             <Columns>
-                                <ProjectCard />
-                                <ProjectCard />
-                                <ProjectCard />
-                                <ProjectCard />
+                                {data.projects && data.projects.map((proj, i) => (
+                                    <ProjectCard
+                                        project={proj}
+                                        tasks={data.tasks}
+                                        i={i}
+                                    />
+                                ))}
                             </Columns>
                         </div>
                     </section>

@@ -1,22 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Columns, Container } from 'react-bulma-components';
 import { PieChart } from "react-minimal-pie-chart";
 
 
 function ProjectCard(props) {
+    const [i, setI] = useState(0);
+    const [project, setProject] = useState({});
+    const [tasks, setTasks] = useState([]);
+    const [status, setStatus] = useState({});
+
+    useEffect(() => {
+        setI(props.i);
+        setProject(props.project);
+        setTasks(props.tasks);
+
+        let toDo = 0;
+        let inProgress = 0;
+        let completed = 0;
+
+        for (let e = 0; e < props.tasks.length; e++) {
+            if (props.tasks[e].project === props.project._id) {
+                switch (props.tasks[e].status) {
+                    case "toDo":
+                        toDo++;
+                        break;
+                    case "inProgress":
+                        inProgress++
+                        break
+                    case "completed":
+                        completed++
+                        break
+                    default:
+                        break
+                }
+            }
+        }
+
+        setStatus({
+            toDo: toDo,
+            inProgress: inProgress,
+            completed: completed
+        })
+    }, [props])
 
     return(
         <Columns.Column size="4">
             <div className="box mb-3">
-            
-                <h5 className="has-text-centered title is-4">Project Name</h5>
-            
+                <h5 className="has-text-centered title is-4">{project.title}</h5>
             <div className="">
                 <PieChart
                     data={[
-                        { title: 'To Do', value: 10, color: '#DD1E2f' },
-                        { title: 'In Progress', value: 15, color: '#ebb035' },
-                        { title: 'Completed', value: 20, color: '#218559' },
+                        { title: 'To Do', value: status.toDo, color: '#DD1E2f' },
+                        { title: 'In Progress', value: status.inProgress, color: '#ebb035' },
+                        { title: 'Completed', value: status.completed, color: '#218559' },
                     ]}
                     lineWidth={66}
                     radius={15}
