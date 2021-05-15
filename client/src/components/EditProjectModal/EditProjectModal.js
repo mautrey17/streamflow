@@ -105,8 +105,8 @@ function EditProjectModal(props) {
   };
 
   return (
-    <div>
-      <span><a href="#" onClick={props.openModal}><i className="fas fa-edit" /></a></span>
+    <>
+      <a href="#" onClick={props.openModal}><i className="fas fa-edit" /></a>
       <Modal
         isOpen={props.modalIsOpen}
         onAfterOpen={setFormUsers}
@@ -150,7 +150,7 @@ function EditProjectModal(props) {
           </FormBtn>
         </form>
       </Modal>
-    </div>
+    </>
   );
 }
 
