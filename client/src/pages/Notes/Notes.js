@@ -94,38 +94,46 @@ function Note ()  {
   }
 
   return (
+    <div>
+      <div className="block">
+      <h1 className="mt-3 title is-1 has-text-centered">Saved Notes</h1>
+      </div>
     <Columns>
-      <Columns.Column size="1">
-        <div className="block ml-3">
-          <aside className="menu">
-            <p className="menu-label">Menu</p>
-            <ul className="menu-list">
-              <li
-                onClick={handleNewFormSubmit}
-              >
-                <a>New Note</a>
-              </li>
-            </ul>
-          </aside>
-        </div>
-      </Columns.Column>
-      <Columns.Column>
-        <Container fluid>
-          <Row>
-            <Col size="md-6">
-              <Card title="What's on your mind?">
+            <Columns.Column size="8">
+            <div className="block ml-6 mt-3">
+              <div className="box">
                 <form ref={formEl}>
-                  <Input
-                    onChange={handleInputChange}
-                    name="title"
-                    placeholder="Title (required)"
-                  />
-                  <TextArea
+                  <div className="field">
+                    <label>Title:</label>
+                    <div className="control">
+                      <input
+                        className="input"
+                        onChange={handleInputChange}
+                        name="title"
+                        placeholder="Title (required)"
+                      ></input>
+                    </div>
+                  </div>
+
+                  <div className="field">
+                    <label>Note:</label>
+                    <div className="control">
+                      <textarea
+                        className="textarea is-large"
+                        onChange={handleInputChange}
+                        name="note"
+                        placeholder="Enter your notes here (Required)"
+                      ></textarea>
+                    </div>
+                    
+                  </div>
+                  
+                  {/* <TextArea
                     onChange={handleInputChange}
                     name="note"
                     placeholder="Enter your notes here (Required)"
                     // value={formObject.note}
-                  />
+                  /> */}
                   <NewBtn
                     onClick={handleNewFormSubmit}
                   >
@@ -138,9 +146,10 @@ function Note ()  {
                     Save Note
                   </FormBtn>
                 </form>
-                </Card>
-            </Col>
-            <Col size="md-6 sm-12">
+                </div>
+                </div>
+            </Columns.Column>
+            <Columns.Column size="4">
               <Card title="Previous Notes">
                 {notes.length ? (
                   <List>
@@ -157,11 +166,11 @@ function Note ()  {
                   <h3>No Results to Display</h3>
                 )}
               </Card>
-            </Col>
-          </Row>
-        </Container>
-      </Columns.Column>
+            </Columns.Column>
+
+
     </Columns>
+    </div>
   )
 }
 
