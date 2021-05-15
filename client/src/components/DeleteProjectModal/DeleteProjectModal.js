@@ -32,8 +32,8 @@ function DeleteProjectModal(props) {
   }
 
   return (
-    <div>
-      <span><a href="#" onClick={props.openDelModal}><i className="fa fa-trash" /></a></span>
+    <>
+      <a href="#" onClick={props.openDelModal}><i className="fa fa-trash" /></a>
       <Modal
         isOpen={props.delModalIsOpen}
         onRequestClose={props.closeDelModal}
@@ -66,7 +66,7 @@ function DeleteProjectModal(props) {
           </button>
         </form>
       </Modal>
-    </div>
+    </>
   );
 }
 

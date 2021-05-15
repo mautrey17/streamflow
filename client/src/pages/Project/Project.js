@@ -361,7 +361,7 @@ function Project() {
 
                                     {/* Shows edit icon only if logged in user is the project owner */}
                                     {selectedProject.owner.id === currentUser._id &&
-                                        <span>
+                                        <div>
                                             <EditProjectModal
                                                 project={selectedProject}
                                                 users={users}
@@ -378,7 +378,7 @@ function Project() {
                                                 openDelModal={openDelModal}
                                                 ariaHideApp={false}
                                             />
-                                        </span>
+                                        </div>
                                     }
                                 </>
                                 : projects.length === 0 ? "No projects found, please create one"
