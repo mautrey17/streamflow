@@ -5,7 +5,6 @@ import { Col, Row, Container } from "../../components/Grid";
 import { Input, FormBtn } from "../../components/Form";
 import Axios from "axios";
 import API from "../../utils/API";
-import { ContinuousColorLegend } from "react-vis";
 
 function UserProfile() {
   let userId;
@@ -35,14 +34,25 @@ function UserProfile() {
 
   useEffect(() => {
     Axios.get("/auth/user/ ").then(res => {
-      console.log('useEffect',res.data)
+      // console.log('useEffect',res.data)
       formEl.current[0].value=res.data.user.firstName
       formEl.current[1].value=res.data.user.lastName
       formEl.current[2].value=res.data.user.username
       formEl.current[3].value=res.data.user.password
       formEl.current[4].value=res.data.user.email
-      API.getUser(res.data.user._id).then(res => {
-        console.log('useEffect res',res)
+      API.getUsers().then(res => {
+        console.log('useEffect res',res.data)
+        avatarEl.current[0].value=res.data[0].avatar.style
+        avatarEl.current[1].value=res.data[0].avatar.top
+        avatarEl.current[2].value=res.data[0].avatar.accessories
+        avatarEl.current[3].value=res.data[0].avatar.hairColor
+        avatarEl.current[4].value=res.data[0].avatar.facialHair
+        avatarEl.current[5].value=res.data[0].avatar.facialColor
+        avatarEl.current[6].value=res.data[0].avatar.clothes
+        avatarEl.current[7].value=res.data[0].avatar.eyes
+        avatarEl.current[8].value=res.data[0].avatar.eyebrow
+        avatarEl.current[9].value=res.data[0].avatar.mouth
+        avatarEl.current[10].value=res.data[0].avatar.skin
       })
     })
   }, [])
@@ -73,17 +83,19 @@ function UserProfile() {
             username: formEl.current[2].value,
             password: formEl.current[3].value,
             email: formEl.current[4].value,
-            style: avatarEl.current[0].value,
-            top: avatarEl.current[1].value,
-            accessories: avatarEl.current[2].value,
-            hairColor: avatarEl.current[3].value,
-            facialHair: avatarEl.current[4].value,
-            facialColor: avatarEl.current[5].value,
-            clothes: avatarEl.current[6].value,
-            eyes: avatarEl.current[7].value,
-            eyebrow: avatarEl.current[8].value,
-            mouth: avatarEl.current[9].value,
-            skin: avatarEl.current[10].value
+            avatar: {
+              style: avatarEl.current[0].value,
+              top: avatarEl.current[1].value,
+              accessories: avatarEl.current[2].value,
+              hairColor: avatarEl.current[3].value,
+              facialHair: avatarEl.current[4].value,
+              facialColor: avatarEl.current[5].value,
+              clothes: avatarEl.current[6].value,
+              eyes: avatarEl.current[7].value,
+              eyebrow: avatarEl.current[8].value,
+              mouth: avatarEl.current[9].value,
+              skin: avatarEl.current[10].value
+            }
           }
         )
         .then(res => {
