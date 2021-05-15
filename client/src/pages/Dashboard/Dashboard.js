@@ -97,6 +97,7 @@ function Dashboard() {
                 <Columns.Column size="9">
                     <section className="hero is-medium mb-3">
                         <div className="hero-body">
+                            <div style={{backgroundColor: '#efefef'}} className="box is-light">
                             <h1 className=" title is-1 has-text-centered">Current Projects</h1>
                             <Columns>
                                 {data.projects && data.projects.map((proj, i) => (
@@ -107,6 +108,7 @@ function Dashboard() {
                                     />
                                 ))}
                             </Columns>
+                            </div>
                         </div>
                     </section>
                     {/* <Columns>
