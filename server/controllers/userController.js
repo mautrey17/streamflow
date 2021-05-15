@@ -60,5 +60,14 @@ module.exports = {
 			delete cleanUser.password;
 		}
 		res.json({ user: cleanUser });
-	}
+	},
+  updateUser: function (req,res) {
+    console.log('updateUser',req)
+    db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
+    .then(dbModel => {
+      console.log(dbModel);
+      res.json(dbModel);
+    })
+    .catch(err => res.status(422).json(err));
+  }
 };

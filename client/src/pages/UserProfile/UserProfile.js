@@ -4,8 +4,11 @@ import MyAvatar from "../../components/Avatar"
 import { Col, Row, Container } from "../../components/Grid";
 import { Input, FormBtn } from "../../components/Form";
 import Axios from "axios";
+import API from "../../utils/API";
+import { ContinuousColorLegend } from "react-vis";
 
 function UserProfile() {
+  let userId;
   const formEl = useRef(null);
   const [userObject, setUserObject] = useState({
     firstName: '',
@@ -17,7 +20,7 @@ function UserProfile() {
   
   const avatarEl = useRef(null);
   const [avatarObject, setAvatarObject] = useState({
-    style: '',
+    Style: '',
     top: '',
     accessories: '',
     hairColor: '',
@@ -31,14 +34,17 @@ function UserProfile() {
   });
 
   useEffect(() => {
-  Axios.get("/auth/user/ ").then(res => {
-    console.log('user',res.data.user)
-    formEl.current[0].value=res.data.user.firstName
-    formEl.current[1].value=res.data.user.lastName
-    formEl.current[2].value=res.data.user.username
-    formEl.current[3].value=res.data.user.password
-    formEl.current[4].value=res.data.user.username
-  })
+    Axios.get("/auth/user/ ").then(res => {
+      console.log('useEffect',res.data)
+      formEl.current[0].value=res.data.user.firstName
+      formEl.current[1].value=res.data.user.lastName
+      formEl.current[2].value=res.data.user.username
+      formEl.current[3].value=res.data.user.password
+      formEl.current[4].value=res.data.user.email
+      API.getUser(res.data.user._id).then(res => {
+        console.log('useEffect res',res)
+      })
+    })
   }, [])
 
   function handleInputChange(event){
@@ -49,51 +55,42 @@ function UserProfile() {
   function handleAvatarChange(event){
     const { name, value } = event.target;
     setAvatarObject({...avatarObject, [name ]: value})
-    console.log('avatar',avatarEl.current)
-    switch (name) {
-      case 'style':
-        console.log(avatarEl.current[0].value)
-        break;
-      case 'top':
-        console.log(avatarEl.current[1].value)
-        break;
-      case 'accessories':
-        console.log(avatarEl.current[2].value)
-        break;
-      case 'hairColor':
-        console.log(avatarEl.current[3].value)
-        break;
-      case 'facialHair':
-        console.log(avatarEl.current[4].value)
-        break;
-      case 'facialColor':
-        console.log(avatarEl.current[5].value)
-        break;
-      case 'clothes':
-        console.log(avatarEl.current[6].value)
-        break;
-      case 'eyes':
-        console.log(avatarEl.current[7].value)
-        break;
-      case 'eyebrow':
-        console.log(avatarEl.current[8].value)
-        break;
-      case 'mouth':
-        console.log(avatarEl.current[9].value)
-        break;
-      case 'skin':
-        console.log(avatarEl.current[10].value)
-        break;    
-      default:
-        break;
-    }
   };
 
   function handleFormSubmit(event){
     event.preventDefault();
-    if(userObject.username && userObject.password && userObject.email){
-
-    }
+    Axios.get("/auth/user/ ").then(res => {
+      console.log('user id',res.data.user._id)
+      userId=res.data.user._id
+      console.log('update user', userId)
+      // if(userObject.username && userObject.password){
+      if (formEl.current[2].value && formEl.current[3].value ){
+        API.updateUser(
+          userId,
+          {
+            firstName: formEl.current[0].value,
+            lastName: formEl.current[1].value,
+            username: formEl.current[2].value,
+            password: formEl.current[3].value,
+            email: formEl.current[4].value,
+            style: avatarEl.current[0].value,
+            top: avatarEl.current[1].value,
+            accessories: avatarEl.current[2].value,
+            hairColor: avatarEl.current[3].value,
+            facialHair: avatarEl.current[4].value,
+            facialColor: avatarEl.current[5].value,
+            clothes: avatarEl.current[6].value,
+            eyes: avatarEl.current[7].value,
+            eyebrow: avatarEl.current[8].value,
+            mouth: avatarEl.current[9].value,
+            skin: avatarEl.current[10].value
+          }
+        )
+        .then(res => {
+          console.log('User has been updated')
+        })
+      }
+    })
   }
 
   return (
@@ -126,10 +123,11 @@ function UserProfile() {
               <Input
                 onChange={handleInputChange}
                 name="Email"
-                placeholder="Email Address (required)"
+                placeholder="Email Address"
               />
               <FormBtn
-                disabled={!(userObject.username && userObject.password && userObject.email)}
+                // disabled={!(userObject.username && userObject.password)}
+                // disabled={!(formEl.current[2].value && formEl.current[3].value)}
                 onClick={handleFormSubmit}
               >Update Profile</FormBtn>
             </form>
@@ -140,7 +138,7 @@ function UserProfile() {
             <form ref={avatarEl}>
               <Input 
                 onChange={handleAvatarChange}
-                name="style"
+                name="Style"
                 placeholder="my style" 
                 list="optStyle"
               />
@@ -222,7 +220,7 @@ function UserProfile() {
                 <option>Blank</option>
                 <option>BeardMedium</option>
                 <option>BeardLight</option>
-                <option>BeardMajectic</option>
+                <option>BeardMajestic</option>
                 <option>MoustacheFancy</option>
                 <option>MoustacheMagnum</option>
               </datalist>
@@ -283,7 +281,7 @@ function UserProfile() {
                 list="optEyebrow"
               />
               <datalist id="optEyebrow">
-                <option>Anrgy</option>
+                <option>Angry</option>
                 <option>AngryNatural</option>
                 <option>Default</option>
                 <option>DefaultNatural</option>
@@ -333,7 +331,7 @@ function UserProfile() {
               </datalist>
               {(avatarEl.current !== null) ? (
               <MyAvatar
-                style={avatarEl.current[0].value}
+                Style={avatarEl.current[0].value}
                 top={avatarEl.current[1].value}
                 accessories={avatarEl.current[2].value}
                 hairColor={avatarEl.current[3].value}

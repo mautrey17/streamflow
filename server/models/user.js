@@ -9,6 +9,18 @@ const userSchema = new Schema({
 	lastName: { type: String, unique: false },
 	username: { type: String, unique: false, required: false },
 	password: { type: String, unique: false, required: false },
+	email: { type: String, unique: false, required: false },
+	style: {type: String},
+	top: {type: String},
+	accessories: {type: String},
+	hairColor: {type: String},
+	facialHair: {type: String},
+	facialColor: {type: String},
+	clothes: {type: String},
+	eyes: {type: String},
+	eyeBrow: {type: String},
+	mouth: {type: String},
+	skin: {type: String},
 	tasks: [
 		{
 			type: Schema.Types.ObjectId,
@@ -27,17 +39,6 @@ const userSchema = new Schema({
 			ref: "Project"
 		}
 	],
-	avatar: { 
-		top: {type: String},
-		accessories: {type: String},
-		hairColor: {type: String},
-		facialHair: {type: String},
-		clothes: {type: String},
-		eyes: {type: String},
-		eyeBrow: {type: String},
-		mouth: {type: String},
-		skin: {type: String}
-	 }
 });
 
 // Define schema methods
