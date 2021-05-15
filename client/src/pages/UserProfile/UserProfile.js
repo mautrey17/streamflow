@@ -53,6 +53,8 @@ function UserProfile() {
         avatarEl.current[8].value=res.data[0].avatar.eyebrow
         avatarEl.current[9].value=res.data[0].avatar.mouth
         avatarEl.current[10].value=res.data[0].avatar.skin
+        setAvatarObject({...avatarObject})
+        console.log('avatarObject',avatarObject)
       })
     })
   }, [])
@@ -65,6 +67,7 @@ function UserProfile() {
   function handleAvatarChange(event){
     const { name, value } = event.target;
     setAvatarObject({...avatarObject, [name ]: value})
+    console.log('change',avatarObject)
   };
 
   function handleFormSubmit(event){
