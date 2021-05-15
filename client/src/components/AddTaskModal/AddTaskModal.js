@@ -24,15 +24,28 @@ const customStyles = {
 function AddTaskModal(props) {
   const [formObject, setFormObject] = useState({});
   const [userInfo, setUserInfo] = useState({});
-  const [userList, setUserList] = useState([]);
   const formEl = useRef(null);
   const [projectList, setProjectList] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  
 
   function setInfo() {
     setUserInfo(props.currentUser);
-    setUserList(props.users);
     setProjectList(props.projects);
+
+    // Automatically sets project name if selected in project page
+    if (props.selectedProject) {
+      let x = {
+        value: {
+          owner: {
+            id: props.selectedProject.owner.id
+          },
+          _id: props.selectedProject.id,
+          assignedUsers: props.selectedProject.assignedUsers
+        }
+      }
+      handleSelectedProj(x);
+    }
   }
 
   // Clears formObject after the modal is closed
@@ -58,7 +71,7 @@ function AddTaskModal(props) {
 
     // Allows it so only users associated with the selected project are shown
     let userArray = [];
-    userList.map(user => {
+    props.users.map(user => {
       if (option.value.owner.id === user._id) {
         userArray.push(user)
       }
@@ -134,6 +147,9 @@ function AddTaskModal(props) {
           <div>
             Select Project for Task
             <Select 
+              defaultValue={props.selectedProject &&
+                {value: props.selectedProject._id, label: props.selectedProject.title}
+              }
               options={projectList ? projectList.map(proj => (
                 {value: proj, label: proj.title}
               )) : ""}
