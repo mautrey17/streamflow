@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { Columns, Container } from 'react-bulma-components';
+const fs = require('fs');
+const path = require('path');
 
 function LoggedOut() {
 
@@ -10,7 +12,7 @@ function LoggedOut() {
 
     return(
         <div>
-            <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+            <nav className="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                 <Link
                     to="/login"
@@ -73,36 +75,100 @@ function LoggedOut() {
                     </div>
                     </div>
                 </nav>
-            
+            {/* //hero sections */}
+            <section className="hero is-medium ">
+                <Container>
+                <div className="hero-body">
+                    <h1 className="title is-1 has-text-centered">Welcome to StreamFlow</h1>
+                    <h2 className="subtitle is-1 has-text-centered">Enjoy sleek project management without all of the fluff</h2>
+                    
+                </div>
+                </Container>
+            </section>
 
             <section className="hero is-link is-fullheight mt-6">
-                <Container>
-            <div className="hero-body">
-                <div className="">
-                <p className="title">
-                    Reason 1 to use streamflow
-                </p>
-                <p className="subtitle">
-                    This is a good reason
-                </p>
+                
+                <div className="hero-body">
+                    <div className="container has-text-centered">
+                    
+                    
+                    <Columns>
+                        <Columns.Column>
+                            <p className="title is-1">
+                                Set Up in Minutes
+                            </p>
+                            <p className="subtitle is-2">
+                                Create a project, add your team, and you are ready to go!
+                            </p>
+                        </Columns.Column>
+                        <Columns.Column>
+                           
+                        <img style={{width: 400}} className="mb-3" src={path.join(__dirname, 'images/time.jpg')}></img>
+                        <div>
+                        <a style={{fontSize: 10}} href="https://www.vecteezy.com/free-vector/calendar">Calendar Vectors by Vecteezy</a>
+                        </div>
+                    
+                        </Columns.Column>
+                    </Columns>
+                    </div>
                 </div>
-            </div>
-            </Container>
+          
             </section>
 
             <section className="hero is-primary is-fullheight">
-                <Container>
-            <div className="hero-body">
-                <div className="">
-                <p className="title">
-                Reason 2 to use streamflow
-                </p>
-                <p className="subtitle">
-                This is a better reason
-                </p>
-                </div>
+                
+            <div className="hero-body has-text-centered">
+                
+            <div className="container has-text-centered">
+                    
+                    
+                    <Columns>
+                        <Columns.Column>
+                        <img style={{width: 500}} className="mb-3" src={path.join(__dirname, 'images/project.png')}></img>
+
+
+                        </Columns.Column>
+                        <Columns.Column>
+                            <p className="title is-1">
+                                Visualization of Project Progress
+                            </p>
+                            <p className="subtitle is-2">
+                                Easily view all of your tasks conveniently in one location
+                            </p>
+                    
+                            </Columns.Column>
+                    </Columns>
+                    </div>
+                
             </div>
-            </Container>
+            
+            </section>
+
+            <section className="hero is-success is-fullheight">
+                
+            <div className="hero-body">
+                
+            <div className="container has-text-centered">
+                    
+                    
+                    <Columns>
+                        <Columns.Column>
+                            <p className="title is-1">
+                                Easily switch between multiple projects
+                            </p>
+                            <p className="subtitle is-2">
+                                There is no limit to the amount of createable projects
+                            </p>
+                        </Columns.Column>
+                        <Columns.Column>
+                        <img style={{width: 500}} className="mb-3" src={path.join(__dirname, 'images/dashboard.png')}></img>
+                    
+                            </Columns.Column>
+                    </Columns>
+                    </div>
+                
+            </div>
+            
             </section>
                 
         </div>
