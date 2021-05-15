@@ -15,8 +15,6 @@ export default function MyAvatar (props){
           eyebrowType={props.eyebrow}
           mouthType={props.mouth}
           skinColor={props.skin}
-
-          
           // avatarStyle='Circle'
           // topType='LongHairMiaWallace'
           // accessoriesType='Prescription02'
