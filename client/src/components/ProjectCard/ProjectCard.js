@@ -7,13 +7,15 @@ import "./ProjectCard.css"
 function ProjectCard(props) {
     const [i, setI] = useState(0);
     const [project, setProject] = useState({});
-    const [tasks, setTasks] = useState([]);
-    const [status, setStatus] = useState({});
+    const [status, setStatus] = useState({
+        toDo: 0,
+        inProgress: 0,
+        completed: 0
+    });
 
     useEffect(() => {
         setI(props.i);
         setProject(props.project);
-        setTasks(props.tasks);
 
         let toDo = 0;
         let inProgress = 0;
@@ -48,27 +50,27 @@ function ProjectCard(props) {
         window.open(window.location.origin + "/project/" + props.i, "_self");
     }
 
-    return(
+    return (
         <Columns.Column size="4" onClick={loadPage} className="projectCard">
             <div className="box mb-3">
                 <h5 className="has-text-centered title is-4">{project.title}</h5>
-            <div className="">
-                <PieChart
-                    data={[
-                        { title: 'To Do', value: status.toDo, color: '#DD1E2f' },
-                        { title: 'In Progress', value: status.inProgress, color: '#ebb035' },
-                        { title: 'Completed', value: status.completed, color: '#218559' },
-                    ]}
-                    lineWidth={66}
-                    radius={15}
-                    center={[50, 15]}
-                    viewBoxSize={[100, 30]}
-                    startAngle={270}
-                    paddingAngle={2}
+                <div className="">
+                    <PieChart
+                        data={[
+                            { title: 'To Do', value: status.toDo, color: '#DD1E2f' },
+                            { title: 'In Progress', value: status.inProgress, color: '#ebb035' },
+                            { title: 'Completed', value: status.completed, color: '#218559' },
+                        ]}
+                        lineWidth={66}
+                        radius={15}
+                        center={[50, 15]}
+                        viewBoxSize={[100, 30]}
+                        startAngle={270}
+                        paddingAngle={2}
 
-                    
-                />
-            </div>
+
+                    />
+                </div>
             </div>
         </Columns.Column>
     )
