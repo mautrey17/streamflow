@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PieChart } from 'react-minimal-pie-chart';
-import BarGraph from "../../components/BarGraph";
 import KanBan from "../../components/KanBan";
-import Nav from "../../components/Nav";
 import { Columns, Container } from 'react-bulma-components'
 import "./Project.css";
 import API from "../../utils/API";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddTaskModal from "../../components/AddTaskModal";
 import EditProjectModal from "../../components/EditProjectModal";
+import DeleteProjectModal from "../../components/DeleteProjectModal";
 import moment from "moment";
 import Select from "react-select";
 import AUTH from '../../utils/AUTH';
@@ -25,6 +24,7 @@ function Project() {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [taskModalIsOpen, setTaskIsOpen] = useState(false);
+    const [delModalIsOpen, setDelIsOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
     let { id } = useParams();
 
@@ -58,8 +58,14 @@ function Project() {
     function closeEditModal() {
         setEditIsOpen(false);
     }
+    function openDelModal() {
+        setDelIsOpen(true);
+    }
+    function closeDelModal() {
+        setDelIsOpen(false);
+    }
 
-    // Calls 3 APIs (Projects, Tasks, Users) and loads them into 3 arrays
+    // Calls 4 APIs (Projects, Tasks, Users, Logged in user) and loads them into 4 arrays
     function loadProjects() {
         API.getProjects()
             .then(res => {
@@ -69,6 +75,7 @@ function Project() {
                     })
                 }
             })
+            .catch(err => console.log(err))
             .then(API.getAllTasks()
                 .then(res2 => {
                     if (res2.data.tasks) {
@@ -78,6 +85,7 @@ function Project() {
                     }
                 })
             )
+            .catch(err => console.log(err))
             .then(API.getUsers()
                 .then(res3 => {
                     if (res3.data) {
@@ -88,15 +96,13 @@ function Project() {
                     }
                 })
             )
+            .catch(err => console.log(err))
             .then(AUTH.getUser()
                 .then(res4 => {
                     setCurrentUser(res4.data.user);
                 })
             )
-    }
-
-    function taskClick(e) {
-        console.log("aa");
+            .catch(err => console.log(err))
     }
 
     // Sets the "Current Task" at the bottom with the task ID clicked from the user
@@ -320,15 +326,28 @@ function Project() {
                                     users={users}
                                     currentUser={currentUser}
                                 />
-                                <AddTaskModal
-                                    modalIsOpen={taskModalIsOpen}
-                                    closeModal={closeTaskModal}
-                                    openModal={openTaskModal}
-                                    ariaHideApp={false}
-                                    users={users}
-                                    projects={projects}
-                                    currentUser={currentUser}
-                                />
+                                {/* If a project is already selected, the task model will pre-select the project name */}
+                                {selectedProject.id ? 
+                                    <AddTaskModal
+                                        modalIsOpen={taskModalIsOpen}
+                                        closeModal={closeTaskModal}
+                                        openModal={openTaskModal}
+                                        ariaHideApp={false}
+                                        users={users}
+                                        projects={projects}
+                                        currentUser={currentUser}
+                                        selectedProject={selectedProject}
+                                    />
+                                :   <AddTaskModal
+                                        modalIsOpen={taskModalIsOpen}
+                                        closeModal={closeTaskModal}
+                                        openModal={openTaskModal}
+                                        ariaHideApp={false}
+                                        users={users}
+                                        projects={projects}
+                                        currentUser={currentUser}
+                                    />
+                                }
                             </ul>
                         </aside>
                     </div>
@@ -342,17 +361,25 @@ function Project() {
 
                                     {/* Shows edit icon only if logged in user is the project owner */}
                                     {selectedProject.owner.id === currentUser._id &&
-                                        <EditProjectModal
-                                            project={selectedProject}
-                                            users={users}
-                                            modalIsOpen={editModalIsOpen}
-                                            closeModal={closeEditModal}
-                                            openModal={openEditModal}
-                                            ariaHideApp={false}
-                                            currentUser={currentUser}
-                                        />
+                                        <span>
+                                            <EditProjectModal
+                                                project={selectedProject}
+                                                users={users}
+                                                modalIsOpen={editModalIsOpen}
+                                                closeModal={closeEditModal}
+                                                openModal={openEditModal}
+                                                ariaHideApp={false}
+                                                currentUser={currentUser}
+                                            />
+                                            <DeleteProjectModal
+                                                project={selectedProject}
+                                                delModalIsOpen={delModalIsOpen}
+                                                closeDelModal={closeDelModal}
+                                                openDelModal={openDelModal}
+                                                ariaHideApp={false}
+                                            />
+                                        </span>
                                     }
-
                                 </>
                                 : projects.length === 0 ? "No projects found, please create one"
                                     : "Please select a project"
@@ -457,7 +484,6 @@ function Project() {
                                     <KanBan
                                         key="todo_tasks"
                                         title="To Do"
-                                        taskClick={taskClick}
                                         tasks={projectTasks}
                                         handleSelectedTask={handleSelectedTask}
                                         users={users}
@@ -470,7 +496,6 @@ function Project() {
                                     <KanBan
                                         key="inProgress_tasks"
                                         title="In Progress"
-                                        taskClick={taskClick}
                                         tasks={projectTasks}
                                         handleSelectedTask={handleSelectedTask}
                                         users={users}
@@ -483,7 +508,6 @@ function Project() {
                                     <KanBan
                                         key="completed_tasks"
                                         title="Completed"
-                                        taskClick={taskClick}
                                         tasks={projectTasks}
                                         handleSelectedTask={handleSelectedTask}
                                         users={users}
@@ -523,12 +547,6 @@ function Project() {
                                                 </input>
                                             </td>
                                             <td className={urgentStyle(openTask.urgency)}>
-                                                {/* <select className="urgent" value={openTask.urgency}>
-                                                        <option className="low" value="low">Low</option>
-                                                        <option className="medium" value="medium">Medium</option>
-                                                        <option className="high" value="high">High</option>
-                                                        <option className="urgent" value="urgent" selected>Urgent</option>
-                                                    </select> */}
                                                 <Select
                                                     value={{
                                                         value: openTask.urgency,
@@ -547,13 +565,6 @@ function Project() {
 
                                             </td>
                                             <td className={statusStyle(openTask.status)}>
-                                                {/* <div className="select is-primary">
-                                                    <select value={openTask.status}>
-                                                        <option className="high" value="toDo">To Do</option>
-                                                        <option className="medium" value="inProgress">In Progress</option>
-                                                        <option className="low" value="completed">Completed</option>
-                                                    </select>
-                                                </div> */}
                                                 <Select
                                                     value={{
                                                         value: openTask.status,

@@ -24,6 +24,7 @@ function DeleteTaskModal(props) {
     event.preventDefault();
     API.deleteTask(props.task._id)
       .then(window.location.reload())
+      .catch(err => console.log(err));
   };
 
   return (
