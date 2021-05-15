@@ -4,6 +4,10 @@ import { Card } from '../../components/Card';
 import { Input, FormBtn } from '../../components/Form';
 import { Columns, Container } from 'react-bulma-components';
 import './LoginForm.css';
+const fs = require('fs');
+const path = require('path');
+
+
 
 
 function LoginForm({login}) {
@@ -79,7 +83,7 @@ function LoginForm({login}) {
                   </Link>
                 </p>
               </div>
-              <img className="ml-4" src='images/login.jpg'></img>
+              <img className="ml-4" src={path.join(__dirname, 'images/login.jpg')}></img>
               <p style={{fontSize: 10}} className="has-text-centered">Image by: <a  href="https://www.vecteezy.com/free-vector/vector">Vector Vectors by Vecteezy</a></p>
               
             </form>
