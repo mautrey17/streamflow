@@ -487,6 +487,7 @@ function Project() {
                                         tasks={projectTasks}
                                         handleSelectedTask={handleSelectedTask}
                                         users={users}
+                                        i={selectedProject.selected}
                                     />
                                 </article>
                             </div>
@@ -499,6 +500,7 @@ function Project() {
                                         tasks={projectTasks}
                                         handleSelectedTask={handleSelectedTask}
                                         users={users}
+                                        i={selectedProject.selected}
                                     />
                                 </article>
                             </div>
@@ -511,6 +513,7 @@ function Project() {
                                         tasks={projectTasks}
                                         handleSelectedTask={handleSelectedTask}
                                         users={users}
+                                        i={selectedProject.selected}
                                     />
                                 </article>
                             </div>

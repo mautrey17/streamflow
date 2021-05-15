@@ -34,8 +34,8 @@ function Task(props) {
 
   return (
     <article className="message is-small is-info mb-3">
-      <div className="message-header title is-5 mb-1" style={{ cursor: "pointer" }}>
-        <p onClick={props.handleSelectedTask} value={props.task._id}>{props.task.title}</p>
+      <div className="message-header title is-5 mb-1">
+        <p onClick={props.handleSelectedTask} value={props.task._id} style={{ cursor: "pointer" }}>{props.task.title}</p>
         <DeleteTaskModal
           task={props.task}
           className="has-text-right"
@@ -43,6 +43,7 @@ function Task(props) {
           closeModal={closeModal}
           openModal={openModal}
           ariaHideApp={false}
+          i={props.i}
         />
       </div>
 

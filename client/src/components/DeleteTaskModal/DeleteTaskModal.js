@@ -23,7 +23,7 @@ function DeleteTaskModal(props) {
   function handleFormSubmit(event) {
     event.preventDefault();
     API.deleteTask(props.task._id)
-      .then(window.location.reload())
+      .then(window.open(window.location.origin + "/project/" + props.i, "_self"))
       .catch(err => console.log(err));
   };
 

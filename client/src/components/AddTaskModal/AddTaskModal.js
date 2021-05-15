@@ -27,6 +27,7 @@ function AddTaskModal(props) {
   const formEl = useRef(null);
   const [projectList, setProjectList] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [projectIndex, setProjectIndex] = useState("");
   
 
   function setInfo() {
@@ -44,6 +45,7 @@ function AddTaskModal(props) {
           assignedUsers: props.selectedProject.assignedUsers
         }
       }
+      setProjectIndex(props.selectedProject.selected)
       handleSelectedProj(x);
     }
   }
@@ -114,7 +116,8 @@ function AddTaskModal(props) {
       })
         .then(res => {
           formEl.current.reset();
-          window.location.reload();
+          if (projectIndex !== "") window.open(window.location.origin + "/project/" + projectIndex, "_self");
+          else window.location.reload();
         })
         .catch(err => console.log(err));
     }
