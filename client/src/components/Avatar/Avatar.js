@@ -15,17 +15,6 @@ export default function MyAvatar (props){
           eyebrowType={props.eyebrow}
           mouthType={props.mouth}
           skinColor={props.skin}
-          // avatarStyle='Circle'
-          // topType='LongHairMiaWallace'
-          // accessoriesType='Prescription02'
-          // hairColor='BrownDark'
-          // facialHairType='Blank'
-          // clotheType='Hoodie'
-          // clotheColor='PastelBlue'
-          // eyeType='Happy'
-          // eyebrowType='Default'
-          // mouthType='Smile'
-          // skinColor='Light'
         />
     )
 }
