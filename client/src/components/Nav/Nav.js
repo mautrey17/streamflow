@@ -1,14 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { PromiseProvider } from "mongoose";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import { PromiseProvider } from "mongoose";
+import API from "../../utils/API";
+import './Nav.css';
 
 function Nav(props) {
 
   const location = useLocation();
-
   const [navActive, setNavActive] = React.useState(false)
-
+  const [avatar, setAvatar] = useState('https://avataaars.io/?')
+  let avatarSettings='https://avataaars.io/?';
+  function loadAvatar() {
+    API.getUsers().then(res => {
+      console.log('Avatar res',res.data)
+      if (res.data[0].avatar.style) {
+        avatarSettings += 'avatarStyle=' + res.data[0].avatar.style
+      }
+      if (res.data[0].avatar.top) {
+        avatarSettings += '&topType=' + res.data[0].avatar.top
+      }
+      if (res.data[0].avatar.accessories) {
+        avatarSettings += '&accessoriesType=' + res.data[0].avatar.accessories
+      }
+      if (res.data[0].avatar.hairColor) {
+        avatarSettings += '&hairColor=' + res.data[0].avatar.hairColor
+      }
+      if (res.data[0].avatar.facialHair) {
+        avatarSettings += '&facialHairType=' + res.data[0].avatar.facialHair
+      }
+      if (res.data[0].avatar.facialColor) {
+        avatarSettings += '&facialHairColor=' + res.data[0].avatar.facialColor
+      }
+      if (res.data[0].avatar.clothes) {
+        avatarSettings += '&clotheType=' + res.data[0].avatar.clothes
+      }
+      if (res.data[0].avatar.eyes) {
+        avatarSettings += '&eyeType=' + res.data[0].avatar.eyes
+      }
+      if (res.data[0].avatar.eyebrow) {
+        avatarSettings += '&eyebrowType=' + res.data[0].avatar.eyebrow
+      }
+      if (res.data[0].avatar.mouth) {
+        avatarSettings += '&mouthType=' + res.data[0].avatar.mouth
+      }
+      if (res.data[0].avatar.skin) {
+        avatarSettings += '&skinColor=' + res.data[0].avatar.skin
+      }
+      console.log('avatarObject',avatarSettings)
+      // return avatarSettings
+    });
+  }
+  
+  console.log('at RETURN')
+  loadAvatar()
   return (
     <div className="">
       <nav
@@ -108,6 +153,11 @@ function Nav(props) {
           </div>
 
           <div className="navbar-end">
+          <img 
+            src={avatar}
+            width='50px'
+            height='75px'
+          />
           <Link
             to="/userprofile"
             className={
@@ -131,7 +181,7 @@ function Nav(props) {
         </div>
       </nav>
     </div>
-  );
+  )
 }
 
 export default Nav;
