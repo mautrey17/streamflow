@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from 'react-modal';
-import { Input, TextArea, FormBtn } from "../../components/Form";
-import AUTH from '../../utils/AUTH';
+import { Input, FormBtn } from "../../components/Form";
 import API from "../../utils/API";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
@@ -62,7 +61,7 @@ function AddTaskModal(props) {
 
   function handleSelectedUser(options) {
     let userArray = [];
-    options.map(user => {
+    options.forEach(user => {
       userArray.push(user.value);
     })
     setFormObject({ ...formObject, users: userArray});
@@ -73,11 +72,11 @@ function AddTaskModal(props) {
 
     // Allows it so only users associated with the selected project are shown
     let userArray = [];
-    props.users.map(user => {
+    props.users.forEach(user => {
       if (option.value.owner.id === user._id) {
         userArray.push(user)
       }
-      option.value.assignedUsers.map(projUser => {
+      option.value.assignedUsers.forEach(projUser => {
         if (user._id === projUser) {
           if (!userArray.some(x => x._id === projUser)) {
             userArray.push(user)

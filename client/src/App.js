@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useParams } from 'react';
+import React, { useState, useEffect } from 'react';
 import Helmet from "react-helmet"
 import { Route, Switch } from 'react-router-dom';
 import "./App.scss";
 import LoginForm from './pages/Auth/LoginForm';
 import SignupForm from './pages/Auth/SignupForm';
 import Nav from "./components/Nav";
-import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AUTH from './utils/AUTH';
-import Test from './pages/Test';
 import Favicon from './images/favicon.ico'
 
 //pages
@@ -76,7 +74,6 @@ function App() {
           <div className="main-view">
             <Switch>
               <Route exact path="/" component={Dashboard} />
-              <Route exact path="/test" component={Test} />
               <Route exact path="/messaging" component={Messages} />
               <Route exact path="/project" component={Project} />
               <Route exact path="/project/:id" component={Project} />

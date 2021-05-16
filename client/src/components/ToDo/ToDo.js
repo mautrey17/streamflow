@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import API from "../../utils/API";
 import ToDoRow from "../ToDoRow";
 import THead from "../THead";
 import moment from "moment";
 import './ToDo.css';
 
 function ToDo(props) {
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const currentDate = new Date();
     const [overTasks, setOverTasks] = useState([]);
     const [todayTasks, setTodayTasks] = useState([]);
     const [tomorrowTasks, setTomorrowTasks] = useState([]);
@@ -17,47 +16,12 @@ function ToDo(props) {
 
     // Tasks are called and split into 3 sections depending on due date
     // Project name gets called and associated with matching task
-    function loadAssignedTasks() {
-        // API.getTasks("assigned")
-        //     .then(res => {
-        //         API.getProjects()
-        //             .then(res2 => {
-        //                 console.log(res2.data.projects)
-        //                 if(res.data.tasks) res.data.tasks.map((task, j) => {
-        //                     if (compareTime(task.dueDate) === 1) {
-        //                         setOverTasks(old => [...old, task])
-        //                         for (let i = 0; i < res2.data.projects.length; i++) {
-        //                             if (res2.data.projects[i]._id === res.data.tasks[j].project) {
-        //                                 setOverProjName(old => [...old, res2.data.projects[i].title])
-        //                                 break;
-        //                             }
-        //                         }
-        //                     } else if (compareTime(task.dueDate) === 2) {
-        //                         setTodayTasks(old => [...old, task])
-        //                         for (let i = 0; i < res2.data.projects.length; i++) {
-        //                             if (res2.data.projects[i]._id === res.data.tasks[j].project) {
-        //                                 setTodayProjName(old => [...old, res2.data.projects[i].title])
-        //                                 break;
-        //                             }
-        //                         }
-        //                     } else {
-        //                         setTomorrowTasks(old => [...old, task])
-        //                         for (let i = 0; i < res2.data.projects.length; i++) {
-        //                             if (res2.data.projects[i]._id === res.data.tasks[j].project) {
-        //                                 setTomProjName(old => [...old, res2.data.projects[i].title])
-        //                                 break;
-        //                             }
-        //                         }
-        //                     }
-        //                 });
-        //             })     
-        //     })
-        
+    function loadAssignedTasks() {   
         let overTasks = [];
         let todayTasks = [];
         let tomTasks = [];
         if (props.tasks && props.projects) {
-            props.tasks.map(task => {
+            props.tasks.forEach(task => {
                 if (task.assignedUsers.indexOf(props.currentUser._id) !== -1) {
                     if (task.status !== "completed") {
                         // Gets the project name from the task's project ID then assigns it to the task object

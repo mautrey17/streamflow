@@ -14,8 +14,8 @@ function Task(props) {
 
   function getTeam() {
     let team = [];
-    props.task.assignedUsers.map(taskUser => {
-      props.users.map(user => {
+    props.task.assignedUsers.forEach(taskUser => {
+      props.users.forEach(user => {
         if (taskUser === user._id) {
           team.push(user.username);
         }
@@ -25,7 +25,7 @@ function Task(props) {
     let message = ""
     if (team.length > 0) {
       message = "Team: ";
-      team.map((user, i) => {
+      team.forEach((user, i) => {
         message += (i ? ", " : "") + user;
       });
     }

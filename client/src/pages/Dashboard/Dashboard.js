@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row } from "../../components/Grid";
-import { Columns, Container } from 'react-bulma-components';
+import { Columns } from 'react-bulma-components';
 import ProjectCard from "../../components/ProjectCard";
 import ToDo from "../../components/ToDo"
-import Nav from "../../components/Nav";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddTaskModal from "../../components/AddTaskModal";
-import ReactDOM from 'react-dom';
-import Modal from 'react-modal';
-import { PieChart } from 'react-minimal-pie-chart';
 import "./Dashboard.css"
 import API from "../../utils/API";
 import AUTH from "../../utils/AUTH";
