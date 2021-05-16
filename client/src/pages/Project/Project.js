@@ -12,6 +12,7 @@ import DeleteProjectModal from "../../components/DeleteProjectModal";
 import moment from "moment";
 import Select from "react-select";
 import AUTH from '../../utils/AUTH';
+import DatePicker from "react-datepicker"
 
 function Project() {
     //set the initial state
@@ -141,6 +142,7 @@ function Project() {
             urgency: filteredTask[0].urgency,
             status: filteredTask[0].status,
             owner: filteredTask[0].owner,
+            dueDate: new Date(filteredTask[0].dueDate),
             team: filteredUsers,
             manager: manager[0].username
         });
@@ -247,8 +249,10 @@ function Project() {
             title: openTask.title,
             status: openTask.status,
             urgency: openTask.urgency,
-            assignedUsers: assignedUsersId
+            assignedUsers: assignedUsersId,
+            dueDate: openTask.dueDate
         })
+        .catch(err => console.log(err));
 
         setProjectTasks(projectTasks.map(task => {
             if (task._id !== openTask.id) return task
@@ -257,7 +261,8 @@ function Project() {
                 title: openTask.title,
                 status: openTask.status,
                 urgency: openTask.urgency,
-                assignedUsers: assignedUsersId
+                assignedUsers: assignedUsersId,
+                dueDate: openTask.dueDate
             }
         }))
         setTasks(tasks.map(task => {
@@ -267,7 +272,8 @@ function Project() {
                 title: openTask.title,
                 status: openTask.status,
                 urgency: openTask.urgency,
-                assignedUsers: assignedUsersId
+                assignedUsers: assignedUsersId,
+                dueDate: openTask.dueDate
             }
         }))
     }
@@ -530,6 +536,7 @@ function Project() {
                                     <thead>
                                         <tr>
                                             <th>Task</th>
+                                            <th>Due Date</th>
                                             <th>Urgency</th>
                                             <th>Status</th>
                                             <th>Team</th>
@@ -548,6 +555,14 @@ function Project() {
                                                     disabled={!openTask.id}
                                                 >
                                                 </input>
+                                            </td>
+                                            <td>
+                                                <DatePicker 
+                                                    selected={openTask.dueDate}
+                                                    onChange={date => setOpenTask({...openTask, dueDate: date})}
+                                                    className="form-control"
+                                                    disabled={!openTask.id}
+                                                />
                                             </td>
                                             <td className={urgentStyle(openTask.urgency)}>
                                                 <Select
@@ -605,7 +620,6 @@ function Project() {
                             </form>
                         </div>
                     </div>
-
                 </Columns.Column>
             </Columns>
         </div>
