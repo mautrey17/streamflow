@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PieChart } from 'react-minimal-pie-chart';
 import KanBan from "../../components/KanBan";
-import { Columns, Container } from 'react-bulma-components'
+import { Columns } from 'react-bulma-components'
 import "./Project.css";
 import API from "../../utils/API";
 import AddProjectModal from "../../components/AddProjectModal";
@@ -71,7 +71,7 @@ function Project() {
         API.getProjects()
             .then(res => {
                 if (res.data.projects) {
-                    res.data.projects.map(proj => {
+                    res.data.projects.forEach(proj => {
                         setProjects(old => [...old, proj]);
                     })
                 }
@@ -80,7 +80,7 @@ function Project() {
             .then(API.getAllTasks()
                 .then(res2 => {
                     if (res2.data.tasks) {
-                        res2.data.tasks.map(task => {
+                        res2.data.tasks.forEach(task => {
                             setTasks(old => [...old, task]);
                         })
                     }
@@ -90,8 +90,7 @@ function Project() {
             .then(API.getUsers()
                 .then(res3 => {
                     if (res3.data) {
-                        console.log(res3.data);
-                        res3.data.map(user => {
+                        res3.data.forEach(user => {
                             setUsers(old => [...old, user]);
                         })
                     }
@@ -121,7 +120,7 @@ function Project() {
         // Gets list of users assigned to the task by comparing assigned user's IDs with user database
         let filteredUsers = [];
         for (let i = 0; i < filteredTask[0].assignedUsers.length; i++) {
-            users.map(user => {
+            users.forEach(user => {
                 if (user._id === filteredTask[0].assignedUsers[i]) {
                     filteredUsers.push(user);
                 }
@@ -159,7 +158,7 @@ function Project() {
 
             // Loads tasks only associated with the project ID
             let taskArray = [];
-            tasks.map(task => {
+            tasks.forEach(task => {
                 if (projects[i]._id === task.project) {
                     taskArray.push(task);
                 }
@@ -169,7 +168,7 @@ function Project() {
             // Gets list of users assigned to the project by comparing assigned user's IDs with user database
             let filteredUsers = [];
             for (let e = 0; e < projects[i].assignedUsers.length; e++) {
-                users.map(user => {
+                users.forEach(user => {
                     if (user._id === projects[i].assignedUsers[e]) {
                         filteredUsers.push(user);
                     }
@@ -178,7 +177,7 @@ function Project() {
 
             // Gets project owner's username by comparing project owner ID with user database
             let manager = "";
-            users.map(user => {
+            users.forEach(user => {
                 if (user._id === projects[i].owner.id) {
                     manager = user.username
                 }
@@ -241,7 +240,7 @@ function Project() {
     function updateTask(e) {
         e.preventDefault();
         let assignedUsersId = [];
-        openTask.team.map(user => {
+        openTask.team.forEach(user => {
             assignedUsersId.push(user._id)
         })
 

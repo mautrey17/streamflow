@@ -27,7 +27,7 @@ function AddProjectModal(props) {
 
   function setInfo() {
     let filteredUsers = [];
-    props.users.map(user => {
+    props.users.forEach(user => {
       // Gets every user but the current logged in one so you can't assign yourself to a project
       if (user._id !== props.currentUser._id) filteredUsers.push(user);
     })
@@ -41,7 +41,7 @@ function AddProjectModal(props) {
 
   function handleSelectedUser(options) {
     let userArray = [];
-    options.map(user => {
+    options.forEach(user => {
       userArray.push(user.value);
     })
     setAddUsers(userArray);

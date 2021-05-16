@@ -28,7 +28,7 @@ function EditProjectModal(props) {
 
   function setFormUsers() {
     let filteredUsers = [];
-    props.users.map(user => {
+    props.users.forEach(user => {
       // Gets every user but the current logged in one so you can't assign yourself to a project
       if (user._id !== props.currentUser._id) filteredUsers.push(user)
     })
@@ -42,8 +42,8 @@ function EditProjectModal(props) {
 
     // Gets users currently assigned to the project to preloaded list
     let filterUsers = [];
-    props.users.map(user => {
-      props.project.assignedUsers.map(assignedUser => {
+    props.users.forEach(user => {
+      props.project.assignedUsers.forEach(assignedUser => {
         if (user._id === assignedUser) {
           if (!filterUsers.some(x => x._id === assignedUser)) {
             filterUsers.push(user);
@@ -54,7 +54,7 @@ function EditProjectModal(props) {
 
     let userSelect = [];
     let userArray = [];
-    filterUsers.map(user => {
+    filterUsers.forEach(user => {
       let obj = {
         value: user._id,
         label: user.username
@@ -66,11 +66,6 @@ function EditProjectModal(props) {
     setFilteredUsers(userSelect);
   }
 
-  function debug() {
-    console.log(formObject)
-    console.log(addUsers);
-  }
-
   function handleInputChange(event) {
     const { name, value } = event.target;
     setFormObject({ ...formObject, [name]: value })
@@ -79,7 +74,7 @@ function EditProjectModal(props) {
   function handleSelectedUser(options) {
     let userArray = [];
     let userSelect = [];
-    options.map(user => {
+    options.forEach(user => {
       userArray.push(user.value);
       userSelect.push(user);
     })
@@ -98,7 +93,8 @@ function EditProjectModal(props) {
       })
         .then(res => {
           formEl.current.reset();
-          window.location.reload();
+          if (props.project.selected) window.open(window.location.origin + "/project/" + props.project.selected, "_self");
+          else window.location.reload();
         })
         .catch(err => console.log(err));
     }
@@ -122,7 +118,6 @@ function EditProjectModal(props) {
             onChange={handleInputChange}
             name="title"
             placeholder="Title (required)"
-            onClick={debug}
           />
           <DatePicker
             selected={formObject.date}

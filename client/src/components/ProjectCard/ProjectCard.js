@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Columns, Container } from 'react-bulma-components';
+import { Columns } from 'react-bulma-components';
 import { PieChart } from "react-minimal-pie-chart";
 import "./ProjectCard.css"
 
 
 function ProjectCard(props) {
-    const [i, setI] = useState(0);
     const [project, setProject] = useState({});
     const [status, setStatus] = useState({
         toDo: 0,
@@ -14,7 +13,6 @@ function ProjectCard(props) {
     });
 
     useEffect(() => {
-        setI(props.i);
         setProject(props.project);
 
         let toDo = 0;
