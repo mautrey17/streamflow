@@ -23,7 +23,7 @@ function DeleteProjectModal(props) {
   function handleFormSubmit(event) {
     event.preventDefault();
     API.deleteProject(props.project.id)
-      .then(window.location.reload())
+      .then(window.open(window.location.origin + "/project", "_self"))
       .catch(err => console.log(err));
   };
 

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { Columns, Container } from 'react-bulma-components';
+import time from "../../images/time.jpg";
+import dashboard from "../../images/dashboard.png";
+import project from "../../images/project.png";
 const fs = require('fs');
 const path = require('path');
 
@@ -103,7 +106,7 @@ function LoggedOut() {
                         </Columns.Column>
                         <Columns.Column>
                            
-                        <img style={{width: 400}} className="mb-3" src={path.join(__dirname, 'images/time.jpg')}></img>
+                        <img style={{width: 400}} className="mb-3" src={time}></img>
                         <div>
                         <a style={{fontSize: 10}} href="https://www.vecteezy.com/free-vector/calendar">Calendar Vectors by Vecteezy</a>
                         </div>
@@ -124,7 +127,7 @@ function LoggedOut() {
                     
                     <Columns>
                         <Columns.Column>
-                        <img style={{width: 500}} className="mb-3" src={path.join(__dirname, 'images/project.png')}></img>
+                        <img style={{width: 500}} className="mb-3" src={project}></img>
 
 
                         </Columns.Column>
@@ -161,7 +164,7 @@ function LoggedOut() {
                             </p>
                         </Columns.Column>
                         <Columns.Column>
-                        <img style={{width: 500}} className="mb-3" src={path.join(__dirname, 'images/dashboard.png')}></img>
+                        <img style={{width: 500}} className="mb-3" src={dashboard}></img>
                     
                             </Columns.Column>
                     </Columns>

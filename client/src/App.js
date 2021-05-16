@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useParams } from 'react';
+import Helmet from "react-helmet"
 import { Route, Switch } from 'react-router-dom';
 import "./App.scss";
 import LoginForm from './pages/Auth/LoginForm';
@@ -9,6 +10,7 @@ import NoMatch from "./pages/NoMatch";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AUTH from './utils/AUTH';
 import Test from './pages/Test';
+import Favicon from './images/favicon.ico'
 
 //pages
 import Messages from './pages/Messages';
@@ -65,6 +67,9 @@ function App() {
 
   return (
     <div className="App">
+      <Helmet>
+        <link rel="icon" type="image/png" href={Favicon} sizes="16x16" />
+      </Helmet>
       { loggedIn && (
         <div>
           <Nav user={user} logout={logout}/>
