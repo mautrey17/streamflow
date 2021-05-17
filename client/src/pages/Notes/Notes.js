@@ -104,7 +104,7 @@ function Note ()  {
               <div className="box">
                 <form ref={formEl}>
                   <div className="field">
-                    <label>Title:</label>
+                    <label className="title is-3 mb-2">Title:</label>
                     <div className="control">
                       <input
                         className="input"
@@ -116,7 +116,7 @@ function Note ()  {
                   </div>
 
                   <div className="field">
-                    <label>Note:</label>
+                    <label className="title is-3 mb-2">Note:</label>
                     <div className="control">
                       <textarea
                         className="textarea is-large"
@@ -134,38 +134,53 @@ function Note ()  {
                     placeholder="Enter your notes here (Required)"
                     // value={formObject.note}
                   /> */}
-                  <NewBtn
-                    onClick={handleNewFormSubmit}
-                  >
-                    New Note
-                  </NewBtn>
-                  <FormBtn
-                    disabled={!(formObject.note && formObject.title)}
-                    onClick={handleFormSubmit}
-                  >
-                    Save Note
-                  </FormBtn>
+                  <div class="field">
+                    <div class="buttons is-centered">
+                    <button 
+                        class="button is-link"
+                        onClick={handleNewFormSubmit}
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-search-plus"></i>
+                        </span>
+                        <span>New Note</span>
+                      </button>
+                      <button 
+                        class="button is-success"
+                        disabled={!(formObject.note && formObject.title)}
+                        onClick={handleFormSubmit}
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span>Save Note</span>
+                      </button>
+                    </div>
+                  </div>
                 </form>
                 </div>
                 </div>
             </Columns.Column>
             <Columns.Column size="4">
-              <Card title="Previous Notes">
+            <div className="block mx-3 mt-3">
+              <div className="box">
                 {notes.length ? (
-                  <List>
+                 <div className="">
+                    
                     {notes.map(note => (
-                      <ListItem key={note._id}>
-                        <button onClick={() => loadNote(note._id)}>
-                          {note.title}
-                        </button>
-                        <DeleteBtn onClick={() => deleteNote(note._id)} />
-                      </ListItem>
+                      <article className="message is-medium is-info">
+                      <div className="message-header ">
+                      <p onClick={() => loadNote(note._id)} className="" style={{ cursor: "pointer" }}>{note.title}</p>
+                      <button onClick={() => deleteNote(note._id)} className="delete"></button>
+                      </div>
+                    </article>
                     ))}
-                  </List>
+                  </div>
                 ) : (
-                  <h3>No Results to Display</h3>
+                  <h3 className="title is-3">No Results to Display</h3>
                 )}
-              </Card>
+                </div>
+              </div>
             </Columns.Column>
 
 
