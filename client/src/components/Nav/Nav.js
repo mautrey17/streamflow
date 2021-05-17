@@ -3,57 +3,61 @@ import { Link, useLocation } from "react-router-dom";
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import { PromiseProvider } from "mongoose";
 import API from "../../utils/API";
+import AUTH from "../../utils/AUTH";
 import './Nav.css';
 
 function Nav(props) {
+  useEffect(() => {
+    AUTH.getUser().then(res => {
+      API.getOneUser(res.data.user._id).then(res2 => {
+        console.log(res2.data)
+        loadAvatar(res2.data[0])
+      })
+    })
+  }, [])
 
   const location = useLocation();
   const [navActive, setNavActive] = React.useState(false)
   const [avatar, setAvatar] = useState('https://avataaars.io/?')
   let avatarSettings='https://avataaars.io/?';
-  function loadAvatar() {
-    API.getUsers().then(res => {
-      console.log('Avatar res',res.data)
-      if (res.data[0].avatar.style) {
-        avatarSettings += 'avatarStyle=' + res.data[0].avatar.style
-      }
-      if (res.data[0].avatar.top) {
-        avatarSettings += '&topType=' + res.data[0].avatar.top
-      }
-      if (res.data[0].avatar.accessories) {
-        avatarSettings += '&accessoriesType=' + res.data[0].avatar.accessories
-      }
-      if (res.data[0].avatar.hairColor) {
-        avatarSettings += '&hairColor=' + res.data[0].avatar.hairColor
-      }
-      if (res.data[0].avatar.facialHair) {
-        avatarSettings += '&facialHairType=' + res.data[0].avatar.facialHair
-      }
-      if (res.data[0].avatar.facialColor) {
-        avatarSettings += '&facialHairColor=' + res.data[0].avatar.facialColor
-      }
-      if (res.data[0].avatar.clothes) {
-        avatarSettings += '&clotheType=' + res.data[0].avatar.clothes
-      }
-      if (res.data[0].avatar.eyes) {
-        avatarSettings += '&eyeType=' + res.data[0].avatar.eyes
-      }
-      if (res.data[0].avatar.eyebrow) {
-        avatarSettings += '&eyebrowType=' + res.data[0].avatar.eyebrow
-      }
-      if (res.data[0].avatar.mouth) {
-        avatarSettings += '&mouthType=' + res.data[0].avatar.mouth
-      }
-      if (res.data[0].avatar.skin) {
-        avatarSettings += '&skinColor=' + res.data[0].avatar.skin
-      }
-      console.log('avatarObject',avatarSettings)
-      // return avatarSettings
-    });
+  function loadAvatar(user) {
+    if (user.avatar.style) {
+      avatarSettings += 'avatarStyle=' + user.avatar.style
+    }
+    if (user.avatar.top) {
+      avatarSettings += '&topType=' + user.avatar.top
+    }
+    if (user.avatar.accessories) {
+      avatarSettings += '&accessoriesType=' + user.avatar.accessories
+    }
+    if (user.avatar.hairColor) {
+      avatarSettings += '&hairColor=' + user.avatar.hairColor
+    }
+    if (user.avatar.facialHair) {
+      avatarSettings += '&facialHairType=' + user.avatar.facialHair
+    }
+    if (user.avatar.facialColor) {
+      avatarSettings += '&facialHairColor=' + user.avatar.facialColor
+    }
+    if (user.avatar.clothes) {
+      avatarSettings += '&clotheType=' + user.avatar.clothes
+    }
+    if (user.avatar.eyes) {
+      avatarSettings += '&eyeType=' + user.avatar.eyes
+    }
+    if (user.avatar.eyebrow) {
+      avatarSettings += '&eyebrowType=' + user.avatar.eyebrow
+    }
+    if (user.avatar.mouth) {
+      avatarSettings += '&mouthType=' + user.avatar.mouth
+    }
+    if (user.avatar.skin) {
+      avatarSettings += '&skinColor=' + user.avatar.skin
+    }
+    setAvatar(avatarSettings)
   }
   
   console.log('at RETURN')
-  loadAvatar()
   return (
     <div className="">
       <nav

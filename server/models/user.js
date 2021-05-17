@@ -11,17 +11,17 @@ const userSchema = new Schema({
 	password: { type: String, unique: false, required: false },
 	email: { type: String, unique: false, required: false },
 	avatar: {
-		style: { type: String, unique: false },
-		top: { type: String, unique: false },
-		accessories: { type: String, unique: false },
-		hairColor: { type: String, unique: false },
-		facialHair: { type: String, unique: false },
-		facialColor: { type: String, unique: false },
-		clothes: { type: String, unique: false },
-		eyes: { type: String, unique: false },
-		eyebrow: { type: String, unique: false },
-		mouth: { type: String, unique: false },
-		skin: { type: String, unique: false }
+		style: { type: String, unique: false, default: "Circle"},
+		top: { type: String, unique: false, default: "LongHairStraight" },
+		accessories: { type: String, unique: false, default: "Blank" },
+		hairColor: { type: String, unique: false, default: "BrownDark" },
+		facialHair: { type: String, unique: false, default: "Blank" },
+		facialColor: { type: String, unique: false, default: "" },
+		clothes: { type: String, unique: false, default: "BlazerShirt" },
+		eyes: { type: String, unique: false, default: "Default" },
+		eyebrow: { type: String, unique: false, default: "Default" },
+		mouth: { type: String, unique: false, default: "Default" },
+		skin: { type: String, unique: false, default: "Light" }
 	},
 	tasks: [
 		{
