@@ -18,6 +18,12 @@ module.exports = {
       return res.json({ user: null });
     }
   },
+  getOneUser: (req, res) => {
+    db.User.find({"_id": req.params.id}, 'firstName lastName username avatar')
+    .then(user => {
+      res.json(user);
+    })
+  },
   register: (req, res) => {
     const { firstName, lastName, username, password } = req.body;
     // ADD VALIDATION

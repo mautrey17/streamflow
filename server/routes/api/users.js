@@ -8,4 +8,7 @@ router.route("/:id")
   .get(userController.getUser)
   .put(userController.updateUser);
 
+router.route("/user/:id")
+  .get(userController.getOneUser);
+
 module.exports = router;
