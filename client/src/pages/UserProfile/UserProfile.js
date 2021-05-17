@@ -5,6 +5,7 @@ import { Col, Row, Container } from "../../components/Grid";
 import { Input, FormBtn } from "../../components/Form";
 import Axios from "axios";
 import API from "../../utils/API";
+import { Box, Columns } from "react-bulma-components";
 
 function UserProfile() {
   let userId;
@@ -111,9 +112,9 @@ function UserProfile() {
   return (
     <>
     <Container fluid>
-      <Row>
-        <Col size="md-6 sm-6">
-          <Card title="Profile Settings">
+      <Columns>
+        <Columns.Column size="md-6 sm-6">
+          <Box title="Profile Settings">
             <form ref={formEl}>
               <Input
                 onChange={handleInputChange}
@@ -146,10 +147,10 @@ function UserProfile() {
                 onClick={handleFormSubmit}
               >Update Profile</FormBtn>
             </form>
-          </Card>
-        </Col>
-        <Col size="md-6 sm-6">
-          <Card title="Avatar Settings">
+          </Box>
+        </Columns.Column>
+        <Columns.Column size="md-6 sm-6">
+          <Box title="Avatar Settings">
             <form ref={avatarEl}>
               <Input 
                 onChange={handleAvatarChange}
@@ -365,9 +366,9 @@ function UserProfile() {
                 />
               )}
             </form>
-          </Card>
-        </Col>
-      </Row>  
+          </Box>
+        </Columns.Column>
+      </Columns>  
     </Container>
     </>
   )
