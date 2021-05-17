@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Card } from "../../components/Card";
-import "../Notes/notes.css"
+import "./notes.css"
+
 
 function Note ()  {
 
@@ -94,14 +95,14 @@ function Note ()  {
   }
 
   return (
-    <div>
+    <div style={{height:"90vh"}}>
       <div className="block">
       <h1 className="mt-3 title is-1 has-text-centered">Saved Notes</h1>
       </div>
     <Columns>
             <Columns.Column size="8">
             <div className="block ml-6 mt-3">
-              <div className="box">
+              <div className="box background">
                 <form ref={formEl}>
                   <div className="field">
                     <label className="title is-3 mb-2">Title:</label>
@@ -163,7 +164,7 @@ function Note ()  {
             </Columns.Column>
             <Columns.Column size="4">
             <div className="block mx-3 mt-3">
-              <div className="box">
+              <div className="box background">
                 {notes.length ? (
                  <div className="">
                     
