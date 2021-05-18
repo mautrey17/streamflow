@@ -41,7 +41,7 @@ function Project() {
         if (id) {
             setCurrentProject(id);
         }
-    }, [users])
+    }, [users, tasks, projects])
 
     function openModal() {
         setIsOpen(true);
