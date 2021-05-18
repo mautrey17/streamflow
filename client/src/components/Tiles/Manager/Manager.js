@@ -4,13 +4,25 @@ function Manager(props) {
   const [avatar, setAvatar] = useState('https://avataaars.io/?')
   const [owner, setOwner] = useState({
     username: "",
-    avatar: {}
+    avatar: {
+      style: "",
+      top: "",
+      accessories: "",
+      hairColor: "",
+      facialHair: "",
+      facialColor: "",
+      clothes: "",
+      eyes: "",
+      eyebrow: "",
+      mouth: "",
+      skin: ""
+    }
   })
 
   useEffect(() => {
     if (props.manager) {
       setOwner(props.manager);
-      loadAvatar(owner);
+      loadAvatar(props.manager);
     }
   }, [props.manager])
 
