@@ -27,20 +27,25 @@ function ToDo(props) {
                         // Gets the project name from the task's project ID then assigns it to the task object
                         if (compareTime(task.dueDate) === 1) {
                             let proj = props.projects.filter(e => e._id === task.project);
-                            if (proj[0].title) task.projectTitle = proj[0].title;
-                            overTasks.push(task);
+                            if (proj[0]) {
+                                task.projectTitle = proj[0].title;
+                                overTasks.push(task);
+                            }
                         } else if (compareTime(task.dueDate) === 2) {
                             let proj = props.projects.filter(e => e._id === task.project);
-                            if (proj[0].title) task.projectTitle = proj[0].title;
-                            todayTasks.push(task);
+                            if (proj[0]) {
+                                task.projectTitle = proj[0].title;
+                                todayTasks.push(task);
+                            }   
                         } else {
                             let proj = props.projects.filter(e => e._id === task.project);
-                            if (proj[0].title) task.projectTitle = proj[0].title;
-                            tomTasks.push(task);
+                            if (proj[0]) {
+                                task.projectTitle = proj[0].title;
+                                tomTasks.push(task);
+                            } 
                         }
                     }  
                 }
-
             })
         }
         setOverTasks(overTasks);
