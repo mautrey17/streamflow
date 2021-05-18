@@ -1,7 +1,6 @@
 import React ,{ useState , useEffect, useRef } from "react";
 import { Card } from "../../components/Card";
 import MyAvatar from "../../components/Avatar"
-import { Col, Row, Container } from "../../components/Grid";
 import { Input, FormBtn } from "../../components/Form";
 import Axios from "axios";
 import API from "../../utils/API";
@@ -110,42 +109,51 @@ function UserProfile() {
   }
 
   return (
-    <>
-    <Container fluid>
+    <div style={{minHeight:"90vh"}}>
+      <div className="block">
+        <h1 className="mt-3 mb-3 title is-1 has-text-centered">User Profile</h1>
+      </div>
       <Columns>
-        <Columns.Column size="md-6 sm-6">
-          <Box title="Profile Settings">
+        <Columns.Column size="6">
+          <Box style={{backgroundColor: "#efefef"}} className=" ml-6 mr-6" title="Profile Settings">
+          <h2 className="title is-3 has-text-centered">Profile Settings</h2>
             <form ref={formEl}>
               <Input
                 onChange={handleInputChange}
                 name="firstname"
                 placeholder="First Name"
+                label="First Name:"
               />
               <Input
                 onChange={handleInputChange}
                 name="lastname"
                 placeholder="Last Name"
+                label="Last Name:"
               />
               <Input
                 onChange={handleInputChange}
                 name="username"
                 placeholder="Username (required)"
+                label="Username:"
               />
                 <Input
                 onChange={handleInputChange}
                 name="Password"
                 placeholder="Change Password (required)"
+                label="Change Password:"
               />
               <Input
                 onChange={handleInputChange}
                 name="Email"
                 placeholder="Email Address"
+                label="Email Address:"
               />
-              <FormBtn
-                // disabled={!(userObject.username && userObject.password)}
-                // disabled={!(formEl.current[2].value && formEl.current[3].value)}
-                onClick={handleFormSubmit}
-              >Update Profile</FormBtn>
+              <div class="field">
+                    <div class="buttons is-centered">
+                      <button className="mt-3 button is-success" onClick={handleFormSubmit}>Update Profile</button>
+                    </div>
+              </div>
+              
             </form>
           </Box>
         </Columns.Column>
@@ -369,8 +377,8 @@ function UserProfile() {
           </Box>
         </Columns.Column>
       </Columns>  
-    </Container>
-    </>
+    </div>
+    
   )
 }
 
