@@ -61,7 +61,7 @@ function Dashboard() {
     }, []);
 
     return (
-        <div style={{height:"90vh"}}>
+        <div style={{minHeight:"90vh"}}>
             <Columns>
                 <Columns.Column size="2">
                     <div className="mt-3 block ml-3 menu-parent">

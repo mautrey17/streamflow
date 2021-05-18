@@ -95,7 +95,7 @@ function Note ()  {
   }
 
   return (
-    <div style={{height:"90vh"}}>
+    <div style={{minHeight:"90vh"}}>
       <div className="block">
       <h1 className="mt-3 title is-1 has-text-centered">Saved Notes</h1>
       </div>
