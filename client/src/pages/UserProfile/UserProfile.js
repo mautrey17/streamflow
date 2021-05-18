@@ -1,25 +1,20 @@
-import React ,{ useState , useEffect, useRef } from "react";
-import { Card } from "../../components/Card";
+import React, { useState, useEffect, useRef } from "react";
 import MyAvatar from "../../components/Avatar"
-import { Input, FormBtn } from "../../components/Form";
+import { Input } from "../../components/Form";
 import Axios from "axios";
 import API from "../../utils/API";
 import { Box, Columns } from "react-bulma-components";
+import Select from "react-select";
+import "./style.css"
 
 function UserProfile() {
   let userId;
   const formEl = useRef(null);
-  const [userObject, setUserObject] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    password: '',
-    email: '',
-  });
-  
+  const [userObject, setUserObject] = useState({});
+
   const avatarEl = useRef(null);
   const [avatarObject, setAvatarObject] = useState({
-    Style: '',
+    style: '',
     top: '',
     accessories: '',
     hairColor: '',
@@ -29,356 +24,349 @@ function UserProfile() {
     eyes: '',
     eyebrow: '',
     mouth: '',
-    skin:''
+    skin: ''
   });
 
   useEffect(() => {
     Axios.get("/auth/user/ ").then(res => {
       // console.log('useEffect',res.data)
-      formEl.current[0].value=res.data.user.firstName
-      formEl.current[1].value=res.data.user.lastName
-      formEl.current[2].value=res.data.user.username
-      formEl.current[3].value=res.data.user.password
-      formEl.current[4].value=res.data.user.email
-      API.getUsers().then(res => {
-        console.log('useEffect res',res.data)
-        avatarEl.current[0].value=res.data[0].avatar.style
-        avatarEl.current[1].value=res.data[0].avatar.top
-        avatarEl.current[2].value=res.data[0].avatar.accessories
-        avatarEl.current[3].value=res.data[0].avatar.hairColor
-        avatarEl.current[4].value=res.data[0].avatar.facialHair
-        avatarEl.current[5].value=res.data[0].avatar.facialColor
-        avatarEl.current[6].value=res.data[0].avatar.clothes
-        avatarEl.current[7].value=res.data[0].avatar.eyes
-        avatarEl.current[8].value=res.data[0].avatar.eyebrow
-        avatarEl.current[9].value=res.data[0].avatar.mouth
-        avatarEl.current[10].value=res.data[0].avatar.skin
-        setAvatarObject({...avatarObject})
-        console.log('avatarObject',avatarObject)
+      setUserObject({ ...userObject, firstName: res.data.user.firstName })
+      setUserObject({ ...userObject, lastName: res.data.user.lastName })
+      setUserObject({ ...userObject, username: res.data.user.username })
+      API.getOneUser(res.data.user._id).then(res => {
+        console.log('useEffect res', res.data)
+        let avatar = {};
+        avatar.style = res.data[0].avatar.style;
+        avatar.top = res.data[0].avatar.top;
+        avatar.accessories = res.data[0].avatar.accessories;
+        avatar.hairColor = res.data[0].avatar.hairColor;
+        avatar.facialHair = res.data[0].avatar.facialHair;
+        avatar.facialColor = res.data[0].avatar.facialColor;
+        avatar.clothes = res.data[0].avatar.clothes;
+        avatar.eyes = res.data[0].avatar.eyes;
+        avatar.eyebrow = res.data[0].avatar.eyebrow;
+        avatar.mouth = res.data[0].avatar.mouth;
+        avatar.skin = res.data[0].avatar.skin;
+        setAvatarObject(avatar);
+        console.log('avatarObject', avatarObject)
       })
     })
   }, [])
 
-  function handleInputChange(event){
+  function handleInputChange(event) {
     const { name, value } = event.target;
-    setUserObject({...userObject, [name ]: value})
+    setUserObject({ ...userObject, [name]: value })
+    console.log(avatarObject);
   };
 
-  function handleAvatarChange(event){
-    const { name, value } = event.target;
-    setAvatarObject({...avatarObject, [name ]: value})
-    console.log('change',avatarObject)
-  };
-
-  function handleFormSubmit(event){
+  function handleFormSubmit(event) {
     event.preventDefault();
     Axios.get("/auth/user/ ").then(res => {
-      console.log('user id',res.data.user._id)
-      userId=res.data.user._id
+      console.log('user id', res.data.user._id)
+      userId = res.data.user._id
       console.log('update user', userId)
-      // if(userObject.username && userObject.password){
-      if (formEl.current[2].value && formEl.current[3].value ){
-        API.updateUser(
-          userId,
-          {
-            firstName: formEl.current[0].value,
-            lastName: formEl.current[1].value,
-            username: formEl.current[2].value,
-            password: formEl.current[3].value,
-            email: formEl.current[4].value,
-            avatar: {
-              style: avatarEl.current[0].value,
-              top: avatarEl.current[1].value,
-              accessories: avatarEl.current[2].value,
-              hairColor: avatarEl.current[3].value,
-              facialHair: avatarEl.current[4].value,
-              facialColor: avatarEl.current[5].value,
-              clothes: avatarEl.current[6].value,
-              eyes: avatarEl.current[7].value,
-              eyebrow: avatarEl.current[8].value,
-              mouth: avatarEl.current[9].value,
-              skin: avatarEl.current[10].value
-            }
+      API.updateUser(
+        userId,
+        {
+          firstName: userObject.firstName,
+          lastName: userObject.lastName,
+          username: userObject.username,
+          password: userObject.password,
+          avatar: {
+            style: avatarObject.style,
+            top: avatarObject.top,
+            accessories: avatarObject.accessories,
+            hairColor: avatarObject.hairColor,
+            facialHair: avatarObject.facialHair,
+            facialColor: avatarObject.facialColor,
+            clothes: avatarObject.clothes,
+            eyes: avatarObject.eyes,
+            eyebrow: avatarObject.eyebrow,
+            mouth: avatarObject.mouth,
+            skin: avatarObject.skin
           }
-        )
+        }
+      )
         .then(res => {
-          console.log('User has been updated')
+          window.location.reload();
         })
-      }
     })
   }
 
   return (
-    <div style={{minHeight:"90vh"}}>
+    <div style={{ minHeight: "90vh" }}>
       <div className="block">
         <h1 className="mt-3 mb-3 title is-1 has-text-centered">User Profile</h1>
       </div>
       <Columns>
         <Columns.Column size="6">
-          <Box style={{backgroundColor: "#efefef"}} className=" ml-6 mr-6" title="Profile Settings">
-          <h2 className="title is-3 has-text-centered">Profile Settings</h2>
+          <Box style={{ backgroundColor: "#efefef" }} className=" ml-6 mr-6" title="Profile Settings">
+            <h2 className="title is-3 has-text-centered">Profile Settings</h2>
             <form ref={formEl}>
               <Input
+                value={userObject.firstName}
                 onChange={handleInputChange}
-                name="firstname"
+                name="firstName"
                 placeholder="First Name"
                 label="First Name:"
               />
               <Input
+                value={userObject.lastName}
                 onChange={handleInputChange}
-                name="lastname"
+                name="lastName"
                 placeholder="Last Name"
                 label="Last Name:"
               />
               <Input
+                value={userObject.username}
                 onChange={handleInputChange}
                 name="username"
                 placeholder="Username (required)"
                 label="Username:"
               />
-                <Input
-                onChange={handleInputChange}
-                name="Password"
-                placeholder="Change Password (required)"
-                label="Change Password:"
-              />
               <Input
                 onChange={handleInputChange}
-                name="Email"
-                placeholder="Email Address"
-                label="Email Address:"
+                name="Password"
+                placeholder="Change Password"
+                label="Change Password:"
               />
               <div class="field">
-                    <div class="buttons is-centered">
-                      <button className="mt-3 button is-success" onClick={handleFormSubmit}>Update Profile</button>
-                    </div>
+                <div class="buttons is-centered">
+                  <button className="mt-3 button is-success" onClick={handleFormSubmit}>Update Profile</button>
+                </div>
               </div>
-              
+
             </form>
           </Box>
         </Columns.Column>
         <Columns.Column size="md-6 sm-6">
           <Box title="Avatar Settings">
-            <form ref={avatarEl}>
-              <Input 
-                onChange={handleAvatarChange}
-                name="Style"
-                placeholder="my style" 
-                list="optStyle"
-              />
-              <datalist id="optStyle">
-                <option>Circle</option>
-                <option>Transparent</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="top"
-                placeholder="my top" 
-                list="optTop"
-              />
-              <datalist id="optTop">
-                <option>No Hair</option>
-                <option>Eyepatch</option>
-                <option>Hat</option>
-                <option>Hijab</option>
-                <option>Turban</option>
-                <option>WinterHat1</option>
-                <option>LongHairBigHair</option>
-                <option>LongHairBob</option>
-                <option>LongHairBun</option>
-                <option>LongHairCurly</option>
-                <option>LongHairCurvy</option>
-                <option>LongHairFrida</option>
-                <option>LongHairFro</option>
-                <option>LongHairFroBand</option>
-                <option>LongHairNotTooLong</option>
-                <option>LongHairShavedSides</option>
-                <option>LongHairMiaWallace</option>
-                <option>LongHairStraight</option>
-                <option>LongHairStraightStrand</option>
-                <option>LongHairDreads01</option>
-                <option>LongHairFrizzle</option>
-                <option>LongHairShaggyMullet</option>
-                <option>LongHairShortCurly</option>
-                <option>LongHairShortRound</option>
-                <option>ShortHairShortFlat</option>
-                <option>ShortHairShortWaved</option>
-                <option>ShortHairSides</option>
-                <option>ShortHairTheCaesar</option>
-                <option>ShortHairTheCaesarSidePart</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="accessories"
-                placeholder="my accessories" 
-                list="optAccessories"
-              />
-              <datalist id="optAccessories">
-                <option>Blank</option>
-                <option>Prescription01</option>
-                <option>Prescription02</option>
-                <option>Round</option>
-                <option>Sunglasses</option>
-                <option>Wayfarers</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="hairColor"
-                placeholder="my hair color" 
-                list="optHairColor"
-              />
-              <datalist id="optHairColor">
-                <option>Black</option>
-                <option>BrownDark</option>
-                <option>Auburn</option>
-                <option>Blonde</option>
-                <option>Red</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="facialHair"
-                placeholder="my facial hair" 
-                list="optFacialHair"
-              />
-              <datalist id="optFacialHair">
-                <option>Blank</option>
-                <option>BeardMedium</option>
-                <option>BeardLight</option>
-                <option>BeardMajestic</option>
-                <option>MoustacheFancy</option>
-                <option>MoustacheMagnum</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="facialColor"
-                placeholder="my facial hair color" 
-                list="optFaceHairColor"
-              />
-              <datalist id="optFaceHairColor">
-                <option>Black</option>
-                <option>BrownDark</option>
-                <option>Auburn</option>
-                <option>Blonde</option>
-                <option>Red</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="clothes"
-                placeholder="my clothes" 
-                list="optClothes"
-              />
-              <datalist id="optClothes">
-                <option>BlazerShirt</option>
-                <option>BlazerSweater</option>
-                <option>CollarSweater</option>
-                <option>GraphicShirt</option>
-                <option>Overall</option>
-                <option>ShirtScoopNeck</option>
-                <option>ShirtVNeck</option>
-                <option>Hoodie</option>
-                <option>ShirtCrewNeck</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="eyes"
-                placeholder="my eyes" 
-                list="optEyes"
-              />
-              <datalist id="optEyes">
-                <option>Close</option>
-                <option>Cry</option>
-                <option>Default</option>
-                <option>Dizzy</option>
-                <option>EyeRoll</option>
-                <option>Happy</option>
-                <option>Hearts</option>
-                <option>Side</option>
-                <option>Squint</option>
-                <option>Surprised</option>
-                <option>Wink</option>
-                <option>WinkWacky</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="eyebrow"
-                placeholder="my eyebrow" 
-                list="optEyebrow"
-              />
-              <datalist id="optEyebrow">
-                <option>Angry</option>
-                <option>AngryNatural</option>
-                <option>Default</option>
-                <option>DefaultNatural</option>
-                <option>FlatNatural</option>
-                <option>RaisedExcited</option>
-                <option>RaisedExcitedNatural</option>
-                <option>SadConcerned</option>
-                <option>SadConcernedNatural</option>
-                <option>UnibrownNatural</option>
-                <option>UpDown</option>
-                <option>UpDownNatural</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="mouth"
-                placeholder="my mouth" 
-                list="optMouth"
-              />
-              <datalist id="optMouth">
-                <option>Concerned</option>
-                <option>Default</option>
-                <option>Disbelief</option>
-                <option>Eating</option>
-                <option>Grimace</option>
-                <option>Sad</option>
-                <option>ScreamOpen</option>
-                <option>Serious</option>
-                <option>Smile</option>
-                <option>Tongue</option>
-                <option>Twinkle</option>
-                <option>Vomit</option>
-              </datalist>
-              <Input
-                onChange={handleAvatarChange}
-                name="skin"
-                placeholder="my skin" 
-                list="optSkin"
-              />
-              <datalist id="optSkin">
-                <option>Tanned</option>
-                <option>Yellow</option>
-                <option>Pale</option>
-                <option>Light</option>
-                <option>Brown</option>
-                <option>DarkBrown</option>
-                <option>Black</option>
-              </datalist>
-              {(avatarEl.current !== null) ? (
-              <MyAvatar
-                Style={avatarEl.current[0].value}
-                top={avatarEl.current[1].value}
-                accessories={avatarEl.current[2].value}
-                hairColor={avatarEl.current[3].value}
-                facialHair={avatarEl.current[4].value}
-                facialColor={avatarEl.current[5].value}
-                clothes={avatarEl.current[6].value}
-                eyes={avatarEl.current[7].value}
-                eyebrow={avatarEl.current[8].value}
-                mouth={avatarEl.current[9].value}
-                skin={avatarEl.current[10].value}
-              />
-              ) : (
-                <MyAvatar
-                  style='Transparent'
-                  top='LongHairMiaWallace'
-                />
-              )}
-            </form>
+          <h2 className="title is-3 has-text-centered">Avatar Settings</h2>
+            <h6>Style</h6>
+            <Select
+              onChange={option => {setAvatarObject({ ...avatarObject, style: option.value })}}
+              value={{value: avatarObject.style, label: avatarObject.style}}
+              name="style"
+              placeholder="Style"
+              options={([
+                { value: "Circle", label: "Circle" },
+                { value: "Transparent", label: "Transparent" }
+              ])}
+            />
+            <h6>Top</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, top: option.value })}
+              value={{value: avatarObject.top, label: avatarObject.top}}
+              name="top"
+              placeholder="Top"
+              options={([
+                { value: "NoHair", label: "NoHair" },
+                { value: "Eyepatch", label: "Eyepatch" },
+                { value: "Hat", label: "Hat" },
+                { value: "Hijab", label: "Hijab" },
+                { value: "Turban", label: "Turban" },
+                { value: "WinterHat1", label: "WinterHat1" },
+                { value: "LongHairBigHair", label: "LongHairBigHair" },
+                { value: "LongHairBob", label: "LongHairBob" },
+                { value: "LongHairBun", label: "LongHairBun" },
+                { value: "LongHairCurly", label: "LongHairCurly" },
+                { value: "LongHairCurvy", label: "LongHairCurvy" },
+                { value: "LongHairFrida", label: "LongHairFrida" },
+                { value: "LongHairFro", label: "LongHairFro" },
+                { value: "LongHairFroBand", label: "LongHairFroBand" },
+                { value: "LongHairNotTooLong", label: "LongHairNotTooLong" },
+                { value: "LongHairShavedSides", label: "LongHairShavedSides" },
+                { value: "LongHairMiaWallace", label: "LongHairMiaWallace" },
+                { value: "LongHairStraight", label: "LongHairStraight" },
+                { value: "LongHairStraightStrand", label: "LongHairStraightStrand" },
+                { value: "LongHairDreads", label: "LongHairDreads" },
+                { value: "ShortHairDreads01", label: "ShortHairDreads01" },
+                { value: "ShortHairDreads02", label: "ShortHairDreads02" },
+                { value: "ShortHairFrizzle", label: "ShortHairFrizzle" },
+                { value: "ShortHairShaggyMullet", label: "ShortHairShaggyMullet" },
+                { value: "ShortHairShortCurly", label: "ShortHairShortCurly" },
+                { value: "ShortHairShortRound", label: "ShortHairShortRound" },
+                { value: "ShortHairShortFlat", label: "ShortHairShortFlat" },
+                { value: "ShortHairShortWaved", label: "ShortHairShortWaved" },
+                { value: "ShortHairSides", label: "ShortHairSides" },
+                { value: "ShortHairTheCaesar", label: "ShortHairTheCaesar" },
+                { value: "ShortHairTheCaesarSidePart", label: "ShortHairTheCaesarSidePart" }
+              ])}
+            />
+            <h6>Accessories</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, accessories: option.value })}
+              name="accessories"
+              value={{value: avatarObject.accessories, label: avatarObject.accessories}}
+              placeholder="Accessories"
+              options={[
+                { value: "Blank", label: "Blank" },
+                { value: "Prescription01", label: "Prescription01" },
+                { value: "Prescription02", label: "Prescription02" },
+                { value: "Round", label: "Round" },
+                { value: "Sunglasses", label: "Sunglasses" },
+                { value: "Wayfarers", label: "Wayfarers" }
+              ]}
+            />
+            <h6>Hair Color</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, hairColor: option.value })}
+              value={{value: avatarObject.hairColor, label: avatarObject.hairColor}}
+              name="hairColor"
+              placeholder="Hair Color"
+              options={[
+                { value: "Black", label: "Black" },
+                { value: "BrownDark", label: "BrownDark" },
+                { value: "Auburn", label: "Auburn" },
+                { value: "Blonde", label: "Blonde" },
+                { value: "Red", label: "Red" }
+              ]}
+            />
+            <h6>Facial Hair</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, facialHair: option.value })}
+              value={{value: avatarObject.facialHair, label: avatarObject.facialHair}}
+              name="facialHair"
+              placeholder="Facial Hair"
+              options={[
+                { value: "Blank", label: "Blank" },
+                { value: "BeardMedium", label: "BeardMedium" },
+                { value: "BeardLight", label: "BeardLight" },
+                { value: "BeardMajestic", label: "BeardMajestic" },
+                { value: "MoustacheFancy", label: "MoustacheFancy" },
+                { value: "MoustacheMagnum", label: "MoustacheMagnum" }
+              ]}
+            />
+            <h6>Facial Color</h6>
+            <Select
+              isDisabled={avatarObject.facialHair === "Blank"}
+              onChange={option => setAvatarObject({ ...avatarObject, facialColor: option.value })}
+              value={{value: avatarObject.facialColor, label: avatarObject.facialColor}}
+              name="facialColor"
+              placeholder="Facial Hair Color"
+              options={[
+                { value: "Black", label: "Black" },
+                { value: "BrownDark", label: "BrownDark" },
+                { value: "Auburn", label: "Auburn" },
+                { value: "Blonde", label: "Blonde" },
+                { value: "Red", label: "Red" }
+              ]}
+            />
+            <h6>Clothes</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, clothes: option.value })}
+              value={{value: avatarObject.clothes, label: avatarObject.clothes}}
+              name="clothes"
+              placeholder="My Clothes"
+              options={[
+                { value: "BlazerShirt", label: "BlazerShirt" },
+                { value: "BlazerSweater", label: "BlazerSweater" },
+                { value: "CollarSweater", label: "CollarSweater" },
+                { value: "GraphicShirt", label: "GraphicShirt" },
+                { value: "Overall", label: "Overall" },
+                { value: "ShirtScoopNeck", label: "ShirtScoopNeck" },
+                { value: "ShirtVNeck", label: "ShirtVNeck" },
+                { value: "Hoodie", label: "Hoodie" },
+                { value: "ShirtCrewNeck", label: "ShirtCrewNeck" }
+              ]}
+            />
+            <h6>Eyes</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, eyes: option.value })}
+              value={{value: avatarObject.eyes, label: avatarObject.eyes}}
+              name="eyes"
+              placeholder="My Eyes"
+              options={[
+                { value: "Close", label: "Close" },
+                { value: "Cry", label: "Cry" },
+                { value: "Default", label: "Default" },
+                { value: "Dizzy", label: "Dizzy" },
+                { value: "EyeRoll", label: "EyeRoll" },
+                { value: "Happy", label: "Happy" },
+                { value: "Hearts", label: "Hearts" },
+                { value: "Side", label: "Side" },
+                { value: "Squint", label: "Squint" },
+                { value: "Surprised", label: "Surprised" },
+                { value: "Wink", label: "Wink" },
+                { value: "WinkWacky", label: "WinkWacky" }
+              ]}
+            />
+            <h6>Eyebrow</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, eyebrow: option.value })}
+              value={{value: avatarObject.eyebrow, label: avatarObject.eyebrow}}
+              name="eyebrow"
+              placeholder="My Eyebrow"
+              options={[
+                { value: "Angry", label: "Angry" },
+                { value: "AngryNatural", label: "AngryNatural" },
+                { value: "Default", label: "Default" },
+                { value: "DefaultNatural", label: "DefaultNatural" },
+                { value: "FlatNatural", label: "FlatNatural" },
+                { value: "RaisedExcited", label: "RaisedExcited" },
+                { value: "RaisedExcitedNatural", label: "RaisedExcitedNatural" },
+                { value: "SadConcerned", label: "SadConcerned" },
+                { value: "SadConcernedNatural", label: "SadConcernedNatural" },
+                { value: "UnibrownNatural", label: "UnibrownNatural" },
+                { value: "UpDown", label: "UpDown" },
+                { value: "UpDownNatural", label: "UpDownNatural" }
+              ]}
+            />
+            <h6>Mouth</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, mouth: option.value })}
+              value={{value: avatarObject.mouth, label: avatarObject.mouth}}
+              name="mouth"
+              placeholder="My Mouth"
+              options={[
+                { value: "Concerned", label: "Concerned" },
+                { value: "Default", label: "Default" },
+                { value: "Disbelief", label: "Disbelief" },
+                { value: "Eating", label: "Eating" },
+                { value: "Grimace", label: "Grimace" },
+                { value: "Sad", label: "Sad" },
+                { value: "ScreamOpen", label: "ScreamOpen" },
+                { value: "Serious", label: "Serious" },
+                { value: "Smile", label: "Smile" },
+                { value: "Tongue", label: "Tongue" },
+                { value: "Twinkle", label: "Twinkle" },
+                { value: "Vomit", label: "Vomit" }
+              ]}
+            />
+            <h6>Skin</h6>
+            <Select
+              onChange={option => setAvatarObject({ ...avatarObject, skin: option.value })}
+              value={{value: avatarObject.skin, label: avatarObject.skin}}
+              name="skin"
+              placeholder="My skin"
+              options={[
+                { value: "Tanned", label: "Tanned" },
+                { value: "Yellow", label: "Yellow" },
+                { value: "Pale", label: "Pale" },
+                { value: "Light", label: "Light" },
+                { value: "Brown", label: "Brown" },
+                { value: "DarkBrown", label: "DarkBrown" },
+                { value: "Black", label: "Black" }
+              ]}
+            />
+            <MyAvatar
+              style={avatarObject.style}
+              top={avatarObject.top}
+              accessories={avatarObject.accessories}
+              hairColor={avatarObject.hairColor}
+              facialHair={avatarObject.facialHair}
+              facialColor={avatarObject.facialColor}
+              clothes={avatarObject.clothes}
+              eyes={avatarObject.eyes}
+              eyebrow={avatarObject.eyebrow}
+              mouth={avatarObject.mouth}
+              skin={avatarObject.skin}
+            />
           </Box>
         </Columns.Column>
-      </Columns>  
+      </Columns>
     </div>
-    
+
   )
 }
 
