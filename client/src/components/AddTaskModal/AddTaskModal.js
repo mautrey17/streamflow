@@ -122,16 +122,6 @@ function AddTaskModal(props) {
     }
   };
 
-  // function dateToLocalTZ(date) {
-  //   const x = date.toString();
-  //   let y = x.substring(0, 4);
-  //   let m = parseInt(x.substring(5, 7)) - 1;
-  //   let d = x.substring(8, 10);
-  //   console.log(`date: ${date}, x: ${x}, y: ${y}, m: ${m}, d: ${d}`)
-  //   const newDate = new Date(y, m, d);
-  //   return newDate.toISOString();
-  // }
-
   return (
     <div className>
       <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Task<i className="fas fa-plus ml-2"/></a></li>
