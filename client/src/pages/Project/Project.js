@@ -73,18 +73,14 @@ function Project() {
         API.getProjects()
             .then(res => {
                 if (res.data.projects) {
-                    res.data.projects.forEach(proj => {
-                        setProjects(old => [...old, proj]);
-                    })
+                    setProjects(res.data.projects);
                 }
             })
             .catch(err => console.log(err))
             .then(API.getAllTasks()
                 .then(res2 => {
                     if (res2.data.tasks) {
-                        res2.data.tasks.forEach(task => {
-                            setTasks(old => [...old, task]);
-                        })
+                        setTasks(res2.data.tasks);
                     }
                 })
             )
@@ -92,9 +88,7 @@ function Project() {
             .then(API.getUsers()
                 .then(res3 => {
                     if (res3.data) {
-                        res3.data.forEach(user => {
-                            setUsers(old => [...old, user]);
-                        })
+                        setUsers(res3.data);
                     }
                 })
             )
@@ -450,16 +444,10 @@ function Project() {
                                     </article>
                                 </div>
                             </div>
-                            {selectedProject.owner ? 
+                            {selectedProject.owner &&
                                 <Manager 
                                     manager={selectedProject.owner}
                                 />
-                            :   <div className="tile is-parent">
-                                    <article className="tile is-child notification is-primary">
-                                        <p className="title">Manager</p>
-                                        <p className="subtitle"></p>
-                                    </article>
-                                </div> 
                             }
                             
                         </div>
