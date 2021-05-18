@@ -54,11 +54,11 @@ function Manager(props) {
   }
 
   return (
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-primary">
-            <p class="title">Manager
+      <div className="tile is-parent">
+        <article className="tile is-child notification is-primary">
+            <p className="title">Manager
             {owner.username && <img src={avatar} width="100px" style={{float: "right"}}/>}</p>
-            <p class="subtitle">{owner.username}</p>
+            <p className="subtitle">{owner.username && owner.username}</p>
         </article>
       </div>
   )
