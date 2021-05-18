@@ -450,9 +450,18 @@ function Project() {
                                     </article>
                                 </div>
                             </div>
-                            <Manager 
-                                manager={selectedProject.owner}
-                            />
+                            {selectedProject.owner ? 
+                                <Manager 
+                                    manager={selectedProject.owner}
+                                />
+                            :   <div className="tile is-parent">
+                                    <article className="tile is-child notification is-primary">
+                                        <p className="title">Manager</p>
+                                        <p className="subtitle"></p>
+                                    </article>
+                                </div> 
+                            }
+                            
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child notification is-success">
