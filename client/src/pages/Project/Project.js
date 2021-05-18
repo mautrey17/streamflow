@@ -12,7 +12,9 @@ import DeleteProjectModal from "../../components/DeleteProjectModal";
 import moment from "moment";
 import Select from "react-select";
 import AUTH from '../../utils/AUTH';
-import DatePicker from "react-datepicker"
+import DatePicker from "react-datepicker";
+import TeamMemberList from "../../components/TeamMemberList";
+import Manager from "../../components/Tiles/Manager";
 
 function Project() {
     //set the initial state
@@ -175,11 +177,11 @@ function Project() {
                 })
             };
 
-            // Gets project owner's username by comparing project owner ID with user database
-            let manager = "";
+            // Gets project owner's information by comparing project owner ID with user database
+            let owner = {};
             users.forEach(user => {
                 if (user._id === projects[i].owner.id) {
-                    manager = user.username
+                    owner = user;
                 }
             })
 
@@ -189,8 +191,7 @@ function Project() {
                 id: projects[i]._id,
                 dueDate: projects[i].dueDate,
                 assignedUsers: projects[i].assignedUsers,
-                owner: projects[i].owner,
-                manager: manager,
+                owner: owner,
                 usernames: filteredUsers,
                 selected: i
             });
@@ -220,7 +221,6 @@ function Project() {
             ...openTask,
             title: e.target.value
         })
-        console.log(openTask);
     }
 
     function statusLabel(x) {
@@ -365,7 +365,7 @@ function Project() {
                                     {selectedProject.title}
 
                                     {/* Shows edit icon only if logged in user is the project owner */}
-                                    {selectedProject.owner.id === currentUser._id &&
+                                    {selectedProject.owner._id === currentUser._id &&
                                         <div>
                                             <EditProjectModal
                                                 project={selectedProject}
@@ -450,15 +450,9 @@ function Project() {
                                     </article>
                                 </div>
                             </div>
-                            <div class="tile is-parent">
-                                <article class="tile is-child notification is-primary">
-                                    <p class="title">Manager</p>
-                                    <p class="subtitle">{selectedProject.manager}</p>
-                                    <div class="content">
-
-                                    </div>
-                                </article>
-                            </div>
+                            <Manager 
+                                manager={selectedProject.owner}
+                            />
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child notification is-success">
@@ -467,10 +461,11 @@ function Project() {
                                     <ul>
                                         {selectedProject.usernames && selectedProject.usernames.map((member) => {
                                             return (
-                                                <li>{member.username}</li>
+                                                <TeamMemberList 
+                                                    user={member}
+                                                />
                                             )
-                                        }
-                                        )}
+                                        })}
                                     </ul>
                                     <div class="content">
 
@@ -524,10 +519,7 @@ function Project() {
                             </div>
                         </div>
                     </div>
-
-
                     <div>
-
                         <div>
                             <h4 className="subtitle is-4">Current Task</h4>
                             <form>
@@ -535,7 +527,7 @@ function Project() {
                                     <thead>
                                         <tr>
                                             <th>Task</th>
-                                            <th>Due Date</th>
+                                            <th className="tableDate">Due Date</th>
                                             <th>Urgency</th>
                                             <th>Status</th>
                                             <th>Team</th>
@@ -548,6 +540,7 @@ function Project() {
                                             <td>
                                                 <input
                                                     className="input"
+                                                    size="9"
                                                     type="text"
                                                     value={openTask.title}
                                                     onChange={handleTaskTitleChange}
@@ -555,7 +548,7 @@ function Project() {
                                                 >
                                                 </input>
                                             </td>
-                                            <td>
+                                            <td className="tableDate">
                                                 <DatePicker 
                                                     selected={openTask.dueDate}
                                                     onChange={date => setOpenTask({...openTask, dueDate: date})}
