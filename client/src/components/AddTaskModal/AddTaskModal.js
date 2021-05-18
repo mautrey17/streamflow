@@ -38,7 +38,7 @@ function AddTaskModal(props) {
       let x = {
         value: {
           owner: {
-            id: props.selectedProject.owner.id
+            id: props.selectedProject.owner._id
           },
           _id: props.selectedProject.id,
           assignedUsers: props.selectedProject.assignedUsers

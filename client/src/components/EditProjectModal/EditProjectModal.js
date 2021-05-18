@@ -37,7 +37,12 @@ function EditProjectModal(props) {
       title: props.project.title,
       date: new Date(props.project.dueDate),
       assignedUsers: props.project.assignedUsers,
-      owner: props.project.owner
+      owner: {
+        firstName: props.project.owner.firstName,
+        lastName: props.project.owner.lastName,
+        username: props.project.owner.username,
+        id: props.project.owner._id
+      }
     })
 
     // Gets users currently assigned to the project to preloaded list
