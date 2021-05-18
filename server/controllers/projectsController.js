@@ -45,14 +45,7 @@ module.exports = {
     console.log('finById',req.body)
     if (req.user) {
       db.Project
-          .find({ 
-            "$or": 
-            [{ 
-              "owner.id": req.user._id
-            }, {
-              "assignedUsers": req.user._id
-            }]
-        })
+        .find({})
         .populate("projects")
         .then(projects => {
           const project = projects.filter(p => p._id.toString() === req.params.id);
