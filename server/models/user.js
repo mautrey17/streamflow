@@ -18,6 +18,7 @@ const userSchema = new Schema({
 		facialHair: { type: String, unique: false, default: "Blank" },
 		facialColor: { type: String, unique: false, default: "" },
 		clothes: { type: String, unique: false, default: "BlazerShirt" },
+		clotheColor: { type: String, unique: false, default: "White" },
 		eyes: { type: String, unique: false, default: "Default" },
 		eyebrow: { type: String, unique: false, default: "Default" },
 		mouth: { type: String, unique: false, default: "Default" },

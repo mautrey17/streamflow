@@ -12,6 +12,7 @@ function Manager(props) {
       facialHair: "",
       facialColor: "",
       clothes: "",
+      clotheColor: "",
       eyes: "",
       eyebrow: "",
       mouth: "",
@@ -50,6 +51,9 @@ function Manager(props) {
       }
       if (user.avatar.clothes) {
         avatarSettings += '&clotheType=' + user.avatar.clothes
+      }
+      if (user.avatar.clotheColor) {
+        avatarSettings += '&clotheColor=' + user.avatar.clotheColor
       }
       if (user.avatar.eyes) {
         avatarSettings += '&eyeType=' + user.avatar.eyes
