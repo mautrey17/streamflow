@@ -11,6 +11,7 @@ export default function MyAvatar (props){
           facialHairType={props.facialHair}
           facialHairColor={props.facialColor}
           clotheType={props.clothes}
+          clotheColor={props.clotheColor}
           eyeType={props.eyes}
           eyebrowType={props.eyebrow}
           mouthType={props.mouth}

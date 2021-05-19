@@ -23,6 +23,7 @@ function UserProfile() {
     facialHair: '',
     facialColor: '',
     clothes: '',
+    clotheColor: '',
     eyes: '',
     eyebrow: '',
     mouth: '',
@@ -45,6 +46,7 @@ function UserProfile() {
         avatar.facialHair = res.data[0].avatar.facialHair;
         avatar.facialColor = res.data[0].avatar.facialColor;
         avatar.clothes = res.data[0].avatar.clothes;
+        avatar.clotheColor = res.data[0].avatar.clotheColor;
         avatar.eyes = res.data[0].avatar.eyes;
         avatar.eyebrow = res.data[0].avatar.eyebrow;
         avatar.mouth = res.data[0].avatar.mouth;
@@ -78,6 +80,7 @@ function UserProfile() {
             facialHair: avatarObject.facialHair,
             facialColor: avatarObject.facialColor,
             clothes: avatarObject.clothes,
+            clotheColor: avatarObject.clotheColor,
             eyes: avatarObject.eyes,
             eyebrow: avatarObject.eyebrow,
             mouth: avatarObject.mouth,
@@ -156,6 +159,25 @@ function UserProfile() {
                 />
               </div>
               <div className="column">
+                <h6>Accessories</h6>
+                <Select
+                  onChange={option => setAvatarObject({ ...avatarObject, accessories: option.value })}
+                  name="accessories"
+                  value={{ value: avatarObject.accessories, label: avatarObject.accessories }}
+                  placeholder="Accessories"
+                  options={[
+                    { value: "Blank", label: "Blank" },
+                    { value: "Prescription01", label: "Prescription01" },
+                    { value: "Prescription02", label: "Prescription02" },
+                    { value: "Round", label: "Round" },
+                    { value: "Sunglasses", label: "Sunglasses" },
+                    { value: "Wayfarers", label: "Wayfarers" }
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
                 <h6>Top</h6>
                 <Select
                   onChange={option => setAvatarObject({ ...avatarObject, top: option.value })}
@@ -197,28 +219,10 @@ function UserProfile() {
                   ])}
                 />
               </div>
-            </div>
-            <div className="columns">
-              <div className="column">
-                <h6>Accessories</h6>
-                <Select
-                  onChange={option => setAvatarObject({ ...avatarObject, accessories: option.value })}
-                  name="accessories"
-                  value={{ value: avatarObject.accessories, label: avatarObject.accessories }}
-                  placeholder="Accessories"
-                  options={[
-                    { value: "Blank", label: "Blank" },
-                    { value: "Prescription01", label: "Prescription01" },
-                    { value: "Prescription02", label: "Prescription02" },
-                    { value: "Round", label: "Round" },
-                    { value: "Sunglasses", label: "Sunglasses" },
-                    { value: "Wayfarers", label: "Wayfarers" }
-                  ]}
-                />
-              </div>
               <div className="column">
                 <h6>Hair Color</h6>
                 <Select
+                  isDisabled={avatarObject.top === "NoHair" || avatarObject.top === "Eyepatch" || avatarObject.top === "Hat" || avatarObject.top === "Hijab" || avatarObject.top === "Turban" || avatarObject.top === "WinterHat1"}
                   onChange={option => setAvatarObject({ ...avatarObject, hairColor: option.value })}
                   value={{ value: avatarObject.hairColor, label: avatarObject.hairColor }}
                   name="hairColor"
@@ -291,6 +295,35 @@ function UserProfile() {
                 />
               </div>
               <div className="column">
+                <h6>Clothe Color</h6>
+                <Select
+                  isDisabled={avatarObject.clothes === "BlazerShirt" || avatarObject.clothes === "BlazerSweater"}
+                  onChange={option => setAvatarObject({ ...avatarObject, clotheColor: option.value })}
+                  value={{ value: avatarObject.clotheColor, label: avatarObject.clotheColor }}
+                  name="clotheColor"
+                  placeholder="My Clothe Color"
+                  options={[
+                    { value: "Black", label: "Black" },
+                    { value: "Blue01", label: "Blue01" },
+                    { value: "Blue02", label: "Blue02" },
+                    { value: "Blue03", label: "Blue03" },
+                    { value: "Gray01", label: "Gray01" },
+                    { value: "Gray02", label: "Gray02" },
+                    { value: "Heather", label: "Heather" },
+                    { value: "PastelBlue", label: "PastelBlue" },
+                    { value: "PastelGreen", label: "PastelGreen" },
+                    { value: "PastelOrange", label: "PastelOrange" },
+                    { value: "PastelRed", label: "PastelRed" },
+                    { value: "PastelYellow", label: "PastelYellow" },
+                    { value: "Pink", label: "Pink" },
+                    { value: "Red", label: "Red" },
+                    { value: "White", label: "White" }
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
                 <h6>Eyes</h6>
                 <Select
                   onChange={option => setAvatarObject({ ...avatarObject, eyes: option.value })}
@@ -313,8 +346,6 @@ function UserProfile() {
                   ]}
                 />
               </div>
-            </div>
-            <div className="columns">
               <div className="column">
                 <h6>Eyebrow</h6>
                 <Select
@@ -335,6 +366,26 @@ function UserProfile() {
                     { value: "UnibrownNatural", label: "UnibrownNatural" },
                     { value: "UpDown", label: "UpDown" },
                     { value: "UpDownNatural", label: "UpDownNatural" }
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <h6>Skin</h6>
+                <Select
+                  onChange={option => setAvatarObject({ ...avatarObject, skin: option.value })}
+                  value={{ value: avatarObject.skin, label: avatarObject.skin }}
+                  name="skin"
+                  placeholder="My skin"
+                  options={[
+                    { value: "Tanned", label: "Tanned" },
+                    { value: "Yellow", label: "Yellow" },
+                    { value: "Pale", label: "Pale" },
+                    { value: "Light", label: "Light" },
+                    { value: "Brown", label: "Brown" },
+                    { value: "DarkBrown", label: "DarkBrown" },
+                    { value: "Black", label: "Black" }
                   ]}
                 />
               </div>
@@ -362,46 +413,28 @@ function UserProfile() {
                 />
               </div>
             </div>
-            <div className="columns">
-              <div className="column">
-                <h6>Skin</h6>
-                <Select
-                  onChange={option => setAvatarObject({ ...avatarObject, skin: option.value })}
-                  value={{ value: avatarObject.skin, label: avatarObject.skin }}
-                  name="skin"
-                  placeholder="My skin"
-                  options={[
-                    { value: "Tanned", label: "Tanned" },
-                    { value: "Yellow", label: "Yellow" },
-                    { value: "Pale", label: "Pale" },
-                    { value: "Light", label: "Light" },
-                    { value: "Brown", label: "Brown" },
-                    { value: "DarkBrown", label: "DarkBrown" },
-                    { value: "Black", label: "Black" }
-                  ]}
-                />
-              </div>
-              <div className="column has-text-centered">
-                <MyAvatar
-                  style={avatarObject.style}
-                  top={avatarObject.top}
-                  accessories={avatarObject.accessories}
-                  hairColor={avatarObject.hairColor}
-                  facialHair={avatarObject.facialHair}
-                  facialColor={avatarObject.facialColor}
-                  clothes={avatarObject.clothes}
-                  eyes={avatarObject.eyes}
-                  eyebrow={avatarObject.eyebrow}
-                  mouth={avatarObject.mouth}
-                  skin={avatarObject.skin}
-                />
-              </div>
+            <div className="has-text-centered">
+              <MyAvatar
+                style={avatarObject.style}
+                top={avatarObject.top}
+                accessories={avatarObject.accessories}
+                hairColor={avatarObject.hairColor}
+                facialHair={avatarObject.facialHair}
+                facialColor={avatarObject.facialColor}
+                clothes={avatarObject.clothes}
+                clotheColor={avatarObject.clotheColor}
+                eyes={avatarObject.eyes}
+                eyebrow={avatarObject.eyebrow}
+                mouth={avatarObject.mouth}
+                skin={avatarObject.skin}
+              />
+
             </div>
             <div class="field">
-                <div class="buttons is-centered">
-                  <button className="mt-3 button is-success" onClick={handleFormSubmit}>Update Avatar</button>
-                </div>
+              <div class="buttons is-centered">
+                <button className="mt-3 button is-success" onClick={handleFormSubmit}>Update Avatar</button>
               </div>
+            </div>
           </Box>
         </Columns.Column>
       </Columns>
