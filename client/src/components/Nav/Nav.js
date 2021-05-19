@@ -10,7 +10,6 @@ function Nav(props) {
   useEffect(() => {
     AUTH.getUser().then(res => {
       API.getOneUser(res.data.user._id).then(res2 => {
-        console.log(res2.data)
         loadAvatar(res2.data[0])
       })
     })
@@ -19,7 +18,7 @@ function Nav(props) {
   const location = useLocation();
   const [navActive, setNavActive] = React.useState(false)
   const [avatar, setAvatar] = useState('https://avataaars.io/?')
-  let avatarSettings='https://avataaars.io/?';
+  let avatarSettings = 'https://avataaars.io/?';
   function loadAvatar(user) {
     if (user.avatar.style) {
       avatarSettings += 'avatarStyle=' + user.avatar.style
@@ -56,8 +55,7 @@ function Nav(props) {
     }
     setAvatar(avatarSettings)
   }
-  
-  console.log('at RETURN')
+
   return (
     <div className="">
       <nav
@@ -101,47 +99,47 @@ function Nav(props) {
         <div id="navbarMain" className={`navbar-menu ${navActive ? 'is-active is-centered' : ''}`}>
           <div className="navbar-start">
             <Link
-            to="/"
-            className={
-              location.pathname === "/"
-                ? "navbar-item is-active"
-                : "navbar-item"
-            }
-          >
+              to="/"
+              className={
+                location.pathname === "/"
+                  ? "navbar-item is-active"
+                  : "navbar-item"
+              }
+            >
               <span><i className="fas fa-home mr-2"></i></span>Dashboard
           </Link>
 
-          <Link
-            to="/project"
-            className={
-              location.pathname === "/project"
-                ? "navbar-item is-active"
-                : "navbar-item"
-            }
-          >
+            <Link
+              to="/project"
+              className={
+                location.pathname === "/project"
+                  ? "navbar-item is-active"
+                  : "navbar-item"
+              }
+            >
               <span><i className="mr-2 fas fa-shapes"></i></span>Projects
           </Link>
-          <Link
-            to="/messaging"
-            className={
-              location.pathname === "/messaging"
-                ? "navbar-item is-active"
-                : "navbar-item"
-            }
-          >
+            <Link
+              to="/messaging"
+              className={
+                location.pathname === "/messaging"
+                  ? "navbar-item is-active"
+                  : "navbar-item"
+              }
+            >
               <span><i className="mr-2 fas fa-comment-dots"></i></span>Messages
           </Link>
-          <Link
-            to="/notes"
-            className={
-              location.pathname === "/notes"
-                ? "navbar-item is-active"
-                : "navbar-item"
-            }
-          >
+            <Link
+              to="/notes"
+              className={
+                location.pathname === "/notes"
+                  ? "navbar-item is-active"
+                  : "navbar-item"
+              }
+            >
               <span><i className="mr-2 fas fa-sticky-note"></i></span>Notes
           </Link>
-          
+
             {/* In the future if we add a dropdown menu */}
             {/* <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">More</a>
@@ -157,25 +155,25 @@ function Nav(props) {
           </div>
 
           <div className="navbar-end">
-          <img 
-            src={avatar}
-            width='50px'
-            height='75px'
-          />
-          <Link
-            to="/userprofile"
-            className={
-              location.pathname === "/userprofile"
-                ? "navbar-item is-active"
-                : "navbar-item"
-            }
-          >
+            <img
+              src={avatar}
+              width='50px'
+              height='75px'
+            />
+            <Link
+              to="/userprofile"
+              className={
+                location.pathname === "/userprofile"
+                  ? "navbar-item is-active"
+                  : "navbar-item"
+              }
+            >
               <span><i className="fas fa-user-tie mr-2"></i></span>User Profile
           </Link>
             <div className="navbar-item">
               <div className="buttons">
-                
-                <a 
+
+                <a
                   className="button is-black"
                   onClick={props.logout}
                 >Log Out</a>

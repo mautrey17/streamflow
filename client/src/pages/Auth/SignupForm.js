@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Card } from '../../components/Card';
-import { Input, FormBtn } from '../../components/Form';
 import { Columns, Container } from 'react-bulma-components';
 import AUTH from '../../utils/AUTH';
 import './LoginForm.css';
