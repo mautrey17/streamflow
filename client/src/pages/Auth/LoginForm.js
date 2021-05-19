@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Card } from '../../components/Card';
-import { Input, FormBtn } from '../../components/Form';
-import { Columns, Container } from 'react-bulma-components';
+import { Columns } from 'react-bulma-components';
 import login_img from "../../images/login.jpg"
 import './LoginForm.css';
-const fs = require('fs');
-const path = require('path');
-
-
-
 
 function LoginForm({login}) {
   const [userObject, setUserObject] = useState({
@@ -88,26 +81,6 @@ function LoginForm({login}) {
               <p style={{fontSize: 10}} className="has-text-centered">Image by: <a  href="https://www.vecteezy.com/free-vector/vector">Vector Vectors by Vecteezy</a></p>
               
             </form>
-            {/* <Card title="Login to React Reading List">
-              <form style={{marginTop: 10}}>
-                <label htmlFor="username">Username: </label>
-                <Input
-                  type="text"
-                  name="username"
-                  value={userObject.username}
-                  onChange={handleChange}
-                />
-                <label htmlFor="password">Password: </label>
-                <Input
-                  type="password"
-                  name="password"
-                  value={userObject.password}
-                  onChange={handleChange}
-                />
-                <Link to="/signup">Register</Link>
-                <FormBtn onClick={handleSubmit}>Login</FormBtn>
-              </form>
-            </Card> */}
           </Columns.Column>
           <Columns.Column size="3">
           

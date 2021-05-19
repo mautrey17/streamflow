@@ -9,9 +9,12 @@ import Select from "react-select";
 function UserProfile() {
   let userId;
   const formEl = useRef(null);
-  const [userObject, setUserObject] = useState({});
+  const [userObject, setUserObject] = useState({
+    firstName: '',
+    lastName: '',
+    username: ''
+  });
 
-  const avatarEl = useRef(null);
   const [avatarObject, setAvatarObject] = useState({
     style: '',
     top: '',
@@ -28,12 +31,12 @@ function UserProfile() {
 
   useEffect(() => {
     Axios.get("/auth/user/ ").then(res => {
-      // console.log('useEffect',res.data)
-      setUserObject({ ...userObject, firstName: res.data.user.firstName })
-      setUserObject({ ...userObject, lastName: res.data.user.lastName })
-      setUserObject({ ...userObject, username: res.data.user.username })
+      setUserObject({
+        firstName: res.data.user.firstName,
+        lastName: res.data.user.lastName,
+        username: res.data.user.username
+      });
       API.getOneUser(res.data.user._id).then(res => {
-        console.log('useEffect res', res.data)
         let avatar = {};
         avatar.style = res.data[0].avatar.style;
         avatar.top = res.data[0].avatar.top;
@@ -47,7 +50,6 @@ function UserProfile() {
         avatar.mouth = res.data[0].avatar.mouth;
         avatar.skin = res.data[0].avatar.skin;
         setAvatarObject(avatar);
-        console.log('avatarObject', avatarObject)
       })
     })
   }, [])
@@ -55,15 +57,12 @@ function UserProfile() {
   function handleInputChange(event) {
     const { name, value } = event.target;
     setUserObject({ ...userObject, [name]: value })
-    console.log(avatarObject);
   };
 
   function handleFormSubmit(event) {
     event.preventDefault();
     Axios.get("/auth/user/ ").then(res => {
-      console.log('user id', res.data.user._id)
       userId = res.data.user._id
-      console.log('update user', userId)
       API.updateUser(
         userId,
         {
@@ -125,7 +124,7 @@ function UserProfile() {
               />
               <Input
                 onChange={handleInputChange}
-                name="Password"
+                name="password"
                 placeholder="Change Password"
                 label="Change Password:"
               />

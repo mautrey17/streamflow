@@ -309,7 +309,7 @@ function Project() {
                             <ul className="menu-list">
                                 {projects ? projects.map((proj, i) => (
                                     <li
-                                        key={proj.id}
+                                        key={proj._id}
                                         onClick={setCurrentProject}
                                         value={i}
                                         className={selectedProject.selected === i ? "has-background-success-light" : ""}
@@ -388,30 +388,30 @@ function Project() {
 
                     {/* tiles start here */}
 
-                    <div class="tile is-ancestor mt-4">
-                        <div class="tile is-vertical is-8">
-                            <div class="tile">
-                                <div class="tile is-parent is-vertical">
-                                    <article class="tile is-child notification is-danger">
+                    <div className="tile is-ancestor mt-4">
+                        <div className="tile is-vertical is-8">
+                            <div className="tile">
+                                <div className="tile is-parent is-vertical">
+                                    <article className="tile is-child notification is-danger">
                                         <div className='content is-medium'>
                                             <h5 className="title is-3">Urgent: </h5>
                                             <ul>
                                                 {projectTasks && projectTasks.map(task => {
                                                     return (
-                                                        task.urgency === "urgent" && <li>{task.title}</li>
+                                                        task.urgency === "urgent" && <li key={task._id}>{task.title}</li>
                                                     )
                                                 }
                                                 )}
                                             </ul>
                                         </div>
                                     </article>
-                                    <article class="tile is-child notification is-warning">
+                                    <article className="tile is-child notification is-warning">
                                         <div className='content is-medium'>
                                             <h5 className="title is-3">This Week: </h5>
                                             <ul>
                                                 {projectTasks && projectTasks.map(task => {
                                                     return (
-                                                        compareWeek(task) && <li>{task.title}</li>
+                                                        compareWeek(task) && <li key={task._id}>{task.title}</li>
                                                     )
                                                 }
                                                 )}
@@ -419,8 +419,8 @@ function Project() {
                                         </div>
                                     </article>
                                 </div>
-                                <div class="tile is-parent">
-                                    <article class="tile is-child notification is-info">
+                                <div className="tile is-parent">
+                                    <article className="tile is-child notification is-info">
                                         <div className="block">
                                             <h2 className="title is-3">Project Progress</h2>
                                             {selectedProject.title &&
@@ -451,20 +451,21 @@ function Project() {
                             }
                             
                         </div>
-                        <div class="tile is-parent">
-                            <article class="tile is-child notification is-success">
-                                <div class="content is-medium">
-                                    <p class="title">Team Members</p>
+                        <div className="tile is-parent">
+                            <article className="tile is-child notification is-success">
+                                <div className="content is-medium">
+                                    <p className="title">Team Members</p>
                                     <ul>
                                         {selectedProject.usernames && selectedProject.usernames.map((member) => {
                                             return (
                                                 <TeamMemberList 
                                                     user={member}
+                                                    key={member._id}
                                                 />
                                             )
                                         })}
                                     </ul>
-                                    <div class="content">
+                                    <div className="content">
 
                                     </div>
                                 </div>
@@ -474,10 +475,10 @@ function Project() {
 
                     {/* kanBan tiles */}
                     <div className="box px-3 has-background-primary">
-                        <div class="tile is-ancestor">
-                            <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p class="title has-text-centered">To Do</p>
+                        <div className="tile is-ancestor">
+                            <div className="tile is-parent">
+                                <article className="tile is-child box">
+                                    <p className="title has-text-centered">To Do</p>
                                     <KanBan
                                         key="todo_tasks"
                                         title="To Do"
@@ -488,9 +489,9 @@ function Project() {
                                     />
                                 </article>
                             </div>
-                            <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p class="title has-text-centered">In Progress</p>
+                            <div className="tile is-parent">
+                                <article className="tile is-child box">
+                                    <p className="title has-text-centered">In Progress</p>
                                     <KanBan
                                         key="inProgress_tasks"
                                         title="In Progress"
@@ -501,9 +502,9 @@ function Project() {
                                     />
                                 </article>
                             </div>
-                            <div class="tile is-parent">
-                                <article class="tile is-child box">
-                                    <p class="title has-text-centered">Completed</p>
+                            <div className="tile is-parent">
+                                <article className="tile is-child box">
+                                    <p className="title has-text-centered">Completed</p>
                                     <KanBan
                                         key="completed_tasks"
                                         title="Completed"
