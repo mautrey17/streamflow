@@ -96,7 +96,7 @@ function ToDo(props) {
                 </tbody>
             </table>
 
-            <h3 className={`${tomorrowTasks.length === 0 ? "hide" : 'subtitle is-2'}`}>Tomorrow</h3>
+            <h3 className={`${tomorrowTasks.length === 0 ? "hide" : 'subtitle is-2'}`}>Upcoming</h3>
             <table className={`${tomorrowTasks.length === 0 ? "hide" : 'table mt-3 is-striped is-hoverable'}`}>
                 <THead />
                 <tbody>
