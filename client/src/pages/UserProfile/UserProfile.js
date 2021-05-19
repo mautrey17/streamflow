@@ -139,7 +139,7 @@ function UserProfile() {
         </Columns.Column>
         <Columns.Column size="md-6 sm-6">
 
-          <Box title="Avatar Settings">
+          <Box className="ml-6 mr-6" title="Avatar Settings" style={{ backgroundColor: "#efefef" }}>
             <h2 className="title is-3 has-text-centered">Avatar Settings</h2>
             <div className="columns">
               <div className="column">
@@ -381,7 +381,7 @@ function UserProfile() {
                   ]}
                 />
               </div>
-              <div className="column">
+              <div className="column has-text-centered">
                 <MyAvatar
                   style={avatarObject.style}
                   top={avatarObject.top}
@@ -397,6 +397,11 @@ function UserProfile() {
                 />
               </div>
             </div>
+            <div class="field">
+                <div class="buttons is-centered">
+                  <button className="mt-3 button is-success" onClick={handleFormSubmit}>Update Avatar</button>
+                </div>
+              </div>
           </Box>
         </Columns.Column>
       </Columns>
