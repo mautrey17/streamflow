@@ -97,6 +97,7 @@ function Dashboard() {
                             <Columns>
                                 {data.projects && data.projects.map((proj, i) => (
                                     <ProjectCard
+                                        key={proj._id}
                                         project={proj}
                                         tasks={data.tasks}
                                         i={i}

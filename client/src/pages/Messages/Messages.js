@@ -1,11 +1,6 @@
 import React from 'react';
-// import LeftContainer from '../../components/LeftContainer/LeftContainer';
-// import {Col, Row} from "../../components/Grid";
-// import ActiveMessage from '../../components/ActiveMessage';
-import Nav from "../../components/Nav";
 
 function Messages() {
-    console.log("messaging");
     return (
         <div>
             <iframe

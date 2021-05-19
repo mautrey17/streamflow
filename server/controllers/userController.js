@@ -1,4 +1,5 @@
 const db = require("../models");
+const bcrypt = require('bcryptjs');
 
 // Defining methods for the userController
 module.exports = {
@@ -68,10 +69,12 @@ module.exports = {
 		res.json({ user: cleanUser });
 	},
   updateUser: function (req,res) {
-    console.log('updateUser',req)
+    if (req.body.password) {
+      let hashPassword = bcrypt.hashSync(req.body.password, 10)
+      req.body.password = hashPassword
+    };
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
     .then(dbModel => {
-      console.log(dbModel);
       res.json(dbModel);
     })
     .catch(err => res.status(422).json(err));
