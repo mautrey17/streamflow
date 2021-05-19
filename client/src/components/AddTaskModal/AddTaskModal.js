@@ -123,7 +123,7 @@ function AddTaskModal(props) {
   };
 
   return (
-    <div className>
+    <div>
       <li className="has-background-success"><a className="has-text-white" href="#" onClick={props.openModal}>Create a Task<i className="fas fa-plus ml-2"/></a></li>
       <Modal
         isOpen={props.modalIsOpen}
