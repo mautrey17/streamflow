@@ -5,7 +5,7 @@ function TeamMemberList(props) {
 
     useEffect(() => {
         loadAvatar(props.user)
-    }, [])
+    }, [props.user])
     
     function loadAvatar(user) {
         let avatarSettings = 'https://avataaars.io/?';

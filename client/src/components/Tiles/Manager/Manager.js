@@ -22,7 +22,7 @@ function Manager(props) {
   useEffect(() => {
     if (props.manager) {
       setOwner(props.manager);
-      loadAvatar(owner);
+      loadAvatar(props.manager);
     }
   }, [props.manager])
 
