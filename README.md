@@ -14,6 +14,7 @@ StreamFlow is a project management application where users can create a profile 
 
 In addition to tracking projects and tasks, StreamFlow supports teams and projects through live chat between users and a place to save and create notes.
 
+Video Walkthrough: https://drive.google.com/file/d/1h9tbBveqixIuvIX2pabMNtNAzDzMDrCN/view
 
 # Installation
 ```
