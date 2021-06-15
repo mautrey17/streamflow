@@ -42,7 +42,7 @@ Few improvements can be added as:
 
 # Notes
 In that page you are able to create, read, update notes relevant to a project or task.
-![images](client/public/images/notes.jpg)
+![images](client/public/images/dashboard.jpg)
 
 # Links
 [Git Repo](https://github.com/mautrey17/streamflow)  
